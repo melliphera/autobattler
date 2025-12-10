@@ -1,0 +1,1 @@
+std::iter::Map<Filter<std::slice::Iter<'_, battle_unit::BattleUnit>, {closure@src\core_structs\battle\battle_state.rs:86:41: 86:47}>, {closure@src\core_structs\battle\battle_state.rs:87:38: 87:44}>

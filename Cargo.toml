@@ -1,0 +1,9 @@
+[package]
+name = "autobattler"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+fixedstr = "0.5.10"
+priority-queue = "2.7.0"
+rand = "0.9.2"

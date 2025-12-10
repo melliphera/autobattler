@@ -1,0 +1,1 @@
+std::iter::Map<std::slice::Iter<'_, primitives::EntityID>, {closure@src\core_structs\unit\targeting.rs:27:61: 27:66}>

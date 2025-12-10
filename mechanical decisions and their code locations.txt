@@ -1,0 +1,7 @@
+damage mitigation formula: battle_unit.rs - BattleUnit::take_damage()
+shield blocks a full hit even if broken   - BattleUnit::take_damage()
+units only change target on target death  - BattleState::initialise
+
+within each tick, actions are resolved in order of EntityID and therefore load order - BattleState
+
+number of grid units per tile - primitives, impl AttackRange

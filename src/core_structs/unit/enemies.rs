@@ -1,0 +1,32 @@
+//! Contains the character roster itself.
+use super::template::UnitTemplate;
+use super::primitives::*;
+use fixedstr::str32;
+
+pub static ENEMY_DATABASE: &[UnitTemplate] = &[
+    UnitTemplate {
+        id: 0,
+        name: str32::const_make("Slime"),
+        hitpoints: Hitpoints(150),
+        defence: Mitigation(2),
+        magic_resist: Mitigation(0),
+        attack: AttackDamage(10),
+        attack_type: Physical,
+        attack_delay: AttackTickDelay(25),
+        attack_range: AttackRange(1),
+        crit_chance: CritChance::from_percentage(10.0),
+    },
+    UnitTemplate {
+        id: 1,
+        name: str32::const_make("Rat"),
+        hitpoints: Hitpoints(60),
+        defence: Mitigation(0),
+        magic_resist: Mitigation(0),
+        attack: AttackDamage(6),
+        attack_type:  Physical,
+        attack_delay: AttackTickDelay(15),
+        attack_range: AttackRange(1),
+        crit_chance: CritChance::from_percentage(10.0),
+    },
+    
+];

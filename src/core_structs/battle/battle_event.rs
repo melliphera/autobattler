@@ -2,64 +2,94 @@ use crate::core_structs::unit::prelude::*;
 use BattleEvent::*;
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
-pub enum BattleEvent {
-    // constitutes everything a character can do in a battle.
-    AttackEvent(AttackData), HealEvent(HealData), ShieldEvent(ShieldData), BuffEvent(BuffData), MoveEvent(MoveData), DeathEvent(EntityID), // TODO BufExpireEvent(BuffID)
+pub(crate) enum BattleEvent {
+    // constitutes everything that can modify state in a battle.
+    // AttackEvent and AbilityEvent are caused directly by entities.
+    // AbilityEvent propagates other events as appropriate.
+    AttackEvent(AttackData), AbilityCastEvent(AbilityData), 
+    RawDamageEvent(AttackData), HealEvent(HealData), ShieldEvent(ShieldData), BuffEvent(BuffData), MoveEvent(MoveData), MoveEndEvent(MoveEndData), DeathEvent(EntityID), // TODO BufExpireEvent(BuffID)
 }
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
-pub struct AttackData {
-    pub source: EntityID,
-    pub target: EntityID,
-    pub damage: Hitpoints, // calculated after attacker buffs, before defensive response
-    pub damage_type: DamageType
+pub(crate) struct AttackData {
+    pub(crate) source: EntityID,
+    pub(crate) target: EntityID,
+    pub(crate) damage: Hitpoints, // calculated after attacker buffs, before defensive response
+    pub(crate) damage_type: DamageType
 }
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
-pub struct HealData {
-    pub source: EntityID,
-    pub target: EntityID,
+pub(crate) struct HealData {
+    pub(crate) source: EntityID,
+    pub(crate) target: EntityID,
+    pub(crate) amount: Hitpoints
 }
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
-pub struct ShieldData {
-    pub source: EntityID,    
-    pub target: EntityID,
+pub(crate) struct ShieldData {
+    pub(crate) source: EntityID,    
+    pub(crate) target: EntityID,
+    pub(crate) amount: Hitpoints,
 }
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
-pub struct BuffData {
-    pub source: EntityID,
-    pub target: EntityID,
-    pub buff: Buff
+pub(crate) struct BuffData {
+    pub(crate) source: EntityID,
+    pub(crate) target: EntityID,
+    pub(crate) buff: Buff
 }
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
-pub struct MoveData {
-    pub source: EntityID,
-    pub target: EntityID,
+pub(crate) struct MoveData {
+    pub(crate) source: EntityID,
+    pub(crate) target: EntityID, // in case of displacing abilities
+    pub(crate) start_pos: BattlePosition,
+    pub(crate) end_pos: BattlePosition,
+    pub(crate) start_tick: u32,
+    pub(crate) end_tick: u32
+}
+
+#[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
+pub(crate) struct MoveEndData {
+    pub(crate) target: EntityID, // in case of displacing abilities
+    pub(crate) end_pos: BattlePosition,
+}
+
+#[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
+pub(crate) struct AbilityData{
+    pub(crate) source: EntityID,
+    pub(crate) ability: Ability
 }
 
 impl BattleEvent {
-    pub fn get_source_id(self) -> EntityID {
+    pub(crate) fn get_source_id(self) -> Option<EntityID> {
+        // only used for clearing events relating to dead people.
+        // Knock-on effects of successful casts shouldnt be cleared.
         match self {
-            AttackEvent(data) => {data.source}
-            HealEvent(data)   => {data.source}
-            ShieldEvent(data) => {data.source}
-            BuffEvent(data)   => {data.source}
-            MoveEvent(data)   => {data.source}
-            DeathEvent(data)  => {data}
+            AttackEvent(data)       => {Some(data.source)}
+            AbilityCastEvent(data)  => {Some(data.source)}
+            MoveEndEvent(data)     =>  {Some(data.target)}
+            RawDamageEvent(_data)   => {None}
+            HealEvent(_data)        => {None}
+            ShieldEvent(_data)      => {None}
+            BuffEvent(_data)        => {None}
+            MoveEvent(_data)        => {None}
+            DeathEvent(_data)       => {None}
         }
     }
 
-    pub fn get_target_id(self) -> EntityID {
+    pub(crate) fn get_target_id(self) -> Option<EntityID> {
         match self {
-            AttackEvent(data) => {data.target}
-            HealEvent(data)   => {data.target}
-            ShieldEvent(data) => {data.target}
-            BuffEvent(data)   => {data.target}
-            MoveEvent(data)   => {data.target}
-            DeathEvent(data)  => {data} // bogus return but never relevant so not worth changing to Option<EntityID>
+            // only used for clearing events relating to dead people.
+            AttackEvent(data)       => {Some(data.target)}            
+            HealEvent(data)         => {Some(data.target)}
+            ShieldEvent(data)       => {Some(data.target)}
+            BuffEvent(data)         => {Some(data.target)}
+            MoveEvent(data)         => {Some(data.target)}
+            MoveEndEvent(data)      => {Some(data.target)}
+            RawDamageEvent(data)    => {Some(data.target)}
+            AbilityCastEvent(_data) => {None} // abilities with targeted effects manifest them as one of the above events so dont need to be handled directly.
+            DeathEvent(_data)       => {None} // bogus return but never relevant so not worth changing to Option<EntityID>
         }
     }
 }

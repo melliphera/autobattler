@@ -1,2 +1,2 @@
-pub mod unit;
-pub mod battle;
+pub(crate) mod unit;
+pub(crate) mod battle;

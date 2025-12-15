@@ -1,39 +1,49 @@
+use std::collections::HashMap;
+
 use crate::core_structs::{
-    unit::prelude::*,
-    battle::battle_event::{*, BattleEvent::*},
+    battle::battle_event::{BattleEvent::*, *}, unit::prelude::*
 };
 
 #[derive(Clone)] // Clone is cheap because all non-collection primitives are Copy
-pub struct BattleUnit {
+pub(crate) struct BattleUnit {
     // Represents a single entity within a battle scenario. 
-    pub id: EntityID,               // ID for entity tracking - *NOT* actual unit's id.
-    pub unit: UnitTemplateID,
-    pub team: Team,
-    pub position: BattlePosition,        
-    
+    pub(crate) id: EntityID,               // ID for entity tracking - *NOT* actual unit's id.
+    pub(crate) unit: UnitTemplateID,
+    pub(crate) team: Team,
+
+    // positional data
+    pub(crate) position: BattlePosition,  // NOT UPDATED WHILE MOVING
+    pub(crate) move_speed: MoveSpeed,
+    pub(crate) current_movement: Option<MoveData>,
+
     // defensive data
-    pub current_hp: Hitpoints,
-    pub max_hp: Hitpoints,
-    pub defence: Mitigation,
-    pub magic_resist: Mitigation,        
+    pub(crate) current_hp: Hitpoints,
+    pub(crate) max_hp: Hitpoints,
+    pub(crate) defence: Mitigation,
+    pub(crate) magic_resist: Mitigation,        
     
     // offensive data
-    pub target: Option<EntityID>,
-    pub attack_type: DamageType,      
-    pub attack: AttackDamage,         
-    pub attack_delay: AttackTickDelay,
-    pub range_squared: AttackRange, // squared for distance comparisons as absolute distance is not needed.
-    pub crit_chance: CritChance,
+    pub(crate) target: Option<EntityID>,
+    pub(crate) attack_type: DamageType,      
+    pub(crate) attack: AttackDamage,         
+    pub(crate) attack_delay: AttackTickDelay,
+    pub(crate) range_squared: AttackRange, // squared for distance comparisons as absolute distance is not needed.
+    pub(crate) crit_chance: CritChance,
+
+    // ability data
+    pub(crate) ability: Option<Ability>,
+    pub(crate) mana: Mana,
+    pub(crate) max_mana: Mana,
     
     // buff data
-    pub shield: Shield,
-    pub incoming_damage_handlers: Vec<Buff>, // includes both buffs and debuffs.
-    pub outgoing_damage_handlers: Vec<Buff>, // includes both buffs and debuffs.
-    pub temp_stat_modifiers: Vec<Buff> // includes both buffs and debuffs.
+    pub(crate) shield: Shield,
+    pub(crate) incoming_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs. - u8 = stacks.
+    pub(crate) outgoing_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
+    pub(crate) temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>  // includes both buffs and debuffs.
 }
 
 impl BattleUnit {
-    pub fn find_target(&mut self, enemy_positions: &Vec<(EntityID, BattlePosition)>) -> Option<EntityID> {
+    pub(crate) fn find_target(&mut self, enemy_positions: &Vec<(EntityID, BattlePosition)>) -> Option<EntityID> {
         // simple nearest-targeting logic for now.
         let mut closest_target: Option<EntityID> = None;
         let mut closest_distance: Option<AttackRange> = None;
@@ -57,11 +67,11 @@ impl BattleUnit {
         closest_target
     }
 
-    pub fn attack_current_target(&self) -> BattleEvent {
+    pub(crate) fn attack_current_target(&self) -> BattleEvent {
         // Attack target. This function is called to queue an attack rather than execute it so shouldn't modify anything about the player state.
         let mut damage = Hitpoints(self.attack.0);
-        for buff in self.outgoing_damage_handlers.iter() {
-            damage = buff.modify(damage)
+        for (_buff, container) in self.outgoing_damage_handlers.iter() {
+            damage = container.to_single().modify_damage(damage)
         }
         AttackEvent(
             AttackData { 
@@ -73,11 +83,11 @@ impl BattleUnit {
         )
     }
 
-    pub fn take_damage(&mut self, incoming: AttackData) -> Option<BattleEvent> {
+    pub(crate) fn take_damage(&mut self, incoming: AttackData) -> Option<BattleEvent> {
         let mut damage = Hitpoints(incoming.damage.0);
         // pass damage through buffs/debuffs here.
-        for buff in self.incoming_damage_handlers.iter_mut() {
-            damage = buff.modify(damage)
+        for (_buff, container) in self.incoming_damage_handlers.iter() {
+            damage = container.to_single().modify_damage(damage)
         }
 
         damage = match incoming.damage_type {
@@ -95,5 +105,20 @@ impl BattleUnit {
         if self.current_hp.0 == 0 {
             Some(DeathEvent(self.id))
         } else {None}
+    }
+
+    pub(crate) fn get_position(&self, tick: u32) -> BattlePosition {
+        if self.current_movement.is_none() {
+            self.position
+        } else {
+            let move_order = self.current_movement.unwrap(); // safe unwrap bc above.
+            let tick_number = tick - move_order.start_tick;
+            let progress = tick_number as f32 / (move_order.end_tick - move_order.start_tick) as f32;
+            let (x_f, y_f) = (
+                move_order.start_pos.x as f32 + progress*(move_order.end_pos.x - move_order.start_pos.x) as f32,
+                move_order.start_pos.y as f32 + progress*(move_order.end_pos.y - move_order.start_pos.y) as f32,
+            );
+            BattlePosition{ x: x_f as i32, y: y_f as i32 }
+        }
     }
 }

@@ -1,1 +1,0 @@
-Box<(dyn Fn(BattleState, Vec<primitives::EntityID>) -> Vec<primitives::EntityID> + Send + Sync + 'static)>

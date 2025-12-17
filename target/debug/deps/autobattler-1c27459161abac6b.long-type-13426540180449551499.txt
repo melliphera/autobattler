@@ -1,1 +1,0 @@
-Box<(dyn Fn(Vec<battle_unit::BattleUnit>) -> Vec<battle_unit::BattleUnit> + Send + Sync + 'static)>

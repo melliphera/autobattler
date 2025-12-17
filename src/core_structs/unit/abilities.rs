@@ -1,8 +1,6 @@
 use fixedstr::str32;
 
-use crate::core_structs::battle::battle_event::{AttackData, BuffData, HealData, ShieldData};
-use crate::core_structs::{battle::battle_event::BattleEvent::{self, *}, unit::prelude::*};
-use crate::BattleState;
+use crate::prelude::*;
 use super::targeting::TargetParadigm;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
@@ -34,9 +32,16 @@ impl Ability {
         Mana(self.mana_cost)
     }
 
-    pub(crate) fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<EntityID> {
-        let ally_positions  = b.get_positions(Team::Player, tick);
-        let enemy_positions = b.get_positions(Team::Opponent, tick);
+    pub(crate) fn cast(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<(BattleEvent, u32)> {
+        let targets = self.get_targets(caster, b, tick);
+        targets.iter().map(|target| {
+            self.create_event(caster, *target)
+        }).collect()
+    }
+
+    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<EntityID> {
+        let ally_positions  = b.get_positions_by_team(Team::Player, tick);
+        let enemy_positions = b.get_positions_by_team(Team::Opponent, tick);
 
         let caster_unit = b.live_units.get(&caster).expect("Caster wasn't found while casting ability.");
         let team_digit: i8 = if caster_unit.team == Team::Player {1} else {-1};
@@ -59,7 +64,6 @@ impl Ability {
             }
 
             TargetParadigm::Nearest(n) => {
-                // 1. find out which team this a
                 viable_targets.sort_by_key(|target| caster_unit.get_position(tick).distance_squared_to(&target.1));
                 viable_targets[0..n as usize].iter().map(|x| x.0).collect()
             }
@@ -71,7 +75,8 @@ impl Ability {
         }
     }
 
-    pub(crate) fn create_event(&self, source: EntityID, target: EntityID) -> (BattleEvent, u32) {
+    fn create_event(&self, source: EntityID, target: EntityID) -> (BattleEvent, u32) {
+        //! creates the BattleEvent object describing the ability's effect on a given target.
         let event = match self.effect {
             Attack(damage, damage_type) => {
                 RawDamageEvent(AttackData{

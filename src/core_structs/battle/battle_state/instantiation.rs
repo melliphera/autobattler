@@ -1,19 +1,9 @@
-use std::{cmp::Reverse, collections::HashMap, u8};
+use std::{cmp::Reverse, collections::HashMap};
 use fixedstr::str32;
 use priority_queue::PriorityQueue;
 use rand::{SeedableRng, rngs::StdRng};
 
-use crate::core_structs::{battle::{battle_event::{AbilityData, MoveEndData}, event_processing::AttackContext}, 
-                            unit::prelude::*};
-
-use super::battle_event::BattleEvent::{self, *};
-
-
-pub(crate) struct BattleState {
-    pub(crate) live_units: HashMap<EntityID, BattleUnit>, // all living units. dead units can be seperately handled in Godot.
-    timeline: PriorityQueue<BattleEvent, Reverse<u32>>,
-    pub(crate) rng: StdRng
-}
+use crate::prelude::*;
 
 impl BattleState {
     pub(crate) fn new() -> Self {
@@ -23,23 +13,18 @@ impl BattleState {
     }
 
     pub(crate) fn new_seeded(seed: u64) -> Self {
-        BattleState { live_units: HashMap::new(), timeline: PriorityQueue::new(), rng: StdRng::seed_from_u64(seed)}
+        BattleState { live_units: HashMap::new(), timeline: PriorityQueue::new(), next_id: EntityID(0), rng: StdRng::seed_from_u64(seed)}
     }
 
     fn queue_event(&mut self, event: BattleEvent, tick: u32) {
         self.timeline.push(event, Reverse(tick));
     }
 
-    fn get_name(&self, id: EntityID) -> str32 {
-        self.live_units.get(&id).unwrap().unit.get_name()
-    }
-
     pub(crate) fn spawn_ally_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) {
-        let entity_id = EntityID(self.live_units.len() as u8); // be wary if implementing minion spawns.
         let template = UNIT_DATABASE[id.0 as usize];
         let ability = get_ability(id);
         let b = BattleUnit { 
-            id: entity_id, 
+            id: self.next_id, 
             unit: id, 
             team: Team::Player,
             position: position.to_logical(),
@@ -65,11 +50,11 @@ impl BattleState {
             crit_chance: template.crit_chance, 
 
         };
-        self.live_units.insert(entity_id, b);
+        self.live_units.insert(self.next_id, b);
+        self.next_id = EntityID(self.next_id.0 + 1)
     }
 
     pub(crate) fn spawn_enemy_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) {
-        let entity_id = EntityID(self.live_units.len() as u8);
         let template = match id.1 {
             Roster::Human => UNIT_DATABASE[id.0 as usize],
             Roster::NPC  => ENEMY_DATABASE[id.0 as usize]
@@ -77,7 +62,7 @@ impl BattleState {
         let ability = get_ability(id);
 
         let b = BattleUnit {
-            id: entity_id, 
+            id: self.next_id, 
             unit: id, 
             team: Team::Opponent,
             position: position.to_logical(),
@@ -102,14 +87,15 @@ impl BattleState {
             outgoing_damage_handlers: HashMap::new(), 
             temp_stat_modifiers: HashMap::new()
         };
-        self.live_units.insert(entity_id, b);
+        self.live_units.insert(self.next_id, b);
+        self.next_id = EntityID(self.next_id.0 + 1)
     }
 
     fn initialize(&mut self) {
         // load any start-of-fight state (not implemented)
         println!("Initialising battlefield.");
-        let ally_positions = self.get_positions(Team::Player, 0);
-        let opponent_positions = self.get_positions(Team::Opponent, 0);
+        let ally_positions = self.get_positions_by_team(Team::Player, 0);
+        let opponent_positions = self.get_positions_by_team(Team::Opponent, 0);
         let mut initial_event_stack: Vec<BattleEvent> = Vec::with_capacity(self.live_units.len());
 
         let cloned_for_keys = self.live_units.clone(); // i'm not smart enough to know why this is needed, i just know it is.
@@ -128,23 +114,11 @@ impl BattleState {
         }
     }
 
-    pub(crate) fn get_positions(&self, team: Team, tick: u32) -> Vec<(EntityID, BattlePosition)> {
-        self.live_units.iter()
-                        .filter(|unit| unit.1.team == team)
-                        .map(|unit| (unit.1.id, unit.1.get_position(tick)))
-                        .collect()
-    }
-
-    pub(crate) fn get_opponent_positions(&self, id: EntityID, tick: u32)  -> Vec<(EntityID, BattlePosition)> {
-        let team = self.live_units.get(&id).unwrap().team;
-        self.get_positions(team.opponent(), tick)
-    }
-
-    pub(crate) fn simulate(&mut self) {
+    pub(crate) fn simulate(&mut self, max_tick: u32) {
         
         self.initialize();
         while let Some((event, tick)) = self.timeline.pop() { // while there are things in the timeline
-            if tick.0 > 30000 { // max fight length.
+            if tick.0 > max_tick { // max fight length.
                 println!("Fight timed out!");
                 return;
             }
@@ -167,10 +141,10 @@ impl BattleState {
         match event {
             AttackEvent(_data) => {
                 let attack_ctx = AttackContext { event, tick };
-                (new_events, new_dead) = self.process_attack_event(attack_ctx); // overwrite because nothing happens sooner.
+                (new_events, new_dead) = self.process_attack_event(attack_ctx); // overwrite safe because original vecs are definitely empty.
                 
                 //if the unit is moving instead of attacking, dont process a new attack.
-                if let Some((MoveEvent(_data), _)) = new_events.iter().next() {
+                if let Some((MoveEvent(_data), _tick)) = new_events.iter().next() {
                     return new_events
                 }
 
@@ -187,12 +161,8 @@ impl BattleState {
                     let source = self.live_units.get_mut(&data.source).unwrap();
                     source.mana = Mana(0)
                 }
-                
-                // find targets for the ability.
-                let targets = data.ability.get_targets(data.source, &self, tick.0);
-                
                 // apply ability effect to each target
-                new_events = targets.iter().map(|t| data.ability.create_event(data.source, *t)).collect::<Vec<(BattleEvent, u32)>>()
+                new_events = data.ability.cast(data.source, &self, tick.0)
             }
             BuffEvent(data) => {
                 let target_unit = self.live_units.get_mut(&data.target).unwrap();
@@ -209,7 +179,7 @@ impl BattleState {
                 let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
                 target_unit.current_movement = Some(data);
 
-                println!("tick {}:  \t{} is moving to ({}, {}) over {} ticks", tick.0, target_unit.unit.get_name(), data.end_pos.x/4096, data.end_pos.y/4096, data.end_tick-data.start_tick);
+                println!("tick {}:  \t{} is moving to ({}, {}) over {} ticks", tick.0, target_unit.unit.get_name(), data.end_pos.x/LOGICAL_SUBTILES, data.end_pos.y/LOGICAL_SUBTILES, data.end_tick-data.start_tick);
 
                 // queue movement end event
                 new_events.push((MoveEndEvent(MoveEndData {
@@ -218,12 +188,29 @@ impl BattleState {
                 }), data.end_tick));
             }
             MoveEndEvent(data) => {
+                let mut move_again = false; // if new move event should be instantly triggered
+                {
                 // update unit position variables
                 let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
                 target_unit.current_movement = None;
                 target_unit.position = data.end_pos;
-                println!("tick {}:  \t{} has arrived at ({}, {})", tick.0, target_unit.unit.get_name(), data.end_pos.x/4096, data.end_pos.y/4096)
+                println!("tick {}:  \t{} has arrived at ({}, {})", tick.0, target_unit.unit.get_name(), data.end_pos.x/LOGICAL_SUBTILES, data.end_pos.y/LOGICAL_SUBTILES);
+                }
+                // double grab so needs immutable 
+                // check if in range to requeue move event if necessary.
+                let attacker = self.live_units.get(&data.target).unwrap();
+                if let Some(unit) = attacker.target {
+                    let target_distance = attacker.position.distance_squared_to(&self.live_units.get(&unit).unwrap().position);
+                    if target_distance > attacker.range_squared {
+                        move_again = true
+                    }
+                }
+                if move_again {
+                    new_events.push((MoveEvent(attacker.path(&self, tick.0)), tick.0));
+                    return new_events;
+                }
             }
+                
             _ => {unreachable!("Other events not implemented yet.")}
         };
 
@@ -234,7 +221,6 @@ impl BattleState {
             self.timeline.retain(|event, _prio| event.get_source_id() != Some(*id) && event.get_target_id() != Some(*id));
         };
         
-
         // -- all below queue the attacker's next event --
         // therefore only relevant for AbilityCast, Attack or MoveEnd events
         match event {
@@ -281,10 +267,7 @@ impl BattleState {
         }
 
         // 3 - attack target (or move into range if currently out of range)
-        let next_attack_tick = if let MoveEndEvent(_) = event {
-            tick.0
-        } else {
-            tick.0 + source.attack_delay.0 as u32};
+        let next_attack_tick = tick.0 + source.attack_delay.0 as u32;
         new_events.push((source.attack_current_target(), next_attack_tick));
         new_events
     }

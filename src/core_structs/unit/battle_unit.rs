@@ -1,8 +1,6 @@
 use std::collections::HashMap;
 
-use crate::core_structs::{
-    battle::battle_event::{BattleEvent::*, *}, unit::prelude::*
-};
+use crate::prelude::*;
 
 #[derive(Clone)] // Clone is cheap because all non-collection primitives are Copy
 pub(crate) struct BattleUnit {
@@ -119,6 +117,21 @@ impl BattleUnit {
                 move_order.start_pos.y as f32 + progress*(move_order.end_pos.y - move_order.start_pos.y) as f32,
             );
             BattlePosition{ x: x_f as i32, y: y_f as i32 }
+        }
+    }
+
+    pub(crate) fn path(&self, b: &BattleState, current_tick: u32) -> MoveData {
+        // pathfinding logic for moving towards target. Returns MoveData object which can be processed as a MoveEvent
+        let target = b.live_units.get(&self.target.expect("Unit tried to path without target!")).unwrap(); // should never issue MoveEvent without an active target - how would it know its out of range?
+        let next = self.position.best_next_tile(&target.get_position(current_tick), self.range_squared);
+        let travel_ticks = self.position.distance_squared_to(&next).0.isqrt() / self.move_speed.0;
+        MoveData {
+            source: self.id, 
+            target: self.id, 
+            start_pos: self.position, // can use position field directly as it will never path while under a MoveEvent.
+            end_pos: next,
+            start_tick: current_tick,
+            end_tick: current_tick + travel_ticks as u32
         }
     }
 }

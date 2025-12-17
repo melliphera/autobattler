@@ -4,6 +4,8 @@ use std::ops::{Add, AddAssign, Sub, SubAssign};
 use rand::Rng;
 use fixedstr::str32;
 
+pub static LOGICAL_SUBTILES: i32 = 4096;
+
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub(crate) struct AttackDamage   (pub(crate) u64);
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub(crate) struct Hitpoints      (pub(crate) u64);
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub(crate) struct Shield         (pub(crate) Option<Hitpoints>); // hp shield, hit before hp
@@ -65,7 +67,7 @@ impl CritChance {
 
 impl AttackRange {
     pub(crate) fn to_squared(self) -> Self {
-        AttackRange((self.0*4096).pow(2)) //  4096 "logical pixels" per tile
+        AttackRange((self.0*LOGICAL_SUBTILES).pow(2)) //  LOGICAL_SUBTILES "logical pixels" per tile
     }
 }
 
@@ -77,7 +79,7 @@ impl BattlePosition {
     }
 
     pub(crate) fn to_logical(self) -> BattlePosition {
-        BattlePosition { x: self.x * 4096, y: self.y * 4096 }
+        BattlePosition { x: self.x * LOGICAL_SUBTILES, y: self.y * LOGICAL_SUBTILES }
     }
 
     pub(crate) fn best_next_tile(&self, other: &Self, target_distance: AttackRange) -> BattlePosition {
@@ -93,15 +95,15 @@ impl BattlePosition {
         // 0 
         if self.x == other.x {
             if self.y < other.y { 
-                BattlePosition{ x: self.x, y: self.y+4096 }
+                BattlePosition{ x: self.x, y: self.y+LOGICAL_SUBTILES }
             } else{
-                BattlePosition{ x: self.x, y: self.y-4096 }
+                BattlePosition{ x: self.x, y: self.y-LOGICAL_SUBTILES }
             }
         } else if self.y == other.y {
             if self.x < other.x {
-                BattlePosition{ x: self.x+4096, y: self.y }
+                BattlePosition{ x: self.x+LOGICAL_SUBTILES, y: self.y }
             } else {
-                BattlePosition{ x: self.x-4096, y: self.y }
+                BattlePosition{ x: self.x-LOGICAL_SUBTILES, y: self.y }
             }
         } else {
 
@@ -115,8 +117,8 @@ impl BattlePosition {
                 best_orthogonal_direction = (x_dist/normaliser, y_dist/normaliser); // because of floor division this returns either (+-1, 0) or (0, +-1) unless x=y as handled above
             }
             let best_orthogonal_tile = BattlePosition{
-                x: self.x + best_orthogonal_direction.0*4096, 
-                y: self.y + best_orthogonal_direction.1*4096
+                x: self.x + best_orthogonal_direction.0*LOGICAL_SUBTILES, 
+                y: self.y + best_orthogonal_direction.1*LOGICAL_SUBTILES
             };
             if best_orthogonal_tile.distance_squared_to(other) <= target_distance {
                 return best_orthogonal_tile;
@@ -125,8 +127,8 @@ impl BattlePosition {
             // 2) check if diagonal brings into range
             let diag_direction = (x_dist.signum(), y_dist.signum());
             let best_diagonal_tile = BattlePosition {
-                x: self.x + diag_direction.0*4096,
-                y: self.y + diag_direction.0*4096
+                x: self.x + diag_direction.0*LOGICAL_SUBTILES,
+                y: self.y + diag_direction.0*LOGICAL_SUBTILES
             };
             if best_diagonal_tile.distance_squared_to(other) <= target_distance {
                 return best_diagonal_tile;

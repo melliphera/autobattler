@@ -1,12 +1,10 @@
 //! Contains impl on BattleState for processing combat Events.
 use fixedstr::str32;
-
-use crate::core_structs::battle::battle_event::{AttackData, BattleEvent::{self, *}, MoveData};
-use crate::core_structs::unit::prelude::*;
-use crate::BattleState;
 use std::cmp::Reverse;
 
-pub(super) struct AttackContext {
+use crate::prelude::*;
+
+pub(crate) struct AttackContext {
     pub(super) event: BattleEvent,
     pub(super) tick: Reverse<u32>
 }
@@ -31,14 +29,12 @@ impl BattleState {
         let source_cc: CritChance;
         let source_pos: BattlePosition;
         let source_range: AttackRange;
-        let source_ms: MoveSpeed;
         let source_name: str32;
         {
             let source_unit = self.live_units.get(&source_id).unwrap(); // safe because source is definitely still alive.
             source_cc = source_unit.crit_chance;
             source_pos = source_unit.get_position(ctx.tick.0);
             source_range = source_unit.range_squared;
-            source_ms = source_unit.move_speed;
             source_name = source_unit.unit.get_name()
         }
 
@@ -63,20 +59,13 @@ impl BattleState {
             if target_distance > source_range {
 
                 // add MoveEvent. Nobody dies and no attacks are made, so can be returned directly.
-                println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick.0, source_name, (target_distance.0 as f32).sqrt()/4096f32, source_range.0.isqrt()/4096);
-                let current_tick = ctx.tick.0;
-                let next = source_pos.best_next_tile(&target.get_position(ctx.tick.0), source_range);
-                let travel_ticks = source_pos.distance_squared_to(&next).0.isqrt() / source_ms.0;
-                let m = MoveEvent( MoveData {
-                    source: source_id, 
-                    target: source_id, 
-                    start_pos: source_pos,
-                    end_pos: next,
-                    start_tick: current_tick,
-                    end_tick: current_tick + travel_ticks as u32
-                });
+                let source = self.live_units.get(&data.source).unwrap();
+
+
+                println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick.0, source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
+                let m = MoveEvent(source.path(&self, ctx.tick.0));
                 println!("{:#?}", m);
-                return (vec![(m,  current_tick)], vec![])
+                return (vec![(m,  ctx.tick.0)], vec![])
             }
             
 

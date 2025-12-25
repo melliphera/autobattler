@@ -7,6 +7,7 @@ mod abilities;
 mod targeting;
 
 pub(crate) mod prelude {
+    #![allow(unused)]
     pub(crate) use super::primitives::*;
     pub(crate) use super::battle_unit::BattleUnit;
     pub(crate) use super::buffs_debuffs::{Buff, BuffEffect, BuffContainer};
@@ -14,7 +15,7 @@ pub(crate) mod prelude {
     pub(crate) use super::data::enemies::ENEMY_DATABASE;
     pub(crate) use super::data::abilities::get_ability;
     pub(crate) use super::abilities::Ability;
-    pub(crate) use super::abilities::AbilityPayload;
+    pub(crate) use super::abilities::AbilityPayload; // this is used, and removing it breaks the program. i have no idea why its saying it isnt.
     pub(crate) use super::targeting::TargetParadigm;
 }
 

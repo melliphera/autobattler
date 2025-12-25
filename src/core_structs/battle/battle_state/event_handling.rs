@@ -34,13 +34,13 @@ impl BattleState {
         let source_cc: CritChance;
         let source_pos: BattlePosition;
         let source_range: AttackRange;
-        let source_name: str32;
+        let _source_name: str32;
         {
             let source_unit = self.live_units.get(&source_id).unwrap(); // safe because source is definitely still alive.
             source_cc = source_unit.crit_chance;
             source_pos = source_unit.get_position(ctx.tick.0);
             source_range = source_unit.range_squared;
-            source_name = source_unit.template.get_name()
+            _source_name = source_unit.template.get_name()
         }
 
         {   
@@ -90,7 +90,7 @@ impl BattleState {
    
             // handle source stuff e.g adding mana.
             let source = self.live_units.get_mut(&source_id).unwrap();
-            let source_name = source.template.get_name();
+            let _source_name = source.template.get_name();
             if _successful_hit {
                 source.mana.add(10, source.max_mana);
                 //print!("tick {}: \t{} {}struck {} for {} damage!\t", ctx.tick.0, source_name, if did_crit {"critically "} else {""}, _target_name, _pre_hp.0 - _rem_hp.0);
@@ -128,7 +128,7 @@ impl BattleState {
                         .or_insert(BuffContainer::new_from(data.buff)); // or create one with value 1.
     }
 
-    pub(super) fn process_move_event(&mut self, data: MoveData, tick: u32) -> Vec<(BattleEvent, u32)> {
+    pub(super) fn process_move_event(&mut self, data: MoveData) -> Vec<(BattleEvent, u32)> {
         let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
         target_unit.current_movement = Some(data);
 

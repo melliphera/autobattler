@@ -1,5 +1,7 @@
-use std::collections::HashMap;
+use rustc_hash::FxHasher;
+use std::{collections::HashMap};
 use std::cell::RefCell;
+use std::hash::BuildHasherDefault;
 
 use priority_queue::PriorityQueue;
 use rand::{SeedableRng, rngs::StdRng};
@@ -14,10 +16,10 @@ impl BattleState {
     }
 
     pub fn new_seeded(seed: u64) -> Self {
-        BattleState { live_units: EntityList::new(), timeline: PriorityQueue::new(), rng: StdRng::seed_from_u64(seed)}
+        BattleState { live_units: EntityList::new(), timeline: PriorityQueue::with_hasher(BuildHasherDefault::<FxHasher>::default()), rng: StdRng::seed_from_u64(seed)}
     }
 
-    pub fn spawn_ally_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) {
+    pub fn spawn_ally_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) -> Result<(), ()> {
         let template = UNIT_DATABASE[id.0 as usize];
         let ability = get_ability(id);
         let b = BattleUnit { 
@@ -49,10 +51,11 @@ impl BattleState {
             crit_chance: template.crit_chance, 
 
         };
-        self.live_units.spawn(b);
+        self.live_units.spawn(b)?;
+        Ok(())
     }
 
-    pub fn spawn_enemy_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) {
+    pub fn spawn_enemy_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) -> Result<(), ()> {
         let template = match id.1 {
             Roster::Human => UNIT_DATABASE[id.0 as usize],
             Roster::NPC  => ENEMY_DATABASE[id.0 as usize]
@@ -87,7 +90,8 @@ impl BattleState {
             outgoing_damage_handlers: HashMap::new(), 
             temp_stat_modifiers: HashMap::new()
         };
-        self.live_units.spawn(b);
+        self.live_units.spawn(b)?;
+        Ok(())
     }
 
     pub fn initialize(&mut self) {

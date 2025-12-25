@@ -45,11 +45,11 @@ pub mod tests {
                         //.with_debug(prelude::DebugInfo::_HealthAndPos, 500)
                         ;
         for (id, (x, y)) in human_team.iter() {
-            b.spawn_ally_from_id(UnitTemplateID(*id, Human), BattlePosition { x: *x, y: *y });
+            _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), BattlePosition { x: *x, y: *y });
         }
 
         for (id, (x, y)) in npc_team.iter() {
-            b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  BattlePosition { x: *x, y: *y });
+            _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  BattlePosition { x: *x, y: *y });
         }
 
         b.simulate(MAX_FIGHT_LENGTH);
@@ -84,11 +84,11 @@ pub mod tests {
 
             let mut b = BattleState::new_seeded(9405163005650660990);
             for (id, (x, y)) in human_team.iter() {
-                b.spawn_ally_from_id(UnitTemplateID(*id, Human), BattlePosition { x: *x, y: *y });
+                _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), BattlePosition { x: *x, y: *y });
             }
 
             for (id, (x, y)) in npc_team.iter() {
-                b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  BattlePosition { x: *x, y: *y });
+                _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  BattlePosition { x: *x, y: *y });
             }
 
             match b.simulate(MAX_FIGHT_LENGTH) {

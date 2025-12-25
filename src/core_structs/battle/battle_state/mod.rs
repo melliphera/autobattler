@@ -7,7 +7,8 @@ pub mod entity_list;
 
 use rand::rngs::StdRng;
 use priority_queue::PriorityQueue;
-use std::cmp::Reverse;
+use rustc_hash::FxHasher;
+use std::{cmp::Reverse, hash::BuildHasherDefault};
 use entity_list::EntityList;
 
 use crate::core_structs::prelude::*;
@@ -15,6 +16,6 @@ use crate::core_structs::prelude::*;
 pub struct BattleState {
     pub live_units: EntityList<25>, // all living units. dead units can be seperately handled in Godot.
     pub rng: StdRng, 
-    timeline: PriorityQueue<BattleEvent, Reverse<u32>>,
+    timeline: PriorityQueue<BattleEvent, Reverse<u32>, BuildHasherDefault<FxHasher>>,
 }
 

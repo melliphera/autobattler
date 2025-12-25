@@ -3,7 +3,7 @@
 use crate::core_structs::prelude::*;
 
 
-fn calc_dps(unit: &BattleUnit) -> f32 {
+fn _calc_dps(unit: &BattleUnit) -> f32 {
     // very incorrect for units that have self-buffs/passives for now.
     let damage_per_auto = (unit.attack.0 as f32)*(1f32+unit.crit_chance.to_percentage());
 

@@ -50,7 +50,7 @@ impl BattleState {
                 self.process_buff_event(data); // doesn't inherently spawn new events.
             }
             MoveEvent(data) => {
-                new_events = self.process_move_event(data, tick.0); // spawns a MoveEndEvent
+                new_events = self.process_move_event(data); // spawns a MoveEndEvent
             }
             MoveEndEvent(data) => {
                 // if move_end processing returns an event, its another Move. therefore do not attack so return immediately.

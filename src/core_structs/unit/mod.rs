@@ -14,6 +14,7 @@ pub(crate) mod prelude {
     pub(crate) use super::data::enemies::ENEMY_DATABASE;
     pub(crate) use super::data::abilities::get_ability;
     pub(crate) use super::abilities::Ability;
+    pub(crate) use super::abilities::AbilityPayload;
     pub(crate) use super::targeting::TargetParadigm;
 }
 

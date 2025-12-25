@@ -6,7 +6,7 @@ use super::primitives::*;
 #[derive(Copy, Clone)]
 pub(crate) struct UnitTemplate {
     // represents a character in the roster. 
-    pub(crate) id: usize,                     // unique identifier. As visuals are also unique, this determines which sprite to load.
+    pub(crate) _id: usize,                    // unique identifier. As visuals are also unique, this determines which sprite to load.
     pub(crate) name: str32,                   // display name.
     pub(crate) hitpoints: Hitpoints,          // damage that can be taken before death
     pub(crate) defence: Mitigation,           // 

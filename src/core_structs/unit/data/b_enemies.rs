@@ -5,7 +5,7 @@ use fixedstr::str32;
 
 pub(crate) static ENEMY_DATABASE: &[UnitTemplate] = &[
     UnitTemplate {
-        id: 0,
+        _id: 0,
         name: str32::const_make("Slime"),
         hitpoints: Hitpoints(150),
         defence: Mitigation(2),
@@ -18,7 +18,7 @@ pub(crate) static ENEMY_DATABASE: &[UnitTemplate] = &[
         move_speed: MoveSpeed(128)
     },
     UnitTemplate {
-        id: 1,
+        _id: 1,
         name: str32::const_make("Rat"),
         hitpoints: Hitpoints(60),
         defence: Mitigation(0),

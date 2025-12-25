@@ -1,43 +1,48 @@
 use std::collections::HashMap;
+use std::cell::RefCell;
 
-use crate::prelude::*;
+use fixedstr::str32;
+
+use crate::core_structs::prelude::*;
 
 #[derive(Clone)] // Clone is cheap because all non-collection primitives are Copy
-pub(crate) struct BattleUnit {
+pub struct BattleUnit {
     // Represents a single entity within a battle scenario. 
-    pub(crate) id: EntityID,               // ID for entity tracking - *NOT* actual unit's id.
-    pub(crate) unit: UnitTemplateID,
-    pub(crate) team: Team,
+    pub id: EntityID,               // ID for entity tracking - *NOT* actual unit's id.
+    pub template: UnitTemplateID,
+    pub team: Team,
 
     // positional data
-    pub(crate) position: BattlePosition,  // NOT UPDATED WHILE MOVING
-    pub(crate) move_speed: MoveSpeed,
-    pub(crate) current_movement: Option<MoveData>,
+    pub position: BattlePosition,  // NOT UPDATED WHILE MOVING
+    pub last_position: BattlePosition,
+    pub move_speed: MoveSpeed,
+    pub current_movement: Option<MoveData>,
+    pub blocked_on_last_move: RefCell<Option<Vec<BattlePosition>>>,
 
     // defensive data
-    pub(crate) current_hp: Hitpoints,
-    pub(crate) max_hp: Hitpoints,
-    pub(crate) defence: Mitigation,
-    pub(crate) magic_resist: Mitigation,        
+    pub current_hp: Hitpoints,
+    pub max_hp: Hitpoints,
+    pub defence: Mitigation,
+    pub magic_resist: Mitigation,        
     
     // offensive data
-    pub(crate) target: Option<EntityID>,
-    pub(crate) attack_type: DamageType,      
-    pub(crate) attack: AttackDamage,         
-    pub(crate) attack_delay: AttackTickDelay,
-    pub(crate) range_squared: AttackRange, // squared for distance comparisons as absolute distance is not needed.
-    pub(crate) crit_chance: CritChance,
+    pub target: Option<EntityID>,
+    pub attack_type: DamageType,      
+    pub attack: AttackDamage,         
+    pub attack_delay: AttackTickDelay,
+    pub range_squared: AttackRange, // squared for distance comparisons as absolute distance is not needed.
+    pub crit_chance: CritChance,
 
     // ability data
-    pub(crate) ability: Option<Ability>,
-    pub(crate) mana: Mana,
-    pub(crate) max_mana: Mana,
+    pub ability: Option<Ability>,
+    pub mana: Mana,
+    pub max_mana: Mana,
     
     // buff data
-    pub(crate) shield: Shield,
-    pub(crate) incoming_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs. - u8 = stacks.
-    pub(crate) outgoing_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
-    pub(crate) temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>  // includes both buffs and debuffs.
+    pub shield: Shield,
+    pub incoming_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs. - u8 = stacks.
+    pub outgoing_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
+    pub temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>  // includes both buffs and debuffs.
 }
 
 impl BattleUnit {
@@ -76,7 +81,8 @@ impl BattleUnit {
                 source: self.id, 
                 target: self.target.unwrap(), // safe unwrap because we've already established target is not None
                 damage_type: self.attack_type,
-                damage: Hitpoints(damage.0)
+                damage: Hitpoints(damage.0),
+                caused_by: "attack".into()
             }  
         )
     }
@@ -100,9 +106,29 @@ impl BattleUnit {
                 else { self.shield = Shield(None) }
             }
         }
+        if incoming.caused_by != str32::from("attack") {
+            //println!("{} took {} damage from {}!", self.template.get_name(), damage.0, incoming.caused_by)
+        }
+
         if self.current_hp.0 == 0 {
             Some(DeathEvent(self.id))
         } else {None}
+    }
+
+    pub(crate) fn heal(&mut self, incoming: HealData) {
+        if incoming.can_overheal {
+            self.current_hp += incoming.amount
+        } else {
+            self.current_hp = Hitpoints((self.current_hp.0 + incoming.amount.0).min(self.max_hp.0))
+        }
+    }
+
+    pub(crate) fn shield(&mut self, incoming: ShieldData) {
+        // shielding doesn't stack. 10 shield + 50 shield = 50 shield.
+        if let Some(hp) = self.shield.0 { if hp > incoming.amount {
+            return // current shield is higher so do nothing
+        }}
+        self.shield = Shield(Some(incoming.amount))
     }
 
     pub(crate) fn get_position(&self, tick: u32) -> BattlePosition {
@@ -123,15 +149,44 @@ impl BattleUnit {
     pub(crate) fn path(&self, b: &BattleState, current_tick: u32) -> MoveData {
         // pathfinding logic for moving towards target. Returns MoveData object which can be processed as a MoveEvent
         let target = b.live_units.get(&self.target.expect("Unit tried to path without target!")).unwrap(); // should never issue MoveEvent without an active target - how would it know its out of range?
-        let next = self.position.best_next_tile(&target.get_position(current_tick), self.range_squared);
-        let travel_ticks = self.position.distance_squared_to(&next).0.isqrt() / self.move_speed.0;
+        let mut blocked = b.get_blocked_positions();
+        blocked.push(self.last_position);
+
+        // check against cache for situations with fully blocked movement.
+        {
+            let b = self.blocked_on_last_move.borrow();
+            if !b.is_none() && b.as_ref().unwrap() == &blocked {
+                // return another 10 tick "move" to current location.
+                return 
+                    MoveData {
+                        source: self.id, 
+                        target: self.id, 
+                        start_pos: self.position, // can use position field directly as it will never path while under a MoveEvent.
+                        end_pos: self.position,
+                        start_tick: current_tick,
+                        end_tick: current_tick + 10,
+                        move_speed_override: None
+                }
+            }
+        }
+        
+
+        let next = self.position.best_next_tile(&target.get_position(current_tick), self.range_squared, &blocked);
+
+        // if next is self, forcibly add 10 tick delay to not spam moveevents, and cache current blockedtiles.
+        let travel_ticks = if next == self.position { 
+            *self.blocked_on_last_move.borrow_mut() = Some(blocked); 10 
+        } else {
+            self.position.distance_squared_to(&next).0.isqrt() / self.move_speed.0
+        };
         MoveData {
             source: self.id, 
             target: self.id, 
             start_pos: self.position, // can use position field directly as it will never path while under a MoveEvent.
             end_pos: next,
             start_tick: current_tick,
-            end_tick: current_tick + travel_ticks as u32
+            end_tick: current_tick + travel_ticks as u32,
+            move_speed_override: None
         }
     }
 }

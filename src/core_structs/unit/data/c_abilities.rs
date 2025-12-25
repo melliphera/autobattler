@@ -11,7 +11,7 @@ pub(crate) const fn get_ability(id: UnitTemplateID) -> Option<Ability> {
             Some(Ability {
                 name: str32::const_make("Bulwark"),
                 mana_cost: 90,
-                effect: BuffPayload( 
+                effects: [Some(BuffPayload( 
                             Buff{
                                 id: BuffID(0),
                                 buff_type: FlatIncomingReduction(Hitpoints(3)),
@@ -19,13 +19,32 @@ pub(crate) const fn get_ability(id: UnitTemplateID) -> Option<Ability> {
                                 max_stacks: None, // infinite scaling
                                 priority: 0
                             }
-                ),
+                )), None, None, None],
                 target: TargetTeam::Ally, // skips target-seeking logic.
                 target_paradigm: TargetParadigm::Me, // selfcast
                 cast_delay: None
             })
         },
+        UnitTemplateID(1, Human) => { // Ranger
+            Some(Ability {
+                name: str32::const_make("Snipe"),
+                mana_cost: 30,
+                effects: [Some(Attack(Hitpoints(15), Physical)), None, None, None],
+                target: TargetTeam::Enemy, 
+                target_paradigm: TargetParadigm::Furthest(1), // furthest enemy
+                cast_delay: None
+            })
+        },
+        UnitTemplateID(2, Human) => { // Mage
+            Some(Ability {
+                name: str32::const_make("Chain Lightning"),
+                mana_cost: 30,
+                effects: [Some(Attack(Hitpoints(15), Magic)), None, None, None],
+                target: TargetTeam::Enemy, 
+                target_paradigm: TargetParadigm::Nearest(3), // furthest enemy
+                cast_delay: None
+            })
+        },            
         _ => None
-
     }
 }

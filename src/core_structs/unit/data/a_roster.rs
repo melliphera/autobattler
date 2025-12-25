@@ -5,7 +5,7 @@ use fixedstr::str32;
 
 pub(crate) static UNIT_DATABASE: &[UnitTemplate] = &[
     UnitTemplate {
-        id: 0,
+        _id: 0,
         name: str32::const_make("Knight"),
         hitpoints: Hitpoints(250),
         defence: Mitigation(2),
@@ -18,7 +18,7 @@ pub(crate) static UNIT_DATABASE: &[UnitTemplate] = &[
         crit_chance: CritChance::from_percentage(10.0),
     },
     UnitTemplate {
-        id: 1,
+        _id: 1,
         name: str32::const_make("Ranger"),
         hitpoints: Hitpoints(75),
         defence: Mitigation(0),
@@ -30,4 +30,18 @@ pub(crate) static UNIT_DATABASE: &[UnitTemplate] = &[
         move_speed: MoveSpeed(128),
         crit_chance: CritChance::from_percentage(10.0),
     },
+    UnitTemplate {
+        _id: 2,
+        name: str32::const_make("Mage"),
+        hitpoints: Hitpoints(50),
+        defence: Mitigation(0),
+        magic_resist: Mitigation(0),
+        attack: AttackDamage(4),
+        attack_type:  Magic ,
+        attack_delay: AttackTickDelay(150),
+        attack_range: AttackRange(6),
+        move_speed: MoveSpeed(64),
+        crit_chance: CritChance::from_percentage(10.0),
+    },
+    
 ];

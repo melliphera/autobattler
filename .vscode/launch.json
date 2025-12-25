@@ -7,39 +7,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'autobattler'",
-            "cargo": {
-                "args": [
-                    "build",
-                    "--bin=autobattler",
-                    "--package=autobattler"
-                ],
-                "filter": {
-                    "name": "autobattler",
-                    "kind": "bin"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in executable 'autobattler'",
+            "name": "Cargo test",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=autobattler",
-                    "--package=autobattler"
-                ],
-                "filter": {
-                    "name": "autobattler",
-                    "kind": "bin"
-                }
+                    "--lib"
+                ]
             },
-            "args": [],
-            "cwd": "${workspaceFolder}"
+            "args": []
         }
     ]
 }

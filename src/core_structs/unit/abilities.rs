@@ -1,30 +1,30 @@
 use fixedstr::str32;
 
-use crate::prelude::*;
+use crate::core_structs::prelude::*;
 use super::targeting::TargetParadigm;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
-pub(crate) enum AbilityPayload {
-    Attack(Hitpoints, DamageType), AddShield(Hitpoints), Heal(Hitpoints), BuffPayload(Buff), Move(BattlePosition)
+pub enum AbilityPayload {
+    Attack(Hitpoints, DamageType), _AddShield(Hitpoints), _Heal(Hitpoints, bool), BuffPayload(Buff), _Move(BattlePosition, MoveSpeed)
 }
 
 use AbilityPayload::*;
 use crate::core_structs::unit::buffs_debuffs::Buff;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
-pub(crate) enum TargetTeam {
+pub enum TargetTeam {
     Ally, Enemy
 }
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
-pub(crate) struct Ability {
+pub struct Ability {
     pub(crate) name: str32,
     pub(crate) mana_cost: u16, // for fast typing, always grabbed as a Mana object. 
-    pub(crate) effect: AbilityPayload, // what Event this produces when it resolves
-    pub(crate) target: TargetTeam, // whether it targets ally or opponent (relative to itself) - also has Oneself for short-circuiting targeting. Do not use Oneself for AoE.
-    pub(crate) target_paradigm: TargetParadigm,  // enum wrapper for targeting function that decides who is targeted within TargetTeam - could be lowest health, highest armour etc.
-    pub(crate) cast_delay: Option<u32>          // ticks between effect starting and impacts applying. Option so that instant = cast_delay: None rather than 0 
-                                         // feels more explict and has behavioural distinctions (1 event rather than 2).
+    pub(crate) effects: [Option<AbilityPayload>; 4], // what Event this produces when it resolves
+    pub(crate) target: TargetTeam,                  // whether it targets ally or opponent (relative to itself) - also has Oneself for short-circuiting targeting. Do not use Oneself for AoE.
+    pub(crate) target_paradigm: TargetParadigm,     // enum wrapper for targeting function that decides who is targeted within TargetTeam - could be lowest health, highest armour etc.
+    pub(crate) cast_delay: Option<u32>              // ticks between effect starting and impacts applying. Option so that instant = cast_delay: None rather than 0 
+                                                    // feels more explict and has behavioural distinctions (1 event rather than 2).
 }
 
 impl Ability {
@@ -34,9 +34,11 @@ impl Ability {
 
     pub(crate) fn cast(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<(BattleEvent, u32)> {
         let targets = self.get_targets(caster, b, tick);
-        targets.iter().map(|target| {
-            self.create_event(caster, *target)
-        }).collect()
+        let temp = targets.iter().map(|target| {
+            self.create_events(caster, *target)
+        }).flatten().collect();
+        ////println!("Events added by ability cast {}\n{:#?}", self.name, temp);
+        temp
     }
 
     fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<EntityID> {
@@ -65,44 +67,63 @@ impl Ability {
 
             TargetParadigm::Nearest(n) => {
                 viable_targets.sort_by_key(|target| caster_unit.get_position(tick).distance_squared_to(&target.1));
-                viable_targets[0..n as usize].iter().map(|x| x.0).collect()
+                let num_targets = (n as usize).min(viable_targets.len());
+                viable_targets[0..num_targets].iter().map(|x| x.0).collect()
             }
 
             TargetParadigm::Furthest(n) => {
                 viable_targets.sort_by_key(|target| -caster_unit.get_position(tick).distance_squared_to(&target.1).0);
-                viable_targets[0..n as usize].iter().map(|x| x.0).collect()
+                let num_targets = (n as usize).min(viable_targets.len());
+                viable_targets[0..num_targets].iter().map(|x| x.0).collect()
             }
         }
     }
 
-    fn create_event(&self, source: EntityID, target: EntityID) -> (BattleEvent, u32) {
+    fn create_events(&self, source: EntityID, target: EntityID) -> Vec<(BattleEvent, u32)> {
         //! creates the BattleEvent object describing the ability's effect on a given target.
-        let event = match self.effect {
-            Attack(damage, damage_type) => {
-                RawDamageEvent(AttackData{
-                    source, target, damage, damage_type
-                })
+        let mut out = Vec::new();
+        for effect_slot in self.effects.iter() {
+            if let Some(event) = effect_slot {
+                let e = match event {
+                    Attack(damage, damage_type) => {
+                        RawDamageEvent(AttackData{
+                            source, 
+                            target, 
+                            damage: *damage, 
+                            damage_type: *damage_type, 
+                            caused_by: self.name
+                        })
+                    }
+                    _AddShield(amount) => {
+                        ShieldEvent(ShieldData{
+                            source, 
+                            target, 
+                            amount: *amount
+                        })
+                    }
+                    _Heal(amount, can_overheal) => {
+                        HealEvent(HealData{
+                            source, 
+                            target, 
+                            amount: *amount, 
+                            can_overheal: *can_overheal
+                        })
+                    }
+                    BuffPayload(buff) => {
+                        BuffEvent(BuffData {
+                            source, 
+                            target, 
+                            buff: *buff
+                        })
+                    }
+                    _Move(_pos, _speed) => {
+                        unimplemented!()
+                    }
+                };
+                out.push((e, self.cast_delay.unwrap_or(0)));
             }
-            AddShield(amount) => {
-                ShieldEvent(ShieldData{
-                    source, target, amount
-                })
-            }
-            Heal(amount) => {
-                HealEvent(HealData{
-                    source, target, amount
-                })
-            }
-            BuffPayload(buff) => {
-                BuffEvent(BuffData {
-                    source, target, buff
-                })
-            }
-            Move(_pos) => {
-                unimplemented!()
-            }
-        };
-        (event, self.cast_delay.unwrap_or(0))
+        }
+        out
     }
 }
 

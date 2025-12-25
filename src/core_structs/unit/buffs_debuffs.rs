@@ -35,7 +35,7 @@ impl Buff {
 }
 
 #[derive(Hash, Clone, PartialEq, Eq, Debug)]
-pub(crate) struct BuffRing {
+pub struct BuffRing {
     // ring buffer for BuffEffects.  Ensures most recent buff effects are measured in buffs with non-1, non-infinite stack limits.
     buffer: Vec<Option<u64>>,
     capacity: usize,
@@ -62,7 +62,7 @@ impl BuffRing  {
 }
 
 #[derive(Clone, PartialEq, Eq, Debug)]
-pub(crate) struct BuffContainer{
+pub struct BuffContainer{
     // contains everything to track an instance (or multiple if you count stacks seperately) of a buff in active play.
     pub(crate) buff: Buff,
     pub(crate) current_magnitude: u64,

@@ -16,7 +16,11 @@ name = "autobattler"
 name = "profile_tests"
 
 [profile.release]
+
+[profile.profiling]
+inherits = "release"
 debug = true
+opt-level = 3
 
 [features]
 profile = []

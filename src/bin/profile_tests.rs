@@ -1,4 +1,5 @@
+use autobattler::dev_tools::profiling::profile;
 
 fn main() {
-    let _ = autobattler::tests::profile();
+    profile(60); // run random tests for this many seconds.   
 }

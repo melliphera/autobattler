@@ -7,20 +7,21 @@ impl BattleState {
         self.timeline.push(event, Reverse(tick));
     }
 
-    pub(crate) fn simulate(&mut self, max_tick: u32) -> Option<Team> {
+    pub fn simulate(&mut self, max_tick: u32) -> (i32, Option<Team>) {
         
         self.initialize();
         while let Some((event, tick)) = self.timeline.pop() { // while there are things in the timeline
             if tick.0 > max_tick { // max fight length.
                 //println!("Fight timed out!");
-                return None;
+                return (self.events_called, None);
             }
             let to_queue = self.execute_event(event, tick);   // do the thing. 
             for (event, tick) in to_queue.into_iter() {       // add newly produced items ot the queue.
                 self.queue_event(event, tick);
+                self.events_called += 1
             } 
         }
-        Some(self.live_units.iter().next().unwrap().team)        // Events should only run dry when one team is fully dead.
+        (self.events_called, Some(self.live_units.iter().next().unwrap().team))        // Events should only run dry when one team is fully dead.
     }
 
     pub(super) fn execute_event(&mut self, event: BattleEvent, tick: Reverse<u32>) -> Vec<(BattleEvent, u32)> {
@@ -50,7 +51,7 @@ impl BattleState {
                 self.process_buff_event(data); // doesn't inherently spawn new events.
             }
             MoveEvent(data) => {
-                new_events = self.process_move_event(data); // spawns a MoveEndEvent
+                new_events = self.process_move_event(data); // spawns a MoveEndEvent                
             }
             MoveEndEvent(data) => {
                 // if move_end processing returns an event, its another Move. therefore do not attack so return immediately.

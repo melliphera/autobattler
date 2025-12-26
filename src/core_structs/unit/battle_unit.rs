@@ -30,7 +30,7 @@ pub struct BattleUnit {
     pub attack_type: DamageType,      
     pub attack: AttackDamage,         
     pub attack_delay: AttackTickDelay,
-    pub range_squared: AttackRange, // squared for distance comparisons as absolute distance is not needed.
+    pub range_squared: SquaredLogicalRange, // squared for distance comparisons as absolute distance is not needed.
     pub crit_chance: CritChance,
 
     // ability data
@@ -49,7 +49,7 @@ impl BattleUnit {
     pub(crate) fn find_target(&mut self, enemy_positions: &Vec<(EntityID, BattlePosition)>) -> Option<EntityID> {
         // simple nearest-targeting logic for now.
         let mut closest_target: Option<EntityID> = None;
-        let mut closest_distance: Option<AttackRange> = None;
+        let mut closest_distance: Option<SquaredLogicalRange> = None;
 
         for (id, pos) in enemy_positions.iter() {
             let dist = self.position.distance_squared_to(pos);

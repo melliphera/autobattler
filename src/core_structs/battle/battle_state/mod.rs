@@ -17,5 +17,6 @@ pub struct BattleState {
     pub live_units: EntityList<25>, // all living units. dead units can be seperately handled in Godot.
     pub rng: StdRng, 
     timeline: PriorityQueue<BattleEvent, Reverse<u32>, BuildHasherDefault<FxHasher>>,
+    pub events_called: i32
 }
 

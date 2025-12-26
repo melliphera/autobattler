@@ -1,7 +1,7 @@
-//! helper tools included to ensure game design is balanced.
+//! helper tools included to ensure game design is balanced.p
+pub mod profiling;
 
 use crate::core_structs::prelude::*;
-
 
 fn _calc_dps(unit: &BattleUnit) -> f32 {
     // very incorrect for units that have self-buffs/passives for now.

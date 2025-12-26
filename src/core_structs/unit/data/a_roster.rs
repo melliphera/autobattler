@@ -14,7 +14,7 @@ pub(crate) static UNIT_DATABASE: &[UnitTemplate] = &[
         attack_type: Physical,
         attack_delay: AttackTickDelay(200),
         attack_range: AttackRange(1),
-        move_speed:  MoveSpeed(128), // subtiles per tick
+        move_speed:  SecondsPerTile(1.5), // subtiles per tick
         crit_chance: CritChance::from_percentage(10.0),
     },
     UnitTemplate {
@@ -27,7 +27,7 @@ pub(crate) static UNIT_DATABASE: &[UnitTemplate] = &[
         attack_type:  Physical,
         attack_delay: AttackTickDelay(150),
         attack_range: AttackRange(6),
-        move_speed: MoveSpeed(128),
+        move_speed: SecondsPerTile(1.5),
         crit_chance: CritChance::from_percentage(10.0),
     },
     UnitTemplate {
@@ -40,7 +40,7 @@ pub(crate) static UNIT_DATABASE: &[UnitTemplate] = &[
         attack_type:  Magic ,
         attack_delay: AttackTickDelay(150),
         attack_range: AttackRange(6),
-        move_speed: MoveSpeed(64),
+        move_speed: SecondsPerTile(2.5),
         crit_chance: CritChance::from_percentage(10.0),
     },
     

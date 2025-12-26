@@ -16,7 +16,12 @@ impl BattleState {
     }
 
     pub fn new_seeded(seed: u64) -> Self {
-        BattleState { live_units: EntityList::new(), timeline: PriorityQueue::with_hasher(BuildHasherDefault::<FxHasher>::default()), rng: StdRng::seed_from_u64(seed)}
+        BattleState { 
+            live_units: EntityList::new(), 
+            timeline: PriorityQueue::with_hasher(BuildHasherDefault::<FxHasher>::default()), 
+            rng: StdRng::seed_from_u64(seed),
+            events_called: 0
+        }
     }
 
     pub fn spawn_ally_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) -> Result<(), ()> {
@@ -42,7 +47,7 @@ impl BattleState {
             
             current_hp: template.hitpoints, 
             max_hp: template.hitpoints,
-            move_speed: template.move_speed,
+            move_speed: template.move_speed.to_logical(),
             defence: template.defence, 
             magic_resist: template.magic_resist, 
             attack_type: template.attack_type, 
@@ -69,7 +74,7 @@ impl BattleState {
             position: position.to_logical(),
             last_position: position.to_logical(),
             current_movement: None,
-            move_speed: template.move_speed,
+            move_speed: template.move_speed.to_logical(),
             blocked_on_last_move: RefCell::new(None),
             current_hp: template.hitpoints, 
             max_hp: template.hitpoints, 

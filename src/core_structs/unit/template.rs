@@ -16,5 +16,5 @@ pub(crate) struct UnitTemplate {
     pub(crate) attack_delay: AttackTickDelay, // number of ticks between consecutive attacks.
     pub(crate) attack_range: AttackRange,     // name descriptive. u8 wrapper
     pub(crate) crit_chance: CritChance,       // name descriptive. u16 wrapper.
-    pub(crate) move_speed: MoveSpeed
+    pub(crate) move_speed: SecondsPerTile     // name descriptive. f32 wrapper
 }

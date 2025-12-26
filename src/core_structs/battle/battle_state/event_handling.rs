@@ -3,11 +3,11 @@
 //! 
 //! Likewise some event types are so simple to handle that they're directly handled in execute_event.
 //! These types are currently RawDamageEvent, HealEvent and ShieldEvent.
-
 use fixedstr::str32;
 use std::cmp::Reverse;
 
 use crate::core_structs::prelude::*;
+
 
 pub(crate) struct AttackContext {
     pub(super) event: BattleEvent,
@@ -33,7 +33,7 @@ impl BattleState {
         // grabbing some cheaply Copy data from source
         let source_cc: CritChance;
         let source_pos: BattlePosition;
-        let source_range: AttackRange;
+        let source_range: SquaredLogicalRange;
         let _source_name: str32;
         {
             let source_unit = self.live_units.get(&source_id).unwrap(); // safe because source is definitely still alive.
@@ -65,7 +65,12 @@ impl BattleState {
 
                 // add MoveEvent. 
                 let source = self.live_units.get(&data.source).unwrap();
-                //println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick.0, source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
+
+                #[cfg(test)] 
+                {
+                    use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
+                    println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick.0, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
+                }
                 let m = MoveEvent(source.path(&self, ctx.tick.0));
                 return (vec![(m,  ctx.tick.0)], vec![])
             }
@@ -132,7 +137,8 @@ impl BattleState {
         let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
         target_unit.current_movement = Some(data);
 
-        //println!("tick {}:  \t{} {} is moving to {} over {} ticks", tick, target_unit.template.get_name(), target_unit.position, data.end_pos, data.end_tick-data.start_tick);
+        #[cfg(test)]
+        println!("tick {}:  \t{} {} is moving to {} over {} ticks ", data.start_tick, target_unit.template.get_name(), target_unit.position, data.end_pos, data.end_tick-data.start_tick);
 
         // queue movement end event
         vec![(MoveEndEvent(MoveEndData {
@@ -144,11 +150,16 @@ impl BattleState {
     pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: u32) -> Option<BattleEvent> {
         let mut move_again = false; // if new move event should be instantly triggered
         {
-        // update unit position variables
-        let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
-        target_unit.current_movement = None;
-        target_unit.position = data.end_pos;
-        //println!("tick {}:  \t{} has arrived at ({}, {})", tick, target_unit.template.get_name(), data.end_pos.x/LOGICAL_SUBTILES, data.end_pos.y/LOGICAL_SUBTILES);
+            // update unit position variables
+            let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
+            target_unit.current_movement = None;
+            target_unit.position = data.end_pos;
+            
+            #[cfg(test)]
+            {
+                use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
+                println!("tick {}:  \t{} has arrived at ({}, {})", tick, target_unit.template.get_name(), data.end_pos.x/LOGICAL_SUBTILES, data.end_pos.y/LOGICAL_SUBTILES);
+            }
         }
         // double grab so needs immutable 
         // check if in range to requeue move event if necessary.
@@ -163,23 +174,25 @@ impl BattleState {
         }
 
         // slipping in some debugging stuff here.
-        /* 
-        let positions = self.get_blocked_positions();
+        #[cfg(test)] 
+        {
+            use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
+            let positions = self.get_blocked_positions();
 
-        let mut arena = [[' ';10];5];
-        for pos in positions.iter() {
-            arena[(pos.y/LOGICAL_SUBTILES) as usize -1][(pos.x/LOGICAL_SUBTILES) as usize-1] = 'O'
-        }
-        //println!("\n 1 2 3 4 5 6 7 8 9 0");
-        for (i, row) in arena.into_iter().enumerate() {
-            //print!("{}", i+1);
-            for cha in row.into_iter() {
-                //print!("{} ", cha);
+            let mut arena = [[' ';10];5];
+            for pos in positions.iter() {
+                arena[(pos.y/LOGICAL_SUBTILES) as usize -1][(pos.x/LOGICAL_SUBTILES) as usize-1] = 'O'
             }
-            //println!()
+            println!("\n 1 2 3 4 5 6 7 8 9 0");
+            for (i, row) in arena.into_iter().enumerate() {
+                print!("{}", i+1);
+                for cha in row.into_iter() {
+                    print!("{} ", cha);
+                }
+                println!()
+            }
+            println!();
         }
-        //println!();
-        */
         // end debugging
 
         if move_again {

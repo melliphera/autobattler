@@ -15,7 +15,7 @@ pub(crate) static ENEMY_DATABASE: &[UnitTemplate] = &[
         attack_delay: AttackTickDelay(250),
         attack_range: AttackRange(1),
         crit_chance: CritChance::from_percentage(10.0),
-        move_speed: MoveSpeed(128)
+        move_speed: SecondsPerTile(1.5)
     },
     UnitTemplate {
         _id: 1,
@@ -28,7 +28,7 @@ pub(crate) static ENEMY_DATABASE: &[UnitTemplate] = &[
         attack_delay: AttackTickDelay(150),
         attack_range: AttackRange(1),
         crit_chance: CritChance::from_percentage(10.0),
-        move_speed: MoveSpeed(128)
+        move_speed: SecondsPerTile(1.5)
     },
     
 ];

@@ -5,6 +5,7 @@ mod data;
 mod buffs_debuffs;
 mod abilities;
 mod targeting;
+pub mod spatial_functions;
 
 pub(crate) mod prelude {
     #![allow(unused)]

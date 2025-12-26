@@ -3,7 +3,7 @@ use crate::prelude::SquaredLogicalRange;
 use super::primitives::{AttackRange, BattlePosition};
 use std::fmt::Display;
 
-pub const LOGICAL_SUBTILES: i32 = 256;
+pub const LOGICAL_SUBTILES: i32 = 512;
 pub const TICKS_PER_SECOND: i32 = 20;
 
 impl AttackRange {

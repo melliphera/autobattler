@@ -135,6 +135,9 @@ impl BattleUnit {
         if self.current_movement.is_none() {
             self.position
         } else {
+            #[cfg(test)] {
+                println!("Getting position of moving unit with MoveData:- current tick: {}\n{:?} ", tick, self.current_movement.unwrap())
+            }
             let move_order = self.current_movement.unwrap(); // safe unwrap bc above.
             let tick_number = tick - move_order.start_tick;
             let progress = tick_number as f32 / (move_order.end_tick - move_order.start_tick) as f32;
@@ -148,7 +151,14 @@ impl BattleUnit {
 
     pub(crate) fn path(&self, b: &BattleState, current_tick: u32) -> MoveData {
         // pathfinding logic for moving towards target. Returns MoveData object which can be processed as a MoveEvent
-        let target = b.live_units.get(&self.target.expect("Unit tried to path without target!")).unwrap(); // should never issue MoveEvent without an active target - how would it know its out of range?
+        let target = b.live_units.get(&self.target.expect("Unit tried to path without target!")).unwrap_or_else(|| {
+            // this else clause happens roughly once every million fights. It can be slow and/or messy.
+            // clones self to find target because of double mutable. Moves towards the temporary target but keeps the original.
+            // messy as stated, but robust retargeting should happen when the event resolves.
+            let t = &self.clone().find_target(&b.get_opponent_positions(self.id, current_tick)).expect("failed to find new target in 1/1m clause.");
+            b.live_units.get(t).expect("retargeted into dead unit. this should be impossible.")
+        });
+
         let mut blocked = b.get_blocked_positions();
         blocked.push(self.last_position);
 

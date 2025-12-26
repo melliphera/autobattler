@@ -12,8 +12,8 @@ impl BattleState {
         let capacity = self.live_units.len() + self.timeline.len();
         let mut out: Vec<BattlePosition> = Vec::with_capacity(capacity);
         
-        out.extend(self.timeline.iter().filter_map(|(event, _tick)| {
-            match event {
+        out.extend(self.timeline.iter().filter_map(|event_container| {
+            match event_container.event {
                 MoveEvent(info) => {Some(info.end_pos)}
                 _ => None
             }

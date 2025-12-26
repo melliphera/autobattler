@@ -35,7 +35,7 @@ impl Ability {
     pub(crate) fn cast(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<(BattleEvent, u32)> {
         let targets = self.get_targets(caster, b, tick);
         let temp = targets.iter().map(|target| {
-            self.create_events(caster, *target)
+            self.create_events(caster, *target, tick)
         }).flatten().collect();
         ////println!("Events added by ability cast {}\n{:#?}", self.name, temp);
         temp
@@ -79,7 +79,7 @@ impl Ability {
         }
     }
 
-    fn create_events(&self, source: EntityID, target: EntityID) -> Vec<(BattleEvent, u32)> {
+    fn create_events(&self, source: EntityID, target: EntityID, cast_tick: u32) -> Vec<(BattleEvent, u32)> {
         //! creates the BattleEvent object describing the ability's effect on a given target.
         let mut out = Vec::new();
         for effect_slot in self.effects.iter() {
@@ -120,7 +120,7 @@ impl Ability {
                         unimplemented!()
                     }
                 };
-                out.push((e, self.cast_delay.unwrap_or(0)));
+                out.push((e, cast_tick + self.cast_delay.unwrap_or(0)));
             }
         }
         out

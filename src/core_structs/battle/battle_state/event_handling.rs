@@ -4,14 +4,13 @@
 //! Likewise some event types are so simple to handle that they're directly handled in execute_event.
 //! These types are currently RawDamageEvent, HealEvent and ShieldEvent.
 use fixedstr::str32;
-use std::cmp::Reverse;
 
 use crate::core_structs::prelude::*;
 
 
 pub(crate) struct AttackContext {
     pub(super) event: BattleEvent,
-    pub(super) tick: Reverse<u32>
+    pub(super) tick: u32
 }
 
 impl BattleState {
@@ -38,7 +37,7 @@ impl BattleState {
         {
             let source_unit = self.live_units.get(&source_id).unwrap(); // safe because source is definitely still alive.
             source_cc = source_unit.crit_chance;
-            source_pos = source_unit.get_position(ctx.tick.0);
+            source_pos = source_unit.get_position(ctx.tick);
             source_range = source_unit.range_squared;
             _source_name = source_unit.template.get_name()
         }
@@ -47,10 +46,10 @@ impl BattleState {
             // handle target stuff - use different code block for source if necessary later.
             if self.live_units.get(&data.target).is_none() {
                 //println!("Target dead, requeueing new attack on this tick.");
-                let opp_positions = self.get_opponent_positions(source_id, ctx.tick.0);
+                let opp_positions = self.get_opponent_positions(source_id, ctx.tick);
                 let source = self.live_units.get_mut(&source_id).unwrap();
                 if let Some(target) = source.find_target(&opp_positions) { // same attack but to other target
-                    new_events.push((AttackEvent(AttackData{target, ..data}), ctx.tick.0))
+                    new_events.push((AttackEvent(AttackData{target, ..data}), ctx.tick))
                 } else {
                     //println!("No more targets found!");
                 }
@@ -60,7 +59,7 @@ impl BattleState {
             let target = self.live_units.get_mut(&data.target).unwrap(); // safe unwrap bc of is_none() arm above.
 
             // check target is in range. If not, queue MoveEvent on tick.
-            let target_distance = source_pos.distance_squared_to(&target.get_position(ctx.tick.0));
+            let target_distance = source_pos.distance_squared_to(&target.get_position(ctx.tick));
             if target_distance > source_range {
 
                 // add MoveEvent. 
@@ -69,10 +68,10 @@ impl BattleState {
                 #[cfg(test)] 
                 {
                     use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
-                    println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick.0, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
+                    println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
                 }
-                let m = MoveEvent(source.path(&self, ctx.tick.0));
-                return (vec![(m,  ctx.tick.0)], vec![])
+                let m = MoveEvent(source.path(&self, ctx.tick));
+                return (vec![(m,  ctx.tick)], vec![])
             }
             
 
@@ -203,6 +202,7 @@ impl BattleState {
     pub(super) fn process_debug_event(&mut self, data: DebugData) {
         //println!();
         match data.info {
+            /*
             DebugInfo::_EventQueue => {
                 let mut vec = self.timeline.iter().collect::<Vec<_>>();
                 vec.sort_by_key(|(_a, b)| **b);
@@ -210,6 +210,7 @@ impl BattleState {
                     println!("{:?}", event)
                 }
             }
+            */
             DebugInfo::_Health => {
                 for unit in self.live_units.iter() {
                     let name = unit.template.get_name();
@@ -228,6 +229,7 @@ impl BattleState {
                     println!("{} {} at ({}, {}) - {}/{}hp", unit.id.0, name, unit.position.x, unit.position.y, unit.current_hp.0, unit.max_hp.0)
                 }
             }
+            _ => unimplemented!()
         }
     }
 }

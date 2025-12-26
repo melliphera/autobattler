@@ -1,11 +1,9 @@
-use rustc_hash::FxHasher;
 use std::{collections::HashMap};
 use std::cell::RefCell;
-use std::hash::BuildHasherDefault;
 
-use priority_queue::PriorityQueue;
 use rand::{SeedableRng, rngs::StdRng};
 
+use crate::core_structs::battle::battle_state::timeline::EventTimeline;
 use crate::core_structs::{battle::battle_state::entity_list::EntityList, prelude::*};
 
 impl BattleState {
@@ -18,9 +16,10 @@ impl BattleState {
     pub fn new_seeded(seed: u64) -> Self {
         BattleState { 
             live_units: EntityList::new(), 
-            timeline: PriorityQueue::with_hasher(BuildHasherDefault::<FxHasher>::default()), 
+            timeline: EventTimeline::new(), 
             rng: StdRng::seed_from_u64(seed),
-            events_called: 0
+            events_called: 0,
+            last_processed_tick: 0
         }
     }
 

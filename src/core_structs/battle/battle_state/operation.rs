@@ -1,32 +1,42 @@
 use crate::core_structs::prelude::*;
-use std::cmp::Reverse;
 use fixedstr::str32;
 
 impl BattleState {
     pub(super) fn queue_event(&mut self, event: BattleEvent, tick: u32) {
-        self.timeline.push(event, Reverse(tick));
+        self.timeline.push(event, tick, self.last_processed_tick);
     }
 
     pub fn simulate(&mut self, max_tick: u32) -> (i32, Option<Team>) {
         
         self.initialize();
-        while let Some((event, tick)) = self.timeline.pop() { // while there are things in the timeline
-            if tick.0 > max_tick { // max fight length.
+        while let Some(container) = self.timeline.pop() { // while there are things in the timeline
+            let (tick, event) = (container.tick, container.event);
+            if tick > max_tick { // max fight length.
                 //println!("Fight timed out!");
                 return (self.events_called, None);
             }
+            #[cfg(test)]
+            println!("{}", self.timeline);
+
             let to_queue = self.execute_event(event, tick);   // do the thing. 
             for (event, tick) in to_queue.into_iter() {       // add newly produced items ot the queue.
                 self.queue_event(event, tick);
                 self.events_called += 1
             } 
         }
-        (self.events_called, Some(self.live_units.iter().next().unwrap().team))        // Events should only run dry when one team is fully dead.
+        (self.events_called, Some(self.live_units.iter().next().map_or(Team::Player, |unit| unit.team)))    // Events should only run dry when one team is fully dead. If both teams are, player biased.
     }
 
-    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: Reverse<u32>) -> Vec<(BattleEvent, u32)> {
+    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32) -> Vec<(BattleEvent, u32)> {
         //! execute the current event. This is gonna get bulky.
-         
+
+        // debug assertion that events are correctly executing in chronological order
+        #[cfg(test)]
+        assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
+
+        // acknowledge current tick as "last processed tick" so spawning events on the same tick is more efficient.
+        self.last_processed_tick = tick;
+
         // below allocations are for combat logging. Pre-unders are to circumvent inaccurate linting.
         let mut _target_name = str32::new();
 
@@ -45,7 +55,7 @@ impl BattleState {
 
             }
             AbilityCastEvent(data) => {
-                new_events = self.process_ability_cast(data, tick.0)
+                new_events = self.process_ability_cast(data, tick)
             }
             BuffEvent(data) => {
                 self.process_buff_event(data); // doesn't inherently spawn new events.
@@ -55,8 +65,8 @@ impl BattleState {
             }
             MoveEndEvent(data) => {
                 // if move_end processing returns an event, its another Move. therefore do not attack so return immediately.
-                if let Some(move_event) = self.process_move_end_event(data, tick.0) {
-                    return vec![(move_event, tick.0)];
+                if let Some(move_event) = self.process_move_end_event(data, tick) {
+                    return vec![(move_event, tick)];
                 }
             }
             RawDamageEvent(data) => {
@@ -78,7 +88,7 @@ impl BattleState {
             }
             _DebugEvent(payload) =>  {
                 self.process_debug_event(payload);
-                self.queue_event(_DebugEvent(payload), tick.0+payload.delay);
+                self.queue_event(_DebugEvent(payload), tick+payload.delay);
             }
         };
 
@@ -86,7 +96,7 @@ impl BattleState {
         for id in new_dead.iter() {
             //println!("Unit {}: {} has died!", id.0, self.get_name(*id));
             self.live_units.remove(id);
-            self.timeline.retain(|event, _prio| event.get_source_id() != Some(*id) && event.get_target_id() != Some(*id));
+            self.timeline.retain(|container| container.event.get_source_id() != Some(*id) && container.event.get_target_id() != Some(*id));
         };
         
         // -- all below queue the attacker's next event --
@@ -105,7 +115,7 @@ impl BattleState {
 
         // grab attacker as mutable 
         let source_id = source_id_opt.expect("Past a let None, this shouldn't ever show up.");
-        let opp_positions = self.get_opponent_positions(source_id, tick.0);
+        let opp_positions = self.get_opponent_positions(source_id, tick);
 
         let source = self.live_units.get_mut(&source_id).unwrap();
 
@@ -128,14 +138,14 @@ impl BattleState {
                     source: source_id,
                     ability: source.ability.expect("Trying to cast ability without having one.")
                 }),
-                tick.0 + source.attack_delay.0 as u32
+                tick + source.attack_delay.0 as u32
             ));
             //println!("Added cast: {} - {} to the queue.", source.template.get_name(), source.ability.expect("trying to cast None ability.").name);
             return new_events
         }
 
         // 3 - attack target (or move into range if currently out of range)
-        let next_attack_tick = tick.0 + source.attack_delay.0 as u32;
+        let next_attack_tick = tick + source.attack_delay.0 as u32;
         new_events.push((source.attack_current_target(), next_attack_tick));
         new_events
     }

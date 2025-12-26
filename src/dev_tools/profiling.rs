@@ -27,7 +27,7 @@ pub fn profile(seconds: usize) {
             }
             total_sims += TESTS_PER_POLL
         }
-        println!("{} simulations completed in {}s", total_sims, start.elapsed().as_secs_f32())
+        println!("{} simulations completed in {:.2}s", total_sims, start.elapsed().as_secs_f32())
     }
     println!("Time taken: {}s\nAlly wins: {}\nEnemy wins: {}\nFights timed out: {}\nEvents called: {}", start.elapsed().as_secs_f32(), win_counter[0], win_counter[1], win_counter[2], total_events)
 }

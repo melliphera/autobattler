@@ -8,14 +8,17 @@ pub mod timeline;
 
 use rand::rngs::StdRng;
 use entity_list::EntityList;
+use std::cell::{Cell, RefCell};
 
-use crate::core_structs::{battle::battle_state::timeline::EventTimeline};
+use crate::{core_structs::battle::battle_state::timeline::EventTimeline, prelude::BattlePosition};
 
 pub struct BattleState {
     pub live_units: EntityList<25>, // all living units. dead units can be seperately handled in Godot.
     pub rng: StdRng, 
     timeline: EventTimeline,
     last_processed_tick: u32,
+    blocked_cache: RefCell<Vec<BattlePosition>>,
+    blocked_dirty: Cell<bool>,
 
     pub events_called: i32
 

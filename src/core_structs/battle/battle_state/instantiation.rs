@@ -1,5 +1,5 @@
 use std::{collections::HashMap};
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 
 use rand::{SeedableRng, rngs::StdRng};
 
@@ -19,7 +19,9 @@ impl BattleState {
             timeline: EventTimeline::new(), 
             rng: StdRng::seed_from_u64(seed),
             events_called: 0,
-            last_processed_tick: 0
+            last_processed_tick: 0,
+            blocked_cache: RefCell::new(Vec::new()),
+            blocked_dirty: Cell::new(true)
         }
     }
 

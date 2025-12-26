@@ -165,7 +165,7 @@ impl BattleUnit {
         // check against cache for situations with fully blocked movement.
         {
             let b = self.blocked_on_last_move.borrow();
-            if !b.is_none() && b.as_ref().unwrap() == &blocked {
+            if !b.is_none() && b.as_ref().unwrap() == &blocked[..] {
                 // return another 10 tick "move" to current location.
                 return 
                     MoveData {
@@ -185,7 +185,8 @@ impl BattleUnit {
 
         // if next is self, forcibly add 10 tick delay to not spam moveevents, and cache current blockedtiles.
         let travel_ticks = if next == self.position { 
-            *self.blocked_on_last_move.borrow_mut() = Some(blocked); 10 
+            self.blocked_on_last_move.borrow_mut().replace(blocked.to_vec());
+            10 
         } else {
             self.position.distance_squared_to(&next).0.isqrt() / self.move_speed.0
         };

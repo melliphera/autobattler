@@ -61,10 +61,12 @@ impl BattleState {
                 self.process_buff_event(data); // doesn't inherently spawn new events.
             }
             MoveEvent(data) => {
+                self.blocked_dirty.set(true);
                 new_events = self.process_move_event(data); // spawns a MoveEndEvent                
             }
             MoveEndEvent(data) => {
                 // if move_end processing returns an event, its another Move. therefore do not attack so return immediately.
+                self.blocked_dirty.set(true);
                 if let Some(move_event) = self.process_move_end_event(data, tick) {
                     return vec![(move_event, tick)];
                 }
@@ -95,6 +97,7 @@ impl BattleState {
         // clear out any dead, and remove their events from the timeline.
         for id in new_dead.iter() {
             //println!("Unit {}: {} has died!", id.0, self.get_name(*id));
+            self.blocked_dirty.set(true);
             self.live_units.remove(id);
             self.timeline.retain(|container| container.event.get_source_id() != Some(*id) && container.event.get_target_id() != Some(*id));
         };

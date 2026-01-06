@@ -5,7 +5,7 @@ use super::targeting::TargetParadigm;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
 pub enum AbilityPayload {
-    Attack(Hitpoints, DamageType), _AddShield(Hitpoints), _Heal(Hitpoints, bool), BuffPayload(Buff), _Move(BattlePosition, MoveSpeed)
+    Attack(Hitpoints, DamageType), _AddShield(Hitpoints), _Heal(Hitpoints, bool), BuffPayload(Buff), _Move(BattleSubtile, MoveSpeed)
 }
 
 use AbilityPayload::*;

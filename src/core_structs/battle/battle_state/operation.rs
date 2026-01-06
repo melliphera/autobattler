@@ -19,7 +19,7 @@ impl BattleState {
             println!("{}", self.timeline);
 
             let to_queue = self.execute_event(event, tick);   // do the thing. 
-            for (event, tick) in to_queue.into_iter() {       // add newly produced items ot the queue.
+            for (event, tick) in to_queue.into_iter() {       // add newly produced items to the queue.
                 self.queue_event(event, tick);
                 self.events_called += 1
             } 
@@ -61,12 +61,10 @@ impl BattleState {
                 self.process_buff_event(data); // doesn't inherently spawn new events.
             }
             MoveEvent(data) => {
-                self.blocked_dirty.set(true);
                 new_events = self.process_move_event(data); // spawns a MoveEndEvent                
             }
             MoveEndEvent(data) => {
-                // if move_end processing returns an event, its another Move. therefore do not attack so return immediately.
-                self.blocked_dirty.set(true);
+                // if move_end processing returns an event, its another MoveEvent. therefore do not attack so return immediately.
                 if let Some(move_event) = self.process_move_end_event(data, tick) {
                     return vec![(move_event, tick)];
                 }
@@ -94,10 +92,19 @@ impl BattleState {
             }
         };
 
-        // clear out any dead, and remove their events from the timeline.
+        // clear out any dead, remove their events from the timeline, and unblock the tiles they are blocking.
+
         for id in new_dead.iter() {
+            let unit = self.live_units.get(id).unwrap(); // this thing is about to die, it shouldnt be dead already.
+
+            // clear movement/position data.
+            if let Some(data) = unit.current_movement {
+                self.blocked.set_coord(&data.end_pos, false);
+            }
+            self.blocked.set_coord(&unit.position, false);
+
             //println!("Unit {}: {} has died!", id.0, self.get_name(*id));
-            self.blocked_dirty.set(true);
+            // remove the unit and its events from the BattleState structure
             self.live_units.remove(id);
             self.timeline.retain(|container| container.event.get_source_id() != Some(*id) && container.event.get_target_id() != Some(*id));
         };
@@ -110,7 +117,7 @@ impl BattleState {
         }
 
         // if source is dead, don't queue them another event.
-        // THIS IS SCUFFED - IF MORE NEW EVENTS COME DOWN HERE, CHECK THEY RETURN SOME ON get_source_id()!!
+        // THIS IS SCUFFED - IF MORE NEW EVENTS COME DOWN HERE, CHECK THEY RETURN Some ON get_source_id()!!
         let source_id_opt = event.get_source_id();
         if let None = source_id_opt { 
             return new_events
@@ -151,5 +158,20 @@ impl BattleState {
         let next_attack_tick = tick + source.attack_delay.0 as u32;
         new_events.push((source.attack_current_target(), next_attack_tick));
         new_events
+    }
+
+    #[cfg(test)]
+    pub fn step_event(&mut self) -> Vec<(BattleEvent, u32)> {
+        //! pops a single event in the timeline and returns the event it spawns.
+        if let Some(container) = self.timeline.pop() {
+            let (tick, event) = (container.tick, container.event);
+
+            println!("{}", self.timeline);
+
+            self.execute_event(event, tick)   // do the thing. 
+
+        } else {
+            panic!("Test set up wrong, popped an empty event queue.")
+        }
     }
 }

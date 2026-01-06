@@ -54,7 +54,8 @@ impl<const N: usize> EntityList<N> {
 
     pub fn remove(&mut self, id: &EntityID) {
         if self.spawns_in_slot[id.0 as usize] == id.1 {
-            self.entities[id.0 as usize] = None
+            self.entities[id.0 as usize] = None;
+            self.is_full = false
         }
     }
 
@@ -155,7 +156,7 @@ impl<'a, const N: usize> Iterator for EntityIterMut<'a, N> {
     }
 }
 
-// Implement IntoIterator for &mut EntityStore
+// Implement IntoIterator for &mut EntityList
 impl<'a, const N: usize> IntoIterator for &'a mut EntityList<N> {
     type Item = &'a mut BattleUnit;
     type IntoIter = EntityIterMut<'a, N>;

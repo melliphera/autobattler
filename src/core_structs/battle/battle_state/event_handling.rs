@@ -31,7 +31,7 @@ impl BattleState {
 
         // grabbing some cheaply Copy data from source
         let source_cc: CritChance;
-        let source_pos: BattlePosition;
+        let source_pos: BattleSubtile;
         let source_range: SquaredLogicalRange;
         let _source_name: str32;
         {
@@ -139,6 +139,7 @@ impl BattleState {
         #[cfg(test)]
         println!("tick {}:  \t{} {} is moving to {} over {} ticks ", data.start_tick, target_unit.template.get_name(), target_unit.position, data.end_pos, data.end_tick-data.start_tick);
 
+        self.blocked.set_coord(&data.end_pos, true);
         // queue movement end event
         vec![(MoveEndEvent(MoveEndData {
             target: data.target,
@@ -148,16 +149,19 @@ impl BattleState {
 
     pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: u32) -> Option<BattleEvent> {
         let mut move_again = false; // if new move event should be instantly triggered
-        {
-            // update unit position variables
+        {   
             let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
+
+            // free the location they departed from
+            self.blocked.set_coord(&target_unit.position, false);
+
+            // update unit position variables
             target_unit.current_movement = None;
             target_unit.position = data.end_pos;
             
             #[cfg(test)]
             {
-                use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
-                println!("tick {}:  \t{} has arrived at ({}, {})", tick, target_unit.template.get_name(), data.end_pos.x/LOGICAL_SUBTILES, data.end_pos.y/LOGICAL_SUBTILES);
+                println!("tick {}:  \t{} has arrived at {}", tick, target_unit.template.get_name(), data.end_pos);
             }
         }
         // double grab so needs immutable 
@@ -165,7 +169,7 @@ impl BattleState {
         let attacker = self.live_units.get(&data.target).unwrap();
         if let Some(unit) = attacker.target {
             if let Some(eid) = &self.live_units.get(&unit) {
-                let target_distance = attacker.position.distance_squared_to(&eid.position);
+                let target_distance = attacker.position.to_logical().distance_squared_to(&eid.get_position(tick));
                 if target_distance > attacker.range_squared {
                     move_again = true
                 }
@@ -175,22 +179,7 @@ impl BattleState {
         // slipping in some debugging stuff here.
         #[cfg(test)] 
         {
-            use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
-            let positions = self.get_blocked_positions();
-
-            let mut arena = [[' ';10];5];
-            for pos in positions.iter() {
-                arena[(pos.y/LOGICAL_SUBTILES) as usize -1][(pos.x/LOGICAL_SUBTILES) as usize-1] = 'O'
-            }
-            println!("\n 1 2 3 4 5 6 7 8 9 0");
-            for (i, row) in arena.into_iter().enumerate() {
-                print!("{}", i+1);
-                for cha in row.into_iter() {
-                    print!("{} ", cha);
-                }
-                println!()
-            }
-            println!();
+            println!("{}", self.blocked)
         }
         // end debugging
 
@@ -202,15 +191,6 @@ impl BattleState {
     pub(super) fn process_debug_event(&mut self, data: DebugData) {
         //println!();
         match data.info {
-            /*
-            DebugInfo::_EventQueue => {
-                let mut vec = self.timeline.iter().collect::<Vec<_>>();
-                vec.sort_by_key(|(_a, b)| **b);
-                for (event, _prio) in vec.iter() {
-                    println!("{:?}", event)
-                }
-            }
-            */
             DebugInfo::_Health => {
                 for unit in self.live_units.iter() {
                     let name = unit.template.get_name();

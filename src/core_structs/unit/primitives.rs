@@ -23,7 +23,9 @@ use fixedstr::str32;
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub enum Team   { Player, Opponent } 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub enum Roster { Human, NPC } 
 
-#[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct BattlePosition {pub x: i32, pub y: i32}
+#[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct BattleSubtile {pub x: i32, pub y: i32} // logical position including subtiles.
+#[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct GridPosition {pub x: i32, pub y: i32} // logical position including subtiles.
+
 #[derive(Clone, Copy, PartialEq, PartialOrd, Debug)]                pub struct SecondsPerTile (pub(crate) f32);  // limited rights because of f32
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct MoveSpeed      (pub(crate) i32);  // used for hash lookup#[derive(Hash, Clone, Copy, PartialEq, Eq)]
 

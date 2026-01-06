@@ -57,10 +57,6 @@ impl EventTimeline {
         self.seq += 1;
 
         #[cfg(test)] {
-            if cont.tick == 0 {
-                println!("{:#?}", cont)
-            }
-
             println!("Inserting event with tick: {}, seq: {} into list with\nticks: {:?}", cont.tick, cont.seq, self.events.iter().map(|e| e.tick).collect::<Vec<_>>());
             println!("Current tick: {}", current_tick);
         }

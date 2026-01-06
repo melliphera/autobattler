@@ -3,6 +3,7 @@ use std::cell::RefCell;
 
 use fixedstr::str32;
 
+use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
 use crate::core_structs::prelude::*;
 
 #[derive(Clone)] // Clone is cheap because all non-collection primitives are Copy
@@ -13,11 +14,11 @@ pub struct BattleUnit {
     pub team: Team,
 
     // positional data
-    pub position: BattlePosition,  // NOT UPDATED WHILE MOVING
-    pub last_position: BattlePosition,
+    pub position: GridPosition,  // NOT UPDATED WHILE MOVING
+    pub last_position: GridPosition,
     pub move_speed: MoveSpeed,
     pub current_movement: Option<MoveData>,
-    pub blocked_on_last_move: RefCell<Option<Vec<BattlePosition>>>,
+    pub blocked_on_last_move: RefCell<Option<BlockedArena>>,
 
     // defensive data
     pub current_hp: Hitpoints,
@@ -46,13 +47,13 @@ pub struct BattleUnit {
 }
 
 impl BattleUnit {
-    pub(crate) fn find_target(&mut self, enemy_positions: &Vec<(EntityID, BattlePosition)>) -> Option<EntityID> {
+    pub(crate) fn find_target(&mut self, enemy_positions: &Vec<(EntityID, BattleSubtile)>) -> Option<EntityID> {
         // simple nearest-targeting logic for now.
         let mut closest_target: Option<EntityID> = None;
         let mut closest_distance: Option<SquaredLogicalRange> = None;
 
         for (id, pos) in enemy_positions.iter() {
-            let dist = self.position.distance_squared_to(pos);
+            let dist = self.position.to_logical().distance_squared_to(pos);
             match closest_distance {
                 None => {
                     closest_distance = Some(dist);
@@ -131,9 +132,9 @@ impl BattleUnit {
         self.shield = Shield(Some(incoming.amount))
     }
 
-    pub(crate) fn get_position(&self, tick: u32) -> BattlePosition {
+    pub(crate) fn get_position(&self, tick: u32) -> BattleSubtile {
         if self.current_movement.is_none() {
-            self.position
+            self.position.to_logical()
         } else {
             #[cfg(test)] {
                 println!("Getting position of moving unit with MoveData:- current tick: {}\n{:?} ", tick, self.current_movement.unwrap())
@@ -145,7 +146,7 @@ impl BattleUnit {
                 move_order.start_pos.x as f32 + progress*(move_order.end_pos.x - move_order.start_pos.x) as f32,
                 move_order.start_pos.y as f32 + progress*(move_order.end_pos.y - move_order.start_pos.y) as f32,
             );
-            BattlePosition{ x: x_f as i32, y: y_f as i32 }
+            BattleSubtile{ x: x_f as i32, y: y_f as i32 }
         }
     }
 
@@ -159,13 +160,20 @@ impl BattleUnit {
             b.live_units.get(t).expect("retargeted into dead unit. this should be impossible.")
         });
 
-        let mut blocked = b.get_blocked_positions();
-        blocked.push(self.last_position);
+        let mut blocked = b.blocked;
+
+        let tile_coords = self.last_position;
+        blocked.set_coord(&tile_coords, true);
+
+        #[cfg(test)]
+        if self.position != self.last_position {
+            assert_ne!(b.blocked, blocked, "blocked is copying to b.blocked!");
+        }
 
         // check against cache for situations with fully blocked movement.
         {
             let b = self.blocked_on_last_move.borrow();
-            if !b.is_none() && b.as_ref().unwrap() == &blocked[..] {
+            if !b.is_none() && b.as_ref().unwrap() == &blocked {
                 // return another 10 tick "move" to current location.
                 return 
                     MoveData {
@@ -185,10 +193,11 @@ impl BattleUnit {
 
         // if next is self, forcibly add 10 tick delay to not spam moveevents, and cache current blockedtiles.
         let travel_ticks = if next == self.position { 
-            self.blocked_on_last_move.borrow_mut().replace(blocked.to_vec());
+            self.blocked_on_last_move.borrow_mut().replace(blocked);
             10 
         } else {
-            self.position.distance_squared_to(&next).0.isqrt() / self.move_speed.0
+            // todo this line is disgustingly expensive for what it is.
+            self.position.to_logical().distance_squared_to(&next.to_logical()).0.isqrt() / self.move_speed.0
         };
         MoveData {
             source: self.id, 

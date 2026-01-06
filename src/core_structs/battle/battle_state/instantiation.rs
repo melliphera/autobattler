@@ -1,10 +1,12 @@
 use std::{collections::HashMap};
-use std::cell::{Cell, RefCell};
+use std::cell::{RefCell};
 
 use rand::{SeedableRng, rngs::StdRng};
 
+use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
 use crate::core_structs::battle::battle_state::timeline::EventTimeline;
 use crate::core_structs::{battle::battle_state::entity_list::EntityList, prelude::*};
+use crate::Roster::*;
 
 impl BattleState {
     pub fn _new() -> Self {
@@ -20,20 +22,45 @@ impl BattleState {
             rng: StdRng::seed_from_u64(seed),
             events_called: 0,
             last_processed_tick: 0,
-            blocked_cache: RefCell::new(Vec::new()),
-            blocked_dirty: Cell::new(true)
+            blocked: BlockedArena::new()
         }
     }
 
-    pub fn spawn_ally_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) -> Result<(), ()> {
+    pub fn new_with_teams(human_team: &[(u16, (i32, i32))], enemy_team: &[(u16, (i32, i32))]) -> BattleState {
+        // mostly for quickly building combat scenarios for testing. Assumes enemy is NPC.
+        let mut b = BattleState::_new();
+        for (id, (x, y)) in human_team.iter() {
+            _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), GridPosition  { x: *x, y: *y });
+        };
+
+        for (id, (x, y)) in enemy_team.iter() {
+            _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  GridPosition { x: *x, y: *y });
+        };
+        b
+    }
+
+    pub fn new_seeded_with_teams(seed: u64, human_team: &[(u16, (i32, i32))], enemy_team: &[(u16, (i32, i32))]) -> BattleState {
+        // mostly for quickly building combat scenarios for testing. Assumes enemy is NPC.
+        let mut b = BattleState::new_seeded(seed);
+        for (id, (x, y)) in human_team.iter() {
+            _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), GridPosition  { x: *x, y: *y });
+        };
+
+        for (id, (x, y)) in enemy_team.iter() {
+            _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  GridPosition { x: *x, y: *y });
+        };
+        b
+    }
+
+    fn spawn_from_id(&mut self, id: UnitTemplateID, position: GridPosition, team: Team) -> Result<(), ()> {
         let template = UNIT_DATABASE[id.0 as usize];
         let ability = get_ability(id);
         let b = BattleUnit { 
             id: self.live_units.get_next_id(), 
             template: id, 
-            team: Team::Player,
-            position: position.to_logical(),
-            last_position: position.to_logical(),
+            team: team,
+            position: position,
+            last_position: position,
             current_movement: None,
             blocked_on_last_move: RefCell::new(None),
             target: None, 
@@ -57,47 +84,17 @@ impl BattleState {
             crit_chance: template.crit_chance, 
 
         };
+        self.blocked.set_coord(&GridPosition { x: position.x, y: position.y}, true);
         self.live_units.spawn(b)?;
         Ok(())
     }
 
-    pub fn spawn_enemy_from_id(&mut self, id: UnitTemplateID, position: BattlePosition) -> Result<(), ()> {
-        let template = match id.1 {
-            Roster::Human => UNIT_DATABASE[id.0 as usize],
-            Roster::NPC  => ENEMY_DATABASE[id.0 as usize]
-        };
-        let ability = get_ability(id);
+    pub fn spawn_ally_from_id(&mut self, id: UnitTemplateID, position: GridPosition) -> Result<(), ()> {
+        self.spawn_from_id(id, position, Team::Player)
+    }
 
-        let b = BattleUnit {
-            id: self.live_units.get_next_id(),
-            template: id, 
-            team: Team::Opponent,
-            position: position.to_logical(),
-            last_position: position.to_logical(),
-            current_movement: None,
-            move_speed: template.move_speed.to_logical(),
-            blocked_on_last_move: RefCell::new(None),
-            current_hp: template.hitpoints, 
-            max_hp: template.hitpoints, 
-            defence: template.defence, 
-            magic_resist: template.magic_resist, 
-            target: None,
-            mana: Mana(0),
-            max_mana: match ability {Some(a) => a.get_mana(), _=> Mana(0)},
-            ability: ability,
-            attack_type: template.attack_type, 
-            attack: template.attack, 
-            attack_delay: template.attack_delay, 
-            range_squared: template.attack_range.to_squared(), 
-
-            crit_chance: template.crit_chance, 
-            shield: Shield(None), 
-            incoming_damage_handlers: HashMap::new(), 
-            outgoing_damage_handlers: HashMap::new(), 
-            temp_stat_modifiers: HashMap::new()
-        };
-        self.live_units.spawn(b)?;
-        Ok(())
+    pub fn spawn_enemy_from_id(&mut self, id: UnitTemplateID, position: GridPosition) -> Result<(), ()> {
+        self.spawn_from_id(id, position, Team::Opponent)
     }
 
     pub fn initialize(&mut self) {
@@ -117,6 +114,9 @@ impl BattleState {
         for event in initial_event_stack.iter() {
             self.queue_event(*event, 0);
         }
+
+        #[cfg(test)]
+        println!("{}", self.blocked)
     }
 
     pub(crate) fn _with_debug(mut self, info: DebugInfo, interval: u32) -> Self {

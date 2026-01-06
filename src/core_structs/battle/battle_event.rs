@@ -51,8 +51,8 @@ pub mod data_types {
     pub struct MoveData {
         pub(crate) source: EntityID,
         pub(crate) target: EntityID, // in case of displacing abilities
-        pub(crate) start_pos: BattlePosition,
-        pub(crate) end_pos: BattlePosition,
+        pub(crate) start_pos: GridPosition,
+        pub(crate) end_pos: GridPosition,
         pub(crate) start_tick: u32,
         pub(crate) end_tick: u32,
         pub(crate) move_speed_override: Option<MoveSpeed> // for forced displacements
@@ -61,7 +61,7 @@ pub mod data_types {
     #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
     pub struct MoveEndData {
         pub(crate) target: EntityID, // in case of displacing abilities
-        pub(crate) end_pos: BattlePosition,
+        pub(crate) end_pos: GridPosition,
     }
 
     #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]

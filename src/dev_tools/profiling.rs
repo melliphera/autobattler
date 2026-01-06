@@ -41,26 +41,26 @@ fn random_test() -> (i32, Option<Team>) {
     let human_count = rng.random_range(2..=4);
     for _ in 0..human_count {
         let id = rng.random_range(0..=2);
-        let x  = rng.random_range(1..=5);
-        let y  = rng.random_range(1..=5);
+        let x  = rng.random_range(0..=4);
+        let y  = rng.random_range(0..=4);
         human_team.push((id, (x, y)));
     }
 
     let enemy_count = rng.random_range(3..=5);
     for _ in 0..enemy_count {
         let id = rng.random_range(0..=1);
-        let x  = rng.random_range(6..=10);
-        let y  = rng.random_range(1..=5);
+        let x  = rng.random_range(5..=9);
+        let y  = rng.random_range(0..=4);
         npc_team.push((id, (x, y)));
     }
 
     let mut b = BattleState::new_seeded(9405163005650660990);
     for (id, (x, y)) in human_team.iter() {
-        _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), BattlePosition { x: *x, y: *y });
+        _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), GridPosition { x: *x, y: *y });
     }
 
     for (id, (x, y)) in npc_team.iter() {
-        _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  BattlePosition { x: *x, y: *y });
+        _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  GridPosition { x: *x, y: *y });
     }
 
     b.simulate(MAX_FIGHT_LENGTH)

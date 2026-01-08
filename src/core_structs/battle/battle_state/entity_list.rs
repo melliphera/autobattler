@@ -1,7 +1,7 @@
 use crate::core_structs::prelude::*;
 
 pub struct EntityList<const N: usize> {
-    entities: [Option<BattleUnit>; N], // allows for eg 5 allies, 5 spawned constructs, 15 enemies at once.
+    entities: [Option<BattleUnit>; N], 
     spawns_in_slot: [u16; N],           
     next_id: usize,
     lowest_nonempty: usize,

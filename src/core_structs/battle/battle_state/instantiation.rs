@@ -22,7 +22,8 @@ impl BattleState {
             rng: StdRng::seed_from_u64(seed),
             events_called: 0,
             last_processed_tick: 0,
-            blocked: BlockedArena::new()
+            blocked: BlockedArena::new(),
+            godot_event_buffer: None
         }
     }
 

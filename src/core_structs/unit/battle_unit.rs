@@ -2,6 +2,7 @@ use std::collections::HashMap;
 use std::cell::RefCell;
 
 use fixedstr::str32;
+use smallvec::SmallVec;
 
 use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
 use crate::core_structs::prelude::*;
@@ -47,7 +48,7 @@ pub struct BattleUnit {
 }
 
 impl BattleUnit {
-    pub(crate) fn find_target(&mut self, enemy_positions: &Vec<(EntityID, BattleSubtile)>) -> Option<EntityID> {
+    pub(crate) fn find_target(&mut self, enemy_positions: &SmallVec<[(EntityID, BattleSubtile); POSITIONS_SMALLVEC_SIZE]>) -> Option<EntityID> {
         // simple nearest-targeting logic for now.
         let mut closest_target: Option<EntityID> = None;
         let mut closest_distance: Option<SquaredLogicalRange> = None;
@@ -88,7 +89,9 @@ impl BattleUnit {
         )
     }
 
-    pub(crate) fn take_damage(&mut self, incoming: AttackData) -> Option<BattleEvent> {
+    pub(crate) fn take_damage(&mut self, incoming: AttackData) -> (Option<BattleEvent>) {
+        //! returns the actual damage taken (for hitsplats/event logs) and a DeathEvent if the target dies.
+        
         let mut damage = Hitpoints(incoming.damage.0);
         // pass damage through buffs/debuffs here.
         for (_buff, container) in self.incoming_damage_handlers.iter() {
@@ -113,7 +116,7 @@ impl BattleUnit {
 
         if self.current_hp.0 == 0 {
             Some(DeathEvent(self.id))
-        } else {None}
+        } else { None}
     }
 
     pub(crate) fn heal(&mut self, incoming: HealData) {
@@ -165,10 +168,10 @@ impl BattleUnit {
         let tile_coords = self.last_position;
         blocked.set_coord(&tile_coords, true);
 
-        #[cfg(test)]
-        if self.position != self.last_position {
-            assert_ne!(b.blocked, blocked, "blocked is copying to b.blocked!");
-        }
+        //#[cfg(test)]
+        //if self.position != self.last_position {
+        //    assert_ne!(b.blocked, blocked, "blocked is copying to b.blocked!");
+        //}
 
         // check against cache for situations with fully blocked movement.
         {

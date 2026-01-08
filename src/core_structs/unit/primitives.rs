@@ -37,34 +37,34 @@ use crate::core_structs::unit::{data::{
 }, spatial_functions::{LOGICAL_SUBTILES, TICKS_PER_SECOND}};
 
 impl AttackDamage {
-    pub(crate) fn add(self, other: &Self) -> Self {
+    pub fn add(self, other: &Self) -> Self {
         // for adding e.g weapon stats
         AttackDamage(self.0 + other.0)
     }
 
-    pub(crate) fn multiply(self, other: f32) -> Self {
+    pub fn multiply(self, other: f32) -> Self {
         // for eg temporary buffs
         AttackDamage((self.0 as f32 * other) as u64)
     }
 }
 
 impl AttackTickDelay {
-    pub(crate) fn get_attack_speed(self, ticks_per_sec: u8) -> f32 {
+    pub fn get_attack_speed(self, ticks_per_sec: u8) -> f32 {
         // converts tick delay into a conventional attack speed based on tps. Used for display purposes.
         (ticks_per_sec as f32) / (self.0 as f32)
     }
 }
 
 impl CritChance {
-    pub(crate) const fn from_percentage(perc: f32) -> Self {
+    pub const fn from_percentage(perc: f32) -> Self {
         Self((perc/100.0 * u16::MAX as f32) as u16)
     }
 
-    pub(crate) fn to_percentage(&self) -> f32 {
+    pub fn to_percentage(&self) -> f32 {
         self.0 as f32 / u16::MAX as f32
     }
 
-    pub(crate) fn did_crit<T: Rng>(self, rng: &mut T) -> bool {
+    pub fn did_crit<T: Rng>(self, rng: &mut T) -> bool {
         let rand = rng.random();
         // //println!("crit roll: {}/65535 - threshold {}", rand, self.0);
         self.0 >= rand

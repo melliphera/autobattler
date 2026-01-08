@@ -34,6 +34,7 @@ impl BattleState {
         #[cfg(test)]
         assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
 
+
         // acknowledge current tick as "last processed tick" so spawning events on the same tick is more efficient.
         self.last_processed_tick = tick;
 
@@ -160,7 +161,7 @@ impl BattleState {
         new_events
     }
 
-    #[cfg(test)]
+    #[cfg(test)] #[allow(private_interfaces)]
     pub fn step_event(&mut self) -> Vec<(BattleEvent, u32)> {
         //! pops a single event in the timeline and returns the event it spawns.
         if let Some(container) = self.timeline.pop() {

@@ -1,12 +1,13 @@
 //! contains the EventTimeline struct, which implements a Binary Heap 
 use std::{cmp::PartialOrd, fmt::Display};
 
+use smallvec::SmallVec;
 
 use crate::prelude::BattleEvent::{self, *};
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct EventTimeline {
-    pub events: Vec<EventContainer>,
+    pub events: SmallVec<[EventContainer; 32]>,
     seq: i32
 }
 
@@ -35,7 +36,7 @@ impl PartialOrd for EventContainer {
 impl EventTimeline {
     pub fn new() -> Self {
         Self {
-            events: Vec::with_capacity(32),
+            events: SmallVec::new(),
             seq: 0
         }
     }
@@ -96,8 +97,8 @@ impl EventTimeline {
         self.events.pop()
     }
 
-    pub fn retain(&mut self, f: impl FnMut(&EventContainer) -> bool) {
-        self.events.retain(f);
+    pub fn retain(&mut self, mut f: impl FnMut(&EventContainer) -> bool) {
+        self.events.retain(|e| f(e));
     }
 }
 

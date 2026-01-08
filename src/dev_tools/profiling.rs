@@ -29,7 +29,7 @@ pub fn profile(seconds: usize) {
         }
         println!("{} simulations completed in {:.2}s", total_sims, start.elapsed().as_secs_f32())
     }
-    println!("Time taken: {}s\nAlly wins: {}\nEnemy wins: {}\nFights timed out: {}\nEvents called: {}", start.elapsed().as_secs_f32(), win_counter[0], win_counter[1], win_counter[2], total_events)
+    println!("Time taken: {}s\nAlly wins: {}\nEnemy wins: {}\nFights timed out: {}\n\nEvents called: {}\nEvents/s: {}", start.elapsed().as_secs_f32(), win_counter[0], win_counter[1], win_counter[2], total_events, total_events as u64/start.elapsed().as_secs())
 }
 
 fn random_test() -> (i32, Option<Team>) {

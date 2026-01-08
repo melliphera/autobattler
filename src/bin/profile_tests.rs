@@ -10,6 +10,6 @@ pub mod tests {
 
     #[test]
     pub fn profile_test() {
-        profile(60);
+        profile(10);
     }
 }

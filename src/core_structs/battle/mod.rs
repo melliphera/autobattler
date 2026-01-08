@@ -6,4 +6,5 @@ pub mod prelude {
     pub(crate) use super::battle_state::event_handling::AttackContext;
     pub use super::battle_event::data_types::*;
     pub use super::battle_state::BattleState;
+    pub use super::battle_state::helper_methods::POSITIONS_SMALLVEC_SIZE;
 }

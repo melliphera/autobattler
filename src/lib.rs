@@ -1,6 +1,7 @@
 //! Outward facing impls for BattleState, to communicate with Godot
 
-#[allow(dead_code)]
+//#[allow(dead_code)]
+
 pub mod core_structs;
 use core_structs::prelude::*;
 
@@ -9,12 +10,6 @@ pub use core_structs::prelude;
 
 #[cfg(test)]
 pub mod tests;
-
-impl BattleState {
-    pub fn get_units(&self) -> Vec<&BattleUnit> {
-        self.live_units.iter().collect()
-    }
-}
 
 pub const MAX_FIGHT_LENGTH: u32 = 30000;
 

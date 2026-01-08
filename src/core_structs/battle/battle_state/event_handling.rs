@@ -5,7 +5,7 @@
 //! These types are currently RawDamageEvent, HealEvent and ShieldEvent.
 use fixedstr::str32;
 
-use crate::core_structs::prelude::*;
+use crate::core_structs::{battle::battle_state::godot_interface::godot_events::{GodotAttackData, GodotEvent}, prelude::*};
 
 
 pub(crate) struct AttackContext {
@@ -97,6 +97,17 @@ impl BattleState {
             let _source_name = source.template.get_name();
             if _successful_hit {
                 source.mana.add(10, source.max_mana);
+
+                // also log the AttackEvent if thats necessary
+                if let Some(ref mut vec) = self.godot_event_buffer {
+                    vec.push(GodotEvent::Attack(GodotAttackData {
+                        source: source_id,
+                        target: data.target,
+                        target_damage: _pre_hp-_rem_hp
+                    }))
+                }
+
+
                 //print!("tick {}: \t{} {}struck {} for {} damage!\t", ctx.tick.0, source_name, if did_crit {"critically "} else {""}, _target_name, _pre_hp.0 - _rem_hp.0);
                 //print!("Mana {}/{}\t", source.mana.0, source.max_mana.0);
                 //println!("Enemy HP {}/{}", _rem_hp.0, _max_hp.0);

@@ -89,7 +89,7 @@ impl BattleUnit {
         )
     }
 
-    pub(crate) fn take_damage(&mut self, incoming: AttackData) -> (Option<BattleEvent>) {
+    pub(crate) fn take_damage(&mut self, incoming: AttackData) -> (Hitpoints, Option<BattleEvent>) {
         //! returns the actual damage taken (for hitsplats/event logs) and a DeathEvent if the target dies.
         
         let mut damage = Hitpoints(incoming.damage.0);
@@ -115,16 +115,19 @@ impl BattleUnit {
         }
 
         if self.current_hp.0 == 0 {
-            Some(DeathEvent(self.id))
-        } else { None}
+            (damage, Some(DeathEvent(self.id)))
+        } else { (damage, None) }
     }
 
-    pub(crate) fn heal(&mut self, incoming: HealData) {
+    pub(crate) fn heal(&mut self, incoming: HealData) -> Hitpoints {
+        // returns the amount healed for combat logging/hitsplat purposes.
+        let start_hp = self.current_hp;
         if incoming.can_overheal {
             self.current_hp += incoming.amount
         } else {
             self.current_hp = Hitpoints((self.current_hp.0 + incoming.amount.0).min(self.max_hp.0))
         }
+        self.current_hp - start_hp
     }
 
     pub(crate) fn shield(&mut self, incoming: ShieldData) {

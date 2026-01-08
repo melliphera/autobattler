@@ -1,6 +1,6 @@
 use fixedstr::str32;
 
-use crate::core_structs::prelude::*;
+use crate::core_structs::{battle::battle_state::godot_interface::godot_events::{GodotAbilityData, GodotEvent}, prelude::*};
 use super::targeting::TargetParadigm;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
@@ -32,8 +32,16 @@ impl Ability {
         Mana(self.mana_cost)
     }
 
-    pub(crate) fn cast(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<(BattleEvent, u32)> {
+    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32) -> Vec<(BattleEvent, u32)> {
         let targets = self.get_targets(caster, b, tick);
+
+        if let Some(ref mut vec) = b.godot_event_buffer {
+            vec.push(GodotEvent::AbilityCast(GodotAbilityData {
+                source: caster,
+                targets: targets.clone()
+            }))
+        }
+
         let temp = targets.iter().map(|target| {
             self.create_events(caster, *target, tick)
         }).flatten().collect();

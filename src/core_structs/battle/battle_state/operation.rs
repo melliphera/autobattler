@@ -1,4 +1,5 @@
 use crate::core_structs::prelude::*;
+use crate::core_structs::battle::battle_state::godot_interface::godot_events::GodotEvent;
 use fixedstr::str32;
 
 impl BattleState {
@@ -72,19 +73,38 @@ impl BattleState {
             }
             RawDamageEvent(data) => {
                 let target = self.live_units.get_mut(&data.target).unwrap();
-                if let Some(DeathEvent(id)) = target.take_damage(data) {
-                    new_dead.push(id);
+                let (damage, dead_opt) = target.take_damage(data);
+
+                if let Some(ref mut vec) = self.godot_event_buffer {
+                    vec.push(GodotEvent::DamageTaken(data.target, damage));
                 }
+
+                if let Some(DeathEvent(id)) = dead_opt {
+                    if let Some(ref mut vec) = self.godot_event_buffer {
+                        vec.push(GodotEvent::Death(id));
+                    }
+                    new_dead.push(id);
+                } 
+
             }
             HealEvent(data) => {
                 let target = self.live_units.get_mut(&data.target).unwrap();
-                target.heal(data)
+                let actually_healed = target.heal(data);
+
+                if let Some(ref mut vec) = self.godot_event_buffer {
+                    vec.push(GodotEvent::DamageHealed(data.target, actually_healed))
+                }
             }
             ShieldEvent(data) => {
                 let target = self.live_units.get_mut(&data.target).unwrap();
+                if let Some(ref mut vec) = self.godot_event_buffer {
+                    vec.push(GodotEvent::Shielded(data.target, data.amount))
+                }
                 target.shield(data)
             }
             DeathEvent(_) => {
+                // note that DeathEvent logging is done at the site that death is registered, and the logic is handled by returning a DeathEvent. As such they are never fed to the timeline.
+                // "the site that the death is registered" = unit.take_damage() calls which are triggered in the handling of AttackEvent and RawDamageEvent
                 unreachable!("DeathEvent can't be called to the timeline.")
             }
             _DebugEvent(payload) =>  {

@@ -14,6 +14,8 @@ pub(crate) struct AttackContext {
 }
 
 impl BattleState {
+    //Events not listed below are handled in the match bracket of operation::execute_event()
+
     pub(super) fn process_attack_event(&mut self, ctx: AttackContext) -> (Vec<(BattleEvent, u32)>, Vec<EntityID>) {
         let (mut _max_hp, mut _pre_hp, mut _rem_hp) = (Hitpoints(0), Hitpoints(0), Hitpoints(0));
         let mut _target_name = str32::new();
@@ -83,7 +85,10 @@ impl BattleState {
 
             _pre_hp = target.current_hp;    
 
-            if let Some(DeathEvent(id)) = target.take_damage(data) {
+            if let Some(DeathEvent(id)) = target.take_damage(data).1 {
+                if let Some(ref mut vec) = self.godot_event_buffer {
+                    vec.push(GodotEvent::Death(id));
+                }
                 new_dead.push(id);
             }
 
@@ -129,7 +134,7 @@ impl BattleState {
             source.mana = Mana(0)
         }
         // apply ability effect to each target
-        data.ability.cast(data.source, &self, tick)
+        data.ability.cast(data.source, self, tick)
     }
 
     pub(super) fn process_buff_event(&mut self, data: BuffData) {
@@ -146,6 +151,10 @@ impl BattleState {
     pub(super) fn process_move_event(&mut self, data: MoveData) -> Vec<(BattleEvent, u32)> {
         let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
         target_unit.current_movement = Some(data);
+
+        if let Some(ref mut vec) = self.godot_event_buffer {
+            vec.push(GodotEvent::Move(data.target, data.end_pos, data.end_tick));
+        }
 
         #[cfg(test)]
         println!("tick {}:  \t{} {} is moving to {} over {} ticks ", data.start_tick, target_unit.template.get_name(), target_unit.position, data.end_pos, data.end_tick-data.start_tick);

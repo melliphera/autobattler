@@ -2,6 +2,7 @@
 
 use crate::prelude::*;
 
+#[derive(Debug)]
 pub enum GodotEvent { // comment format: uses; required info
     Attack(GodotAttackData),           // DONE animation + hitsplat + health adjustment; attacker, target, post-mitigation damage.
     AbilityCast(GodotAbilityData),     // DONE just used for animations.
@@ -18,6 +19,7 @@ pub enum GodotEvent { // comment format: uses; required info
     // by putting ability receiver animations in, BuffEvent can be skipped entirely
 }
 
+#[derive(Debug)]
 pub struct GodotAttackData {
     // for animation + hitsplats
     pub source: EntityID,
@@ -25,6 +27,7 @@ pub struct GodotAttackData {
     pub target_damage: Hitpoints
 }
 
+#[derive(Debug)]
 pub struct GodotAbilityData {
     // purely for animation. Internal AbilityEvent spawns other events which are replicated here 
     pub source: EntityID,

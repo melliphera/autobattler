@@ -36,7 +36,6 @@ pub fn profile_threaded(seconds: u64, threads: usize) {
     let start = Instant::now();
 
     let mut cumulative_result = ChunkResult::new();
-    let mut sims_run = 0;
 
     for i in 0..threads {
         let t = tx.clone();

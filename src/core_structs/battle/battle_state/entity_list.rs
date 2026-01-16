@@ -1,5 +1,6 @@
 use crate::core_structs::prelude::*;
 
+#[derive(Debug)]
 pub struct EntityList<const N: usize> {
     entities: [Option<BattleUnit>; N], 
     spawns_in_slot: [u16; N],           

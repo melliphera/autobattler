@@ -14,6 +14,7 @@ use blocked_arena::BlockedArena;
 
 use crate::core_structs::battle::battle_state::{godot_interface::godot_events::GodotEvent, timeline::EventTimeline};
 
+#[derive(Debug)]
 pub struct BattleState {
     pub live_units: EntityList<25>, // all living units. dead units can be seperately handled in Godot. <N> represents max number concurrently alive.
     pub rng: StdRng, 

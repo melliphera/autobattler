@@ -13,7 +13,8 @@ impl BattleState {
         while let Some(container) = self.timeline.pop() { // while there are things in the timeline
             let (tick, event) = (container.tick, container.event);
             if tick > max_tick { // max fight length.
-                //println!("Fight timed out!");
+                println!("Fight timed out!");
+                print!("{:?}", self);
                 return (self.events_called, None);
             }
             #[cfg(test)]

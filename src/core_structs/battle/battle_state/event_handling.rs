@@ -29,7 +29,7 @@ impl BattleState {
         };
 
         let mut _successful_hit: bool = false; 
-        let source_id = event.get_source_id().unwrap(); // safe because it is Attack
+        let source_id = data.source; 
 
         // grabbing some cheaply Copy data from source
         let source_cc: CritChance;
@@ -45,7 +45,7 @@ impl BattleState {
         }
 
         {   
-            // handle target stuff - use different code block for source if necessary later.
+            // if attack is stale (dead target), find new target and queue a new attack to that target.
             if self.live_units.get(&data.target).is_none() {
                 //println!("Target dead, requeueing new attack on this tick.");
                 let opp_positions = self.get_opponent_positions(source_id, ctx.tick);
@@ -177,6 +177,7 @@ impl BattleState {
 
             // update unit position variables
             target_unit.current_movement = None;
+            target_unit.last_position = target_unit.position;
             target_unit.position = data.end_pos;
             
             #[cfg(test)]
@@ -194,6 +195,8 @@ impl BattleState {
                     move_again = true
                 }
             } 
+        } else {
+
         }
 
         // slipping in some debugging stuff here.

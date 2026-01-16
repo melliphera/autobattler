@@ -21,9 +21,9 @@ pub mod tests_local {
     #[test]
     fn it_works() {
         let human_team = [
-            (0, (5, 3)), // knight
-            (1, (1, 3)), // ranger
-            (2, (1, 2))  // mage
+            (0, (4, 2)), // knight
+            (1, (0, 3)), // ranger
+            (2, (0, 1))  // mage
         ];
 
         let npc_team = [

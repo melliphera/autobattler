@@ -30,3 +30,11 @@ pub struct GodotAbilityData {
     pub source: EntityID,
     pub targets: Vec<EntityID>
 }
+
+#[test] 
+fn test_godot_event_size() {
+    use std::mem::size_of;
+    let p = size_of::<GodotEvent>();
+    println!("Size of GodotEvent: {}", p);
+    assert!(p <= 64);
+}

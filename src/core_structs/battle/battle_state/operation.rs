@@ -31,10 +31,45 @@ impl BattleState {
     pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32) -> Vec<(BattleEvent, u32)> {
         //! execute the current event. This is gonna get bulky.
 
-        // debug assertion that events are correctly executing in chronological order
-        #[cfg(test)]
-        assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
+        #[cfg(test)] {
+            // debug assertion that events are correctly executing in chronological order
+            assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
 
+            // debug assertion that when there are no 0-tick events queued, each unit has exactly one AttackEvent, AbilityCastEvent or MoveEndEvent queued.
+            // also sanity checks that the event is in a reasonable timeframe.
+            if tick > self.last_processed_tick {
+                let has_player = self.live_units.iter().any(|u| u.team == Team::Player);
+                let has_opponent = self.live_units.iter().any(|u| u.team == Team::Opponent);
+                if !(has_player && has_opponent) {
+                    println!("One team is dead, skipping event queue sanity check.");
+                } else {
+                    println!("Checking event queue sanity at tick {}.", tick);
+
+                    for unit in self.live_units.iter() {
+                        if unit.id == event.get_source_id().expect("this shouldnt fail.") {
+                            continue; // skip the unit that just acted.
+                        }
+                        let source_id = unit.id;
+                        let mut event_count = 0;
+                        for container in self.timeline.iter() {
+                            let ev = &container.event;
+                            if let Some(ev_source) = ev.get_source_for_pruning() {
+                                if ev_source == source_id {
+                                    match ev {
+                                        AttackEvent(_) | AbilityCastEvent(_) | MoveEndEvent(_) => {
+                                            event_count += 1;
+                                            assert!(container.tick <= tick+300, "Unit {}'s next key event isn't for another {} ticks!'!", source_id.0, container.tick-tick);
+                                        }
+                                        _ => { println!("Event {:?} from unit {} is not a key event, ignoring.", ev, source_id.0)}
+                                    }
+                                }
+                            }
+                        }
+                        assert!(event_count == 1, "Unit {} has {} queued events when they should have exactly one!\n\nUnit data:\n{:#?}", source_id.0, event_count, self.live_units.get(&source_id).unwrap());
+                    }
+                }
+            }
+        }
 
         // acknowledge current tick as "last processed tick" so spawning events on the same tick is more efficient.
         self.last_processed_tick = tick;
@@ -50,8 +85,8 @@ impl BattleState {
                 let attack_ctx = AttackContext { event, tick };
                 (new_events, new_dead) = self.process_attack_event(attack_ctx); // overwrite safe because original vecs are definitely empty.
                 
-                //if the unit is moving instead of attacking, dont process a new attack.
-                if let Some((MoveEvent(_data), _tick)) = new_events.iter().next() {
+                //if the unit is moving, or the processed attack was stale, 
+                if let Some(_container) = new_events.iter().next() {
                     return new_events
                 }
 
@@ -114,7 +149,6 @@ impl BattleState {
         };
 
         // clear out any dead, remove their events from the timeline, and unblock the tiles they are blocking.
-
         for id in new_dead.iter() {
             let unit = self.live_units.get(id).unwrap(); // this thing is about to die, it shouldnt be dead already.
 
@@ -127,7 +161,9 @@ impl BattleState {
             //println!("Unit {}: {} has died!", id.0, self.get_name(*id));
             // remove the unit and its events from the BattleState structure
             self.live_units.remove(id);
-            self.timeline.retain(|container| container.event.get_source_id() != Some(*id) && container.event.get_target_id() != Some(*id));
+            self.timeline.retain(|container| 
+                container.event.get_source_for_pruning() != Some(*id) && 
+                container.event.get_target_for_pruning() != Some(*id));
         };
         
         // -- all below queue the attacker's next event --
@@ -139,7 +175,7 @@ impl BattleState {
 
         // if source is dead, don't queue them another event.
         // THIS IS SCUFFED - IF MORE NEW EVENTS COME DOWN HERE, CHECK THEY RETURN Some ON get_source_id()!!
-        let source_id_opt = event.get_source_id();
+        let source_id_opt = event.get_source_for_pruning();
         if let None = source_id_opt { 
             return new_events
         };
@@ -156,7 +192,7 @@ impl BattleState {
             source.find_target(&opp_positions);
         }
 
-        // 1.5 - if no target can be found, don't queue another event
+        // 1.5 - if no target can be found, don't queue another event - the enemy team is dead and the fight is won.
         if source.target == None {
             return new_events;
         }

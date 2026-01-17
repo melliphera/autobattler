@@ -1,6 +1,7 @@
 use crate::core_structs::prelude::*;
 use crate::core_structs::battle::battle_state::godot_interface::godot_events::GodotEvent;
 use fixedstr::str32;
+use smallvec::SmallVec;
 
 impl BattleState {
     pub(super) fn queue_event(&mut self, event: BattleEvent, tick: u32) {
@@ -29,7 +30,7 @@ impl BattleState {
         (self.events_called, Some(self.live_units.iter().next().map_or(Team::Player, |unit| unit.team)))    // Events should only run dry when one team is fully dead. If both teams are, player biased.
     }
 
-    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32) -> Vec<(BattleEvent, u32)> {
+    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32) -> SmallVec<[(BattleEvent, u32); 1]> {
         //! execute the current event. This is gonna get bulky.
 
         #[cfg(test)] {
@@ -47,7 +48,7 @@ impl BattleState {
                     println!("Checking event queue sanity at tick {}.", tick);
 
                     for unit in self.live_units.iter() {
-                        if unit.id == event.get_source_id().expect("this shouldnt fail.") {
+                        if unit.id == event._get_source_id().expect("this shouldnt fail.") {
                             continue; // skip the unit that just acted.
                         }
                         let source_id = unit.id;
@@ -78,8 +79,8 @@ impl BattleState {
         // below allocations are for combat logging. Pre-unders are to circumvent inaccurate linting.
         let mut _target_name = str32::new();
 
-        let mut new_dead: Vec<EntityID> = Vec::new(); // entities that have died from this Event
-        let mut new_events: Vec<(BattleEvent, u32)> = Vec::new();
+        let mut new_dead: SmallVec<[EntityID; 1]> = SmallVec::new(); // entities that have died from this Event. 95+% of the time this is 0 or 1 long.
+        let mut new_events: SmallVec<[(BattleEvent, u32); 1]> = SmallVec::new();
 
         match event {
             AttackEvent(_data) => {
@@ -104,7 +105,9 @@ impl BattleState {
             MoveEndEvent(data) => {
                 // if move_end processing returns an event, its another MoveEvent. therefore do not attack so return immediately.
                 if let Some(move_event) = self.process_move_end_event(data, tick) {
-                    return vec![(move_event, tick)];
+                    let mut v = SmallVec::new();
+                    v.push((move_event, tick));
+                    return v;
                 }
             }
             RawDamageEvent(data) => {
@@ -168,10 +171,9 @@ impl BattleState {
         };
         
         // -- all below queue the attacker's next event --
-        // therefore only relevant for AbilityCast, Attack or MoveEnd events
-        match event {
-            AbilityCastEvent(_) | AttackEvent(_) | MoveEndEvent(_) => {}
-            _ => { return new_events }
+        // therefore only relevant for Key Events (AbilityCast, Attack or MoveEnd events), see BattleEvent::is_key_event() for more info.
+        if !event.is_key_event() { 
+            return new_events 
         }
 
         // if source is dead, don't queue them another event.
@@ -219,8 +221,8 @@ impl BattleState {
     }
 
     #[cfg(test)] #[allow(private_interfaces)]
-    pub fn step_event(&mut self) -> Vec<(BattleEvent, u32)> {
-        //! pops a single event in the timeline and returns the event it spawns.
+    pub fn step_event(&mut self) -> SmallVec<[(BattleEvent, u32); 1]> {
+        //! pops a single event in the timeline and returns the events it spawns.
         if let Some(container) = self.timeline.pop() {
             let (tick, event) = (container.tick, container.event);
 

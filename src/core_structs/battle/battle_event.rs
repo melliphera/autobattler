@@ -83,10 +83,23 @@ pub mod data_types {
 }
 
 
-
-
 impl BattleEvent {
-    pub(crate) fn get_source_id(self) -> Option<EntityID> {
+    pub(crate) fn is_key_event(&self) -> bool {
+        //! key events are defined as those in a unit's event stream. 
+        //! while the unit lives and battle continues, each key event processed spawns exactly one new key event for that unit.
+        //! non-key events are side-effects of key events and do not spawn new key events.
+        //! The exception to this is MoveEvent. This is a non-key event but exists as part of the key event chain.
+        //! i.e AttackEvent or AbilityCastEvent can spawn a MoveEvent, which spawns a MoveEndEvent, restoring the key event chain.
+        //! MoveEvent is considered non-key because it is spawned and executed on-tick - at the end of a tick a unit will never have a MoveEvent queued for it.
+        match self {
+            AttackEvent(_)       => true,
+            AbilityCastEvent(_)  => true,
+            MoveEndEvent(_)      => true,
+            _ => false
+        }
+    }
+
+    pub(crate) fn _get_source_id(self) -> Option<EntityID> {
         // used for logging only
         match self {
             AttackEvent(data)       => {Some(data.source)}

@@ -1,4 +1,5 @@
 use fixedstr::str32;
+use smallvec::SmallVec;
 
 use crate::core_structs::{battle::battle_state::godot_interface::godot_events::{GodotAbilityData, GodotEvent}, prelude::*};
 use super::targeting::TargetParadigm;
@@ -32,7 +33,7 @@ impl Ability {
         Mana(self.mana_cost)
     }
 
-    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32) -> Vec<(BattleEvent, u32)> {
+    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32) -> SmallVec<[(BattleEvent, u32); 1]> {
         let targets = self.get_targets(caster, b, tick);
 
         if let Some(ref mut vec) = b.godot_event_buffer {

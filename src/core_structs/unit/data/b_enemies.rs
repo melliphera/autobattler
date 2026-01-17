@@ -12,10 +12,10 @@ pub(crate) static ENEMY_DATABASE: &[UnitTemplate] = &[
         magic_resist: Mitigation(0),
         attack: AttackDamage(10),
         attack_type: Physical,
-        attack_delay: AttackTickDelay(250),
+        attack_delay: AttackTickDelay(90),  // 1.5s attack interval (slow but tanky)
         attack_range: AttackRange(1),
         crit_chance: CritChance::from_percentage(10.0),
-        move_speed: SecondsPerTile(1.5)
+        move_speed: SecondsPerTile(0.6)     // 0.6s per tile (slightly slow)
     },
     UnitTemplate {
         _id: 1,
@@ -24,11 +24,11 @@ pub(crate) static ENEMY_DATABASE: &[UnitTemplate] = &[
         defence: Mitigation(0),
         magic_resist: Mitigation(0),
         attack: AttackDamage(6),
-        attack_type:  Physical,
-        attack_delay: AttackTickDelay(150),
+        attack_type: Physical,
+        attack_delay: AttackTickDelay(40),  // 0.67s attack interval (fast attacker)
         attack_range: AttackRange(1),
         crit_chance: CritChance::from_percentage(10.0),
-        move_speed: SecondsPerTile(1.5)
+        move_speed: SecondsPerTile(0.4)     // 0.4s per tile (quick)
     },
     
 ];

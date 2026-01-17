@@ -37,11 +37,11 @@ impl BattleState {
         let source_range: SquaredLogicalRange;
         let _source_name: str32;
         {
-            let source_unit = self.live_units.get(&source_id).unwrap(); // safe because source is definitely still alive.
+            let source_unit = self.live_units.get_mut(&source_id).unwrap(); // safe because source is definitely still alive.
             source_cc = source_unit.crit_chance;
             source_pos = source_unit.get_position(ctx.tick);
             source_range = source_unit.range_squared;
-            _source_name = source_unit.template.get_name()
+            _source_name = source_unit.template.get_name();
         }
 
         {   
@@ -131,7 +131,7 @@ impl BattleState {
         }
         { // set mana to 0
             let source = self.live_units.get_mut(&data.source).unwrap();
-            source.mana = Mana(0)
+            source.mana = Mana(0);
         }
         // apply ability effect to each target
         data.ability.cast(data.source, self, tick)
@@ -170,10 +170,12 @@ impl BattleState {
     pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: u32) -> Option<BattleEvent> {
         let mut move_again = false; // if new move event should be instantly triggered
         {   
-            let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
+            let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
 
             // free the location they departed from
-            self.blocked.set_coord(&target_unit.position, false);
+            if target_unit.position != data.end_pos {
+                self.blocked.set_coord(&target_unit.position, false);
+            }
 
             // update unit position variables
             target_unit.current_movement = None;

@@ -11,7 +11,7 @@ pub use core_structs::prelude;
 #[cfg(test)]
 pub mod tests;
 
-pub const MAX_FIGHT_LENGTH: u32 = 30000;
+pub const MAX_FIGHT_LENGTH: u32 = 18000; // 5 minutes at 60 TPS
 
 #[cfg(test)]
 pub mod tests_local {

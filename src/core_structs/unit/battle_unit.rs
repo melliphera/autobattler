@@ -44,7 +44,7 @@ pub struct BattleUnit {
     pub shield: Shield,
     pub incoming_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs. - u8 = stacks.
     pub outgoing_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
-    pub temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>  // includes both buffs and debuffs.
+    pub temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
 }
 
 impl BattleUnit {

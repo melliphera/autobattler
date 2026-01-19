@@ -5,6 +5,7 @@ use fixedstr::str32;
 use smallvec::SmallVec;
 
 use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
+use crate::core_structs::battle::battle_state::team_position_caches::LocationTag;
 use crate::core_structs::prelude::*;
 
 #[derive(Clone, Debug)] // Clone is cheap because all non-collection primitives are Copy
@@ -48,22 +49,22 @@ pub struct BattleUnit {
 }
 
 impl BattleUnit {
-    pub(crate) fn find_target(&mut self, enemy_positions: &SmallVec<[(EntityID, BattleSubtile); POSITIONS_SMALLVEC_SIZE]>) -> Option<EntityID> {
+    pub(crate) fn find_target(&mut self, enemy_positions: &SmallVec<[LocationTag; MAX_TEAM_SIZE]>) -> Option<EntityID> {
         // simple nearest-targeting logic for now.
         let mut closest_target: Option<EntityID> = None;
         let mut closest_distance: Option<SquaredLogicalRange> = None;
 
-        for (id, pos) in enemy_positions.iter() {
-            let dist = self.position.to_logical().distance_squared_to(pos);
+        for tag in enemy_positions.iter() {
+            let dist = self.position.to_logical().distance_squared_to(&tag.location);
             match closest_distance {
                 None => {
                     closest_distance = Some(dist);
-                    closest_target = Some(*id);
+                    closest_target = Some(tag.id);
                 }
                 Some(current_closest) => {
                     if dist.0 < current_closest.0 {
                         closest_distance = Some(dist);
-                        closest_target = Some(*id);
+                        closest_target = Some(tag.id);
                     }
                 }
             }
@@ -138,9 +139,11 @@ impl BattleUnit {
         self.shield = Shield(Some(incoming.amount))
     }
 
-    pub(crate) fn get_position(&self, tick: u32) -> BattleSubtile {
+    pub(crate) fn get_position(&self, tick: u32) -> (BattleSubtile, bool) {
+        //! BattleSubtile is position, bool is whether it is actively moving or not (for cacheing reasons).
+
         if self.current_movement.is_none() {
-            self.position.to_logical()
+            (self.position.to_logical(), false)
         } else {
             #[cfg(test)] {
                 println!("Getting position of moving unit with MoveData:- current tick: {}\n{:?} ", tick, self.current_movement.unwrap())
@@ -152,21 +155,12 @@ impl BattleUnit {
                 move_order.start_pos.x as f32 + progress*(move_order.end_pos.x - move_order.start_pos.x) as f32,
                 move_order.start_pos.y as f32 + progress*(move_order.end_pos.y - move_order.start_pos.y) as f32,
             );
-            BattleSubtile{ x: x_f as i32, y: y_f as i32 }
+            (BattleSubtile{ x: x_f as i32, y: y_f as i32 }, true)
         }
     }
 
-    pub(crate) fn path(&self, b: &BattleState, current_tick: u32) -> MoveData {
-        // pathfinding logic for moving towards target. Returns MoveData object which can be processed as a MoveEvent
-        let target = b.live_units.get(&self.target.expect("Unit tried to path without target!")).unwrap_or_else(|| {
-            // this else clause happens roughly once every million fights. It can be slow and/or messy.
-            // clones self to find target because of double mutable. Moves towards the temporary target but keeps the original.
-            // messy as stated, but robust retargeting should happen when the event resolves.
-            let t = &self.clone().find_target(&b.get_opponent_positions(self.id, current_tick)).expect("failed to find new target in 1/1m clause.");
-            b.live_units.get(t).expect("retargeted into dead unit. this should be impossible.")
-        });
-
-        let mut blocked = b.blocked;
+    pub(crate) fn path(&self, blocked: &BlockedArena, target_pos: BattleSubtile, current_tick: u32) -> MoveData {
+        let mut blocked = *blocked; // create editable local copy
 
         let tile_coords = self.last_position;
         blocked.set_coord(&tile_coords, true);
@@ -195,7 +189,7 @@ impl BattleUnit {
         }
         
 
-        let next = self.position.best_next_tile(&target.get_position(current_tick), self.range_squared, &blocked);
+        let next = self.position.best_next_tile(&target_pos, self.range_squared, &blocked);
 
         // if next is self, forcibly add 10 tick delay to not spam moveevents, and cache current blockedtiles.
         let travel_ticks = if next == self.position { 

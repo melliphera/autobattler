@@ -7,12 +7,18 @@ pub mod entity_list;
 pub mod timeline;
 pub mod blocked_arena;
 pub mod godot_interface;
+pub mod team_position_caches;
 
 use entity_list::EntityList;
-use blocked_arena::BlockedArena;
 use rand_chacha::ChaCha8Rng;
 
-use crate::{core_structs::battle::battle_state::{godot_interface::godot_events::GodotEvent, timeline::EventTimeline}, prelude::EntityID};
+use crate::prelude::*;
+use timeline::EventTimeline;
+use blocked_arena::BlockedArena;
+use godot_interface::godot_events::GodotEvent;
+use team_position_caches::TeamPositionCache;
+
+use std::cell::RefCell;
 
 #[derive(Debug)]
 pub struct BattleState {
@@ -24,7 +30,10 @@ pub struct BattleState {
     pub godot_event_buffer: Option<Vec<GodotEvent>>, // if Some, all processed events get converted to GodotEvent and stored.
     pub unit_manifest: Option<Vec<(EntityID, fixedstr::str32)>>,
 
-    pub events_called: i32
+    pub ally_pos_cache: RefCell<TeamPositionCache>, // Caches for all unit locations on team.
+    pub opp_pos_cache:  RefCell<TeamPositionCache>, 
 
+    pub events_called: i32
 }
+
 

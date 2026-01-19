@@ -1,7 +1,7 @@
 //! helper tools included to ensure game design is balanced.p
 pub mod profiling;
 
-use crate::core_structs::prelude::*;
+use crate::core_structs::{prelude::*, unit::spatial_functions::TICKS_PER_SECOND};
 
 fn _calc_dps(unit: &BattleUnit) -> f32 {
     // very incorrect for units that have self-buffs/passives for now.
@@ -23,7 +23,7 @@ fn _calc_dps(unit: &BattleUnit) -> f32 {
                 _ => {}
             }
         };
-        (attack_damage_per_cycle + ability_damage) * 20.0 / ticks_per_cast_cycle
+        (attack_damage_per_cycle + ability_damage) * TICKS_PER_SECOND as f32 / ticks_per_cast_cycle
     } else {
         damage_per_auto * 20.0 / unit.attack_delay.0 as f32
     }

@@ -1,3 +1,5 @@
+//! Contains information for BlockedArena and LocationTag
+
 use crate::prelude::{BattleSubtile, GridPosition};
 
 use std::fmt::Display;

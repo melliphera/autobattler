@@ -4,9 +4,8 @@
 //! Likewise some event types are so simple to handle that they're directly handled in execute_event.
 //! These types are currently RawDamageEvent, HealEvent and ShieldEvent.
 use fixedstr::str32;
-use smallvec::SmallVec;
 
-use crate::core_structs::{battle::battle_state::godot_interface::godot_events::{GodotAttackData, GodotEvent}, prelude::*};
+use crate::core_structs::{battle::battle_state::{godot_interface::godot_events::{GodotAttackData, GodotEvent}, operation::EventReturnBuffer}, prelude::*};
 
 
 pub(crate) struct AttackContext {
@@ -16,12 +15,10 @@ pub(crate) struct AttackContext {
 
 impl BattleState {
     //Events not listed below are handled in the match bracket of operation::execute_event()
-
-    pub(super) fn process_attack_event(&mut self, ctx: AttackContext) -> (SmallVec<[(BattleEvent, u32); 1]>, SmallVec<[EntityID; 1]>) {
+    //! All event outputs here are via mutation of buffer, the last argument.
+    pub(super) fn process_attack_event(&mut self, ctx: AttackContext,  buffer: &mut EventReturnBuffer) {
         let (mut _max_hp, mut _pre_hp, mut _rem_hp) = (Hitpoints(0), Hitpoints(0), Hitpoints(0));
         let mut _target_name = str32::new();
-        let mut new_dead = SmallVec::new();
-        let mut new_events = SmallVec::new();
         let event = ctx.event;
         let mut data = match event {
             AttackEvent(d) => d,
@@ -39,7 +36,7 @@ impl BattleState {
         {
             let source_unit = self.live_units.get_mut(&source_id).unwrap(); // safe because source is definitely still alive.
             source_cc = source_unit.crit_chance;
-            source_pos = source_unit.get_position(ctx.tick);
+            source_pos = source_unit.get_position(ctx.tick).0;
             source_range = source_unit.range_squared;
             _source_name = source_unit.template.get_name();
         }
@@ -51,17 +48,18 @@ impl BattleState {
                 let opp_positions = self.get_opponent_positions(source_id, ctx.tick);
                 let source = self.live_units.get_mut(&source_id).unwrap();
                 if let Some(target) = source.find_target(&opp_positions) { // same attack but to other target
-                    new_events.push((AttackEvent(AttackData{target, ..data}), ctx.tick))
+                    buffer.0.push((AttackEvent(AttackData{target, ..data}), ctx.tick))
                 } else {
                     //println!("No more targets found!");
                 }
-                return (new_events, new_dead); // need to be careful here. 
+                return; // need to be careful here. 
             }
 
             let target = self.live_units.get_mut(&data.target).unwrap(); // safe unwrap bc of is_none() arm above.
 
             // check target is in range. If not, queue MoveEvent on tick.
-            let target_distance = source_pos.distance_squared_to(&target.get_position(ctx.tick));
+            let t_pos= target.get_position(ctx.tick).0;
+            let target_distance = source_pos.distance_squared_to(&t_pos);
             if target_distance > source_range {
 
                 // add MoveEvent. 
@@ -72,9 +70,9 @@ impl BattleState {
                     use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
                     println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
                 }
-                let m = MoveEvent(source.path(&self, ctx.tick));
-                new_events.push((m, ctx.tick));
-                return (new_events, SmallVec::new())
+                let m = MoveEvent(source.path(&self.blocked, t_pos, ctx.tick));
+                buffer.0.push((m, ctx.tick));
+                return
             }
             
 
@@ -90,7 +88,7 @@ impl BattleState {
                 if let Some(ref mut vec) = self.godot_event_buffer {
                     vec.push(GodotEvent::Death(id));
                 }
-                new_dead.push(id);
+                buffer.1.push(id);
             }
 
             _target_name = target.template.get_name();
@@ -112,17 +110,14 @@ impl BattleState {
                         target_damage: _pre_hp-_rem_hp
                     }))
                 }
-
-
                 //print!("tick {}: \t{} {}struck {} for {} damage!\t", ctx.tick.0, source_name, if did_crit {"critically "} else {""}, _target_name, _pre_hp.0 - _rem_hp.0);
                 //print!("Mana {}/{}\t", source.mana.0, source.max_mana.0);
                 //println!("Enemy HP {}/{}", _rem_hp.0, _max_hp.0);
             } 
         }
-        (new_events, new_dead)
     }
 
-    pub(super) fn process_ability_cast(&mut self, data: AbilityData, tick: u32) -> SmallVec<[(BattleEvent, u32); 1]> {
+    pub(super) fn process_ability_cast(&mut self, data: AbilityData, tick: u32, buffer: &mut EventReturnBuffer) {
         // check if ability is targeted to current attack target. - if it is, ensure current target is valid.
         let source = self.live_units.get(&data.source).unwrap();
         if data.ability.target_paradigm == TargetParadigm::CurrentTarget && source.target.is_none() {
@@ -135,7 +130,7 @@ impl BattleState {
             source.mana = Mana(0);
         }
         // apply ability effect to each target
-        data.ability.cast(data.source, self, tick)
+        data.ability.cast(data.source, self, tick, buffer);
     }
 
     pub(super) fn process_buff_event(&mut self, data: BuffData) {
@@ -149,9 +144,16 @@ impl BattleState {
                         .or_insert(BuffContainer::new_from(data.buff)); // or create one with value 1.
     }
 
-    pub(super) fn process_move_event(&mut self, data: MoveData) -> SmallVec<[(BattleEvent, u32); 1]> {
+    pub(super) fn process_move_event(&mut self, data: MoveData, buffer: &mut EventReturnBuffer) {
+        // REMINDER THAT THE TARGET OF MOVEEVENTS IS THE UNIT MOVING.
         let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
         target_unit.current_movement = Some(data);
+
+        // dirty the positions cache for the mover's team
+        match target_unit.team {
+            Team::Player   => {self.ally_pos_cache.borrow_mut().acknowledge_movement(data.start_tick);}
+            Team::Opponent => {self.opp_pos_cache .borrow_mut().acknowledge_movement(data.start_tick);}
+        }
 
         if let Some(ref mut vec) = self.godot_event_buffer {
             vec.push(GodotEvent::Move(data.target, data.end_pos, data.end_tick));
@@ -162,16 +164,13 @@ impl BattleState {
 
         self.blocked.set_coord(&data.end_pos, true);
         // queue movement end event
-        let mut v = SmallVec::new();
-        v.push((MoveEndEvent(MoveEndData {
+        buffer.0.push((MoveEndEvent(MoveEndData {
             target: data.target,
             end_pos: data.end_pos
         }), data.end_tick));
-        v
     }
 
     pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: u32) -> Option<BattleEvent> {
-        let mut move_again = false; // if new move event should be instantly triggered
         {   
             let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
 
@@ -193,27 +192,18 @@ impl BattleState {
         // double grab so needs immutable 
         // check if in range to requeue move event if necessary.
         let attacker = self.live_units.get(&data.target).unwrap();
+        
         if let Some(unit) = attacker.target {
             if let Some(eid) = &self.live_units.get(&unit) {
-                let target_distance = attacker.position.to_logical().distance_squared_to(&eid.get_position(tick));
+                let target_pos = eid.get_position(tick).0;
+                let target_distance = attacker.position.to_logical().distance_squared_to(&target_pos);
                 if target_distance > attacker.range_squared {
-                    move_again = true
+                    return Some(MoveEvent(attacker.path(&self.blocked, target_pos, tick)))
                 }
             } 
-        } else {
-
         }
 
-        // slipping in some debugging stuff here.
-        #[cfg(test)] 
-        {
-            println!("{}", self.blocked)
-        }
-        // end debugging
-
-        if move_again {
-            Some(MoveEvent(attacker.path(&self, tick)))
-        } else {None}
+        None
     }
 
     pub(super) fn process_debug_event(&mut self, data: DebugData) {

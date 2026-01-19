@@ -59,12 +59,12 @@ pub fn profile_threaded(seconds: u64, threads: usize) {
 
     let mut cumulative_result = ChunkResult::new();
 
-    for i in 0..threads {
+    for _i in 0..threads {
         let t = tx.clone();
         let timer_local = start.clone();
         thread::spawn(move || {
             #[cfg(test)]
-            println!("Thread{} started at {}μs", i, timer_local.elapsed().as_micros());
+            println!("Thread{} started at {}μs", _i, timer_local.elapsed().as_micros());
 
             let mut last_crossed_second = 0;
             let mut second_result = ChunkResult::new();
@@ -80,7 +80,7 @@ pub fn profile_threaded(seconds: u64, threads: usize) {
             }
 
             #[cfg(test)]
-            println!("Thread {} has finished working.", i)
+            println!("Thread {} has finished working.", _i)
         });
     }
 
@@ -130,7 +130,7 @@ fn profile_chunk(num_tests: usize, with_listener: bool) -> ChunkResult {
     //! PASSES BACK ([ALLY WINS, ENEMY WINS, TIMEOUTS], EVENTS HANDLED)
     let mut out = ChunkResult::with_tests(num_tests);
 
-    for i in 0..num_tests {
+    for _i in 0..num_tests {
         let result = if with_listener {
             random_with_listener()
         } else { 

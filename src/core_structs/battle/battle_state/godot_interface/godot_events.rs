@@ -1,5 +1,4 @@
 // condensed form of BattleEvent suitable for streaming to Godot.
-
 use crate::prelude::*;
 
 #[derive(Debug)]
@@ -31,6 +30,7 @@ pub struct GodotAttackData {
 pub struct GodotAbilityData {
     // purely for animation. Internal AbilityEvent spawns other events which are replicated here 
     pub source: EntityID,
+    pub ability_name: fixedstr::str32,
     pub targets: Vec<EntityID>
 }
 
@@ -40,4 +40,18 @@ fn test_godot_event_size() {
     let p = size_of::<GodotEvent>();
     println!("Size of GodotEvent: {}", p);
     assert!(p <= 64);
+}
+
+impl std::fmt::Display for GodotEvent {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            GodotEvent::Attack(adata)               => write!(f, "{} attacked {} for {} damage.", adata.source, adata.target, adata.target_damage.0),             
+            GodotEvent::AbilityCast(adata)          => write!(f, "{} cast {}, affecting {:?}.", adata.source, adata.ability_name, adata.targets),
+            GodotEvent::DamageTaken(id, amount)     => write!(f, "{} took {} damage.", id, amount.0),
+            GodotEvent::DamageHealed(id, amount)    => write!(f, "{} healed for {} health.", id, amount.0),
+            GodotEvent::Shielded(id, amount)        => write!(f, "{} was shielded for {} health.", id, amount.0),
+            GodotEvent::Move(id, end_loc, end_tick) => write!(f, "{} started moving to {}, arriving on tick {}.", id, end_loc, end_tick),        
+            GodotEvent::Death(id)                   => write!(f, "{} died.", id)
+        }
+    }
 }

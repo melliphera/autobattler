@@ -1,16 +1,19 @@
-use fixedstr::str32;
-use smallvec::SmallVec;
+use std::cmp::Reverse;
 
-use crate::core_structs::{battle::battle_state::godot_interface::godot_events::{GodotAbilityData, GodotEvent}, prelude::*};
+use fixedstr::str32;
+use smallvec::{smallvec, SmallVec};
+
+use crate::core_structs::{battle::battle_state::{godot_interface::godot_events::{GodotAbilityData, GodotEvent}, operation::EventReturnBuffer}, prelude::*};
 use super::targeting::TargetParadigm;
+use AbilityPayload::*;
+use crate::core_structs::unit::buffs_debuffs::Buff;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
 pub enum AbilityPayload {
     Attack(Hitpoints, DamageType), _AddShield(Hitpoints), _Heal(Hitpoints, bool), BuffPayload(Buff), _Move(BattleSubtile, MoveSpeed)
 }
 
-use AbilityPayload::*;
-use crate::core_structs::unit::buffs_debuffs::Buff;
+
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq, Debug)]
 pub enum TargetTeam {
@@ -25,7 +28,7 @@ pub struct Ability {
     pub(crate) target: TargetTeam,                  // whether it targets ally or opponent (relative to itself) - also has Oneself for short-circuiting targeting. Do not use Oneself for AoE.
     pub(crate) target_paradigm: TargetParadigm,     // enum wrapper for targeting function that decides who is targeted within TargetTeam - could be lowest health, highest armour etc.
     pub(crate) cast_delay: Option<u32>              // ticks between effect starting and impacts applying. Option so that instant = cast_delay: None rather than 0 
-                                                    // feels more explict and has behavioural distinctions (1 event rather than 2).
+                                                    // (...cont) feels more explict and has behavioural distinctions (1 event rather than 2).
 }
 
 impl Ability {
@@ -33,24 +36,24 @@ impl Ability {
         Mana(self.mana_cost)
     }
 
-    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32) -> SmallVec<[(BattleEvent, u32); 1]> {
+    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32, buffer: &mut EventReturnBuffer) {
         let targets = self.get_targets(caster, b, tick);
 
         if let Some(ref mut vec) = b.godot_event_buffer {
             vec.push(GodotEvent::AbilityCast(GodotAbilityData {
                 source: caster,
+                ability_name: self.name,
                 targets: targets.clone()
             }))
         }
 
-        let temp = targets.iter().map(|target| {
-            self.create_events(caster, *target, tick)
-        }).flatten().collect();
+        for target in targets.iter() {
+            buffer.0.extend(self.create_events(caster, *target, tick))
+        };
         ////println!("Events added by ability cast {}\n{:#?}", self.name, temp);
-        temp
     }
 
-    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<EntityID> {
+    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> SmallVec<[EntityID;8]> {
         let ally_positions  = b.get_positions_by_team(Team::Player, tick);
         let enemy_positions = b.get_positions_by_team(Team::Opponent, tick);
 
@@ -64,7 +67,7 @@ impl Ability {
         };
 
         match self.target_paradigm {
-            TargetParadigm::Me => { return vec![caster]}
+            TargetParadigm::Me => { return smallvec![caster] }
             
             TargetParadigm::CurrentTarget => {
                 if let Some(t) = caster_unit.target {
@@ -75,15 +78,15 @@ impl Ability {
             }
 
             TargetParadigm::Nearest(n) => {
-                viable_targets.sort_by_key(|target| caster_unit.get_position(tick).distance_squared_to(&target.1));
+                viable_targets.sort_by_key(|target| caster_unit.get_position(tick).0.distance_squared_to(&target.location));
                 let num_targets = (n as usize).min(viable_targets.len());
-                viable_targets[0..num_targets].iter().map(|x| x.0).collect()
+                viable_targets[0..num_targets].iter().map(|x| x.id).collect()
             }
 
             TargetParadigm::Furthest(n) => {
-                viable_targets.sort_by_key(|target| -caster_unit.get_position(tick).distance_squared_to(&target.1).0);
+                viable_targets.sort_by_key(|target| Reverse(caster_unit.get_position(tick).0.distance_squared_to(&target.location)));
                 let num_targets = (n as usize).min(viable_targets.len());
-                viable_targets[0..num_targets].iter().map(|x| x.0).collect()
+                viable_targets[0..num_targets].iter().map(|x| x.id).collect()
             }
         }
     }

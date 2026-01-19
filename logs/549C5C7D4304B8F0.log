@@ -1,0 +1,1894 @@
+[
+	(EntityID(0, 1), Knight)
+	(EntityID(1, 1), Knight)
+	(EntityID(2, 1), Knight)
+	(EntityID(3, 1), Knight)
+	(EntityID(4, 1), Knight)
+	(EntityID(5, 1), Knight)
+	(EntityID(6, 1), Knight)
+]
+
+START OF EVENT TRANSCRIPT
+0-1 started moving to GRID(5, 1), arriving on tick 30.
+1-1 started moving to GRID(5, 4), arriving on tick 30.
+2-1 started moving to GRID(8, 4), arriving on tick 30.
+3-1 started moving to GRID(6, 4), arriving on tick 30.
+4-1 started moving to GRID(9, 1), arriving on tick 42.
+5-1 started moving to GRID(6, 0), arriving on tick 30.
+6-1 started moving to GRID(6, 3), arriving on tick 30.
+0-1 started moving to GRID(4, 2), arriving on tick 72.
+1-1 started moving to GRID(4, 3), arriving on tick 72.
+2-1 started moving to GRID(8, 4), arriving on tick 40.
+5-1 started moving to GRID(5, 0), arriving on tick 60.
+6-1 started moving to GRID(5, 3), arriving on tick 60.
+2-1 started moving to GRID(7, 3), arriving on tick 82.
+4-1 started moving to GRID(8, 1), arriving on tick 72.
+5-1 started moving to GRID(4, 0), arriving on tick 90.
+6-1 started moving to GRID(5, 2), arriving on tick 90.
+0-1 started moving to GRID(3, 1), arriving on tick 114.
+1-1 started moving to GRID(3, 4), arriving on tick 114.
+4-1 started moving to GRID(7, 1), arriving on tick 102.
+2-1 started moving to GRID(6, 2), arriving on tick 124.
+3-1 started moving to GRID(5, 4), arriving on tick 120.
+5-1 started moving to GRID(3, 0), arriving on tick 120.
+6-1 started moving to GRID(6, 1), arriving on tick 132.
+4-1 started moving to GRID(8, 0), arriving on tick 144.
+0-1 started moving to GRID(2, 1), arriving on tick 144.
+1-1 started moving to GRID(2, 3), arriving on tick 156.
+3-1 started moving to GRID(4, 3), arriving on tick 162.
+5-1 started moving to GRID(2, 0), arriving on tick 150.
+2-1 started moving to GRID(5, 3), arriving on tick 166.
+6-1 started moving to GRID(5, 1), arriving on tick 162.
+4-1 started moving to GRID(7, 0), arriving on tick 174.
+0-1 started moving to GRID(1, 0), arriving on tick 186.
+5-1 started moving to GRID(1, 1), arriving on tick 192.
+1-1 started moving to GRID(1, 2), arriving on tick 198.
+3-1 started moving to GRID(3, 2), arriving on tick 204.
+6-1 started moving to GRID(4, 1), arriving on tick 192.
+2-1 started moving to GRID(4, 2), arriving on tick 208.
+4-1 started moving to GRID(6, 0), arriving on tick 204.
+6-1 started moving to GRID(3, 1), arriving on tick 222.
+1-1 started moving to GRID(0, 1), arriving on tick 240.
+3-1 started moving to GRID(2, 1), arriving on tick 246.
+4-1 started moving to GRID(5, 0), arriving on tick 234.
+2-1 started moving to GRID(5, 1), arriving on tick 250.
+6-1 started moving to GRID(4, 0), arriving on tick 264.
+4-1 started moving to GRID(4, 1), arriving on tick 276.
+0-1 attacked 5-1 for 8 damage.
+3-1 started moving to GRID(1, 2), arriving on tick 288.
+2-1 started moving to GRID(5, 1), arriving on tick 260.
+5-1 attacked 0-1 for 18 damage.
+2-1 started moving to GRID(4, 2), arriving on tick 302.
+6-1 started moving to GRID(3, 0), arriving on tick 294.
+4-1 started moving to GRID(3, 1), arriving on tick 306.
+3-1 started moving to GRID(0, 2), arriving on tick 318.
+6-1 started moving to GRID(2, 0), arriving on tick 324.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(3, 2), arriving on tick 332.
+0-1 attacked 5-1 for 8 damage.
+4-1 started moving to GRID(2, 1), arriving on tick 336.
+5-1 attacked 0-1 for 8 damage.
+6-1 started moving to GRID(2, 0), arriving on tick 334.
+2-1 started moving to GRID(2, 2), arriving on tick 362.
+6-1 started moving to GRID(2, 0), arriving on tick 344.
+4-1 started moving to GRID(3, 0), arriving on tick 378.
+6-1 started moving to GRID(3, 1), arriving on tick 386.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(1, 2), arriving on tick 392.
+0-1 attacked 5-1 for 8 damage.
+5-1 attacked 0-1 for 8 damage.
+3-1 attacked 1-1 for 8 damage.
+4-1 started moving to GRID(3, 0), arriving on tick 388.
+6-1 started moving to GRID(2, 1), arriving on tick 416.
+4-1 started moving to GRID(2, 0), arriving on tick 418.
+2-1 started moving to GRID(0, 3), arriving on tick 434.
+6-1 started moving to GRID(2, 1), arriving on tick 426.
+1-1 attacked 3-1 for 8 damage.
+0-1 attacked 5-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 436.
+5-1 attacked 0-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 444.
+6-1 started moving to GRID(1, 2), arriving on tick 478.
+3-1 attacked 1-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 454.
+2-1 started moving to GRID(0, 3), arriving on tick 464.
+2-1 started moving to GRID(0, 3), arriving on tick 474.
+2-1 started moving to GRID(0, 3), arriving on tick 484.
+4-1 attacked 0-1 for 8 damage.
+6-1 started moving to GRID(1, 2), arriving on tick 488.
+1-1 attacked 3-1 for 18 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 494.
+0-1 attacked 5-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 530.
+5-1 attacked 0-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 504.
+3-1 attacked 1-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 514.
+2-1 started moving to GRID(0, 3), arriving on tick 524.
+2-1 started moving to GRID(0, 3), arriving on tick 534.
+6-1 started moving to GRID(2, 1), arriving on tick 540.
+2-1 started moving to GRID(1, 2), arriving on tick 576.
+4-1 attacked 0-1 for 8 damage.
+1-1 attacked 3-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 550.
+0-1 attacked 5-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 560.
+5-1 attacked 0-1 for 8 damage.
+3-1 attacked 1-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 570.
+6-1 started moving to GRID(2, 1), arriving on tick 580.
+2-1 started moving to GRID(1, 2), arriving on tick 586.
+6-1 started moving to GRID(2, 1), arriving on tick 590.
+2-1 started moving to GRID(0, 3), arriving on tick 628.
+6-1 started moving to GRID(2, 1), arriving on tick 600.
+4-1 attacked 0-1 for 8 damage.
+1-1 attacked 3-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 610.
+0-1 attacked 5-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 620.
+5-1 attacked 0-1 for 8 damage.
+3-1 attacked 1-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 630.
+2-1 started moving to GRID(0, 3), arriving on tick 638.
+6-1 started moving to GRID(1, 2), arriving on tick 672.
+2-1 started moving to GRID(0, 3), arriving on tick 648.
+2-1 started moving to GRID(0, 3), arriving on tick 658.
+4-1 attacked 0-1 for 18 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 668.
+1-1 attacked 3-1 for 8 damage.
+0-1 attacked 5-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 678.
+5-1 attacked 0-1 for 8 damage.
+6-1 started moving to GRID(1, 2), arriving on tick 682.
+3-1 attacked 1-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 688.
+6-1 started moving to GRID(2, 1), arriving on tick 724.
+2-1 started moving to GRID(0, 3), arriving on tick 698.
+2-1 started moving to GRID(0, 3), arriving on tick 708.
+2-1 started moving to GRID(0, 3), arriving on tick 718.
+4-1 attacked 0-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 728.
+1-1 attacked 3-1 for 18 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 734.
+0-1 attacked 5-1 for 8 damage.
+2-1 started moving to GRID(1, 2), arriving on tick 770.
+5-1 attacked 0-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 744.
+3-1 attacked 1-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 754.
+6-1 started moving to GRID(2, 1), arriving on tick 764.
+6-1 started moving to GRID(2, 1), arriving on tick 774.
+2-1 started moving to GRID(1, 2), arriving on tick 780.
+6-1 started moving to GRID(2, 1), arriving on tick 784.
+4-1 attacked 0-1 for 8 damage.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 822.
+6-1 started moving to GRID(2, 1), arriving on tick 794.
+0-1 cast Bulwark, affecting [EntityID(0, 1)].
+5-1 attacked 0-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 804.
+3-1 attacked 1-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 814.
+6-1 started moving to GRID(2, 1), arriving on tick 824.
+2-1 started moving to GRID(0, 3), arriving on tick 832.
+6-1 started moving to GRID(1, 2), arriving on tick 866.
+2-1 started moving to GRID(0, 3), arriving on tick 842.
+4-1 attacked 0-1 for 5 damage.
+1-1 cast Bulwark, affecting [EntityID(1, 1)].
+2-1 started moving to GRID(0, 3), arriving on tick 852.
+0-1 attacked 5-1 for 18 damage.
+5-1 attacked 0-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 862.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 872.
+6-1 started moving to GRID(1, 2), arriving on tick 876.
+2-1 started moving to GRID(0, 3), arriving on tick 882.
+6-1 started moving to GRID(2, 1), arriving on tick 918.
+2-1 started moving to GRID(0, 3), arriving on tick 892.
+2-1 started moving to GRID(0, 3), arriving on tick 902.
+4-1 attacked 0-1 for 5 damage.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 912.
+0-1 attacked 5-1 for 18 damage.
+5-1 attacked 0-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 922.
+3-1 attacked 1-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 928.
+2-1 started moving to GRID(1, 2), arriving on tick 964.
+6-1 started moving to GRID(2, 1), arriving on tick 938.
+6-1 started moving to GRID(2, 1), arriving on tick 948.
+6-1 started moving to GRID(2, 1), arriving on tick 958.
+4-1 attacked 0-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 968.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(1, 2), arriving on tick 974.
+0-1 attacked 5-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 978.
+5-1 attacked 0-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1016.
+3-1 attacked 1-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 988.
+6-1 started moving to GRID(2, 1), arriving on tick 998.
+6-1 started moving to GRID(2, 1), arriving on tick 1008.
+6-1 started moving to GRID(2, 1), arriving on tick 1018.
+2-1 started moving to GRID(0, 3), arriving on tick 1026.
+4-1 attacked 0-1 for 5 damage.
+6-1 started moving to GRID(1, 2), arriving on tick 1060.
+1-1 attacked 3-1 for 8 damage.
+0-1 attacked 5-1 for 18 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1036.
+5-1 attacked 0-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1046.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1056.
+2-1 started moving to GRID(0, 3), arriving on tick 1066.
+6-1 started moving to GRID(1, 2), arriving on tick 1070.
+2-1 started moving to GRID(0, 3), arriving on tick 1076.
+6-1 started moving to GRID(2, 1), arriving on tick 1112.
+2-1 started moving to GRID(0, 3), arriving on tick 1086.
+4-1 attacked 0-1 for 5 damage.
+1-1 attacked 3-1 for 8 damage.
+0-1 attacked 5-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1096.
+5-1 attacked 0-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1106.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1116.
+6-1 started moving to GRID(2, 1), arriving on tick 1122.
+2-1 started moving to GRID(1, 2), arriving on tick 1158.
+6-1 started moving to GRID(2, 1), arriving on tick 1132.
+6-1 started moving to GRID(2, 1), arriving on tick 1142.
+4-1 attacked 0-1 for 5 damage.
+1-1 attacked 3-1 for 18 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 1152.
+0-1 attacked 5-1 for 8 damage.
+5-1 attacked 0-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 1162.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(1, 2), arriving on tick 1168.
+6-1 started moving to GRID(2, 1), arriving on tick 1172.
+2-1 started moving to GRID(0, 3), arriving on tick 1210.
+6-1 started moving to GRID(2, 1), arriving on tick 1182.
+6-1 started moving to GRID(2, 1), arriving on tick 1192.
+6-1 started moving to GRID(2, 1), arriving on tick 1202.
+4-1 attacked 0-1 for 5 damage.
+1-1 attacked 3-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 1212.
+0-1 attacked 5-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1220.
+5-1 attacked 0-1 for 5 damage.
+6-1 started moving to GRID(1, 2), arriving on tick 1254.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1230.
+2-1 started moving to GRID(0, 3), arriving on tick 1240.
+2-1 started moving to GRID(0, 3), arriving on tick 1250.
+2-1 started moving to GRID(0, 3), arriving on tick 1260.
+6-1 started moving to GRID(1, 2), arriving on tick 1264.
+4-1 attacked 0-1 for 5 damage.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1270.
+6-1 started moving to GRID(2, 1), arriving on tick 1306.
+0-1 attacked 5-1 for 8 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1280.
+5-1 attacked 0-1 for 5 damage.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1290.
+2-1 started moving to GRID(0, 3), arriving on tick 1300.
+2-1 started moving to GRID(0, 3), arriving on tick 1310.
+6-1 started moving to GRID(2, 1), arriving on tick 1316.
+2-1 started moving to GRID(1, 2), arriving on tick 1352.
+6-1 started moving to GRID(2, 1), arriving on tick 1326.
+4-1 attacked 0-1 for 5 damage.
+1-1 attacked 3-1 for 8 damage.
+0-1 attacked 5-1 for 8 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 1336.
+5-1 attacked 0-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 1346.
+3-1 attacked 1-1 for 5 damage.
+6-1 started moving to GRID(2, 1), arriving on tick 1356.
+2-1 started moving to GRID(1, 2), arriving on tick 1362.
+6-1 started moving to GRID(2, 1), arriving on tick 1366.
+2-1 started moving to GRID(0, 3), arriving on tick 1404.
+6-1 started moving to GRID(2, 1), arriving on tick 1376.
+6-1 started moving to GRID(2, 1), arriving on tick 1386.
+0-1 died.
+4-1 attacked 0-1 for 15 damage.
+1-1 attacked 3-1 for 8 damage.
+6-1 started moving to GRID(1, 0), arriving on tick 1428.
+5-1 attacked 1-1 for 5 damage.
+3-1 attacked 1-1 for 5 damage.
+2-1 started moving to GRID(0, 3), arriving on tick 1414.
+2-1 started moving to GRID(1, 2), arriving on tick 1456.
+6-1 started moving to GRID(1, 0), arriving on tick 1438.
+6-1 started moving to GRID(0, 0), arriving on tick 1468.
+4-1 started moving to GRID(3, 1), arriving on tick 1480.
+1-1 cast Bulwark, affecting [EntityID(1, 1)].
+5-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 1498.
+3-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(2, 2), arriving on tick 1522.
+2-1 started moving to GRID(1, 0), arriving on tick 1540.
+1-1 attacked 3-1 for 8 damage.
+5-1 attacked 1-1 for 12 damage.
+3-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1552.
+6-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1550.
+2-1 started moving to GRID(2, 1), arriving on tick 1592.
+4-1 started moving to GRID(0, 3), arriving on tick 1594.
+1-1 attacked 3-1 for 8 damage.
+5-1 attacked 1-1 for 2 damage.
+3-1 attacked 1-1 for 2 damage.
+6-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 1602.
+4-1 started moving to GRID(0, 3), arriving on tick 1604.
+2-1 started moving to GRID(1, 0), arriving on tick 1644.
+4-1 started moving to GRID(1, 2), arriving on tick 1646.
+1-1 attacked 3-1 for 8 damage.
+5-1 attacked 1-1 for 2 damage.
+3-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1654.
+4-1 started moving to GRID(2, 1), arriving on tick 1688.
+6-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1664.
+2-1 started moving to GRID(1, 0), arriving on tick 1674.
+2-1 started moving to GRID(1, 0), arriving on tick 1684.
+1-1 attacked 3-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1694.
+4-1 started moving to GRID(2, 1), arriving on tick 1698.
+5-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1704.
+3-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1740.
+2-1 started moving to GRID(1, 0), arriving on tick 1714.
+6-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1724.
+2-1 started moving to GRID(1, 0), arriving on tick 1734.
+2-1 started moving to GRID(1, 0), arriving on tick 1744.
+1-1 attacked 3-1 for 8 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1750.
+2-1 started moving to GRID(2, 1), arriving on tick 1786.
+4-1 started moving to GRID(1, 2), arriving on tick 1760.
+5-1 attacked 1-1 for 12 damage.
+3-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1770.
+6-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1780.
+4-1 started moving to GRID(1, 2), arriving on tick 1790.
+2-1 started moving to GRID(2, 1), arriving on tick 1796.
+4-1 started moving to GRID(0, 3), arriving on tick 1832.
+2-1 started moving to GRID(1, 0), arriving on tick 1838.
+1-1 attacked 3-1 for 8 damage.
+5-1 attacked 1-1 for 2 damage.
+3-1 attacked 1-1 for 2 damage.
+6-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(0, 3), arriving on tick 1842.
+2-1 started moving to GRID(1, 0), arriving on tick 1848.
+4-1 started moving to GRID(1, 2), arriving on tick 1884.
+2-1 started moving to GRID(2, 1), arriving on tick 1890.
+1-1 attacked 3-1 for 8 damage.
+5-1 attacked 1-1 for 2 damage.
+3-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1894.
+6-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 1900.
+4-1 started moving to GRID(0, 3), arriving on tick 1936.
+2-1 started moving to GRID(1, 0), arriving on tick 1942.
+1-1 attacked 3-1 for 8 damage.
+5-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(0, 3), arriving on tick 1946.
+3-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 1952.
+4-1 started moving to GRID(1, 2), arriving on tick 1988.
+6-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 1994.
+1-1 attacked 3-1 for 8 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 1998.
+5-1 attacked 1-1 for 2 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2004.
+3-1 attacked 1-1 for 2 damage.
+4-1 started moving to GRID(0, 3), arriving on tick 2040.
+2-1 started moving to GRID(1, 0), arriving on tick 2046.
+6-1 attacked 1-1 for 2 damage.
+1-1 cast Bulwark, affecting [EntityID(1, 1)].
+4-1 started moving to GRID(0, 3), arriving on tick 2050.
+2-1 started moving to GRID(1, 0), arriving on tick 2056.
+4-1 started moving to GRID(1, 2), arriving on tick 2092.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2098.
+3-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 started moving to GRID(1, 2), arriving on tick 2102.
+2-1 started moving to GRID(2, 1), arriving on tick 2108.
+3-1 died.
+1-1 attacked 3-1 for 4 damage.
+4-1 started moving to GRID(0, 2), arriving on tick 2132.
+2-1 started moving to GRID(1, 0), arriving on tick 2150.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2160.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2202.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2212.
+2-1 started moving to GRID(1, 0), arriving on tick 2254.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2264.
+2-1 started moving to GRID(2, 1), arriving on tick 2306.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2316.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2358.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2368.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2410.
+4-1 attacked 1-1 for 0 damage.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2420.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2462.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2472.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2514.
+6-1 attacked 1-1 for 9 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2524.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2566.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2576.
+2-1 started moving to GRID(2, 1), arriving on tick 2618.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2628.
+2-1 started moving to GRID(1, 0), arriving on tick 2670.
+1-1 cast Bulwark, affecting [EntityID(1, 1)].
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2680.
+4-1 attacked 1-1 for 6 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2722.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2732.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2774.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2784.
+2-1 started moving to GRID(2, 1), arriving on tick 2826.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2836.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2878.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2888.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2930.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 2940.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2982.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 6 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 2992.
+2-1 started moving to GRID(2, 1), arriving on tick 3034.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 6 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3044.
+2-1 started moving to GRID(1, 0), arriving on tick 3086.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3096.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3138.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3148.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3190.
+4-1 attacked 1-1 for 6 damage.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3200.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3242.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+1-1 cast Bulwark, affecting [EntityID(1, 1)].
+2-1 started moving to GRID(2, 1), arriving on tick 3252.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3294.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3304.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3346.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3356.
+2-1 started moving to GRID(1, 0), arriving on tick 3398.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3408.
+2-1 started moving to GRID(2, 1), arriving on tick 3450.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 3 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3460.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3502.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3512.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3554.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3564.
+2-1 started moving to GRID(1, 0), arriving on tick 3606.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+1-1 attacked 4-1 for 18 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3616.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3658.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3668.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3710.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3720.
+1-1 attacked 4-1 for 8 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3762.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3772.
+2-1 started moving to GRID(1, 0), arriving on tick 3814.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3824.
+2-1 started moving to GRID(2, 1), arriving on tick 3866.
+1-1 cast Bulwark, affecting [EntityID(1, 1)].
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3876.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3918.
+1-1 attacked 4-1 for 8 damage.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 3928.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3970.
+4-1 attacked 1-1 for 0 damage.
+1-1 attacked 4-1 for 18 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 3980.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 4022.
+6-1 attacked 1-1 for 0 damage.
+4-1 attacked 1-1 for 0 damage.
+4-1 died.
+1-1 attacked 4-1 for 6 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 4032.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 4074.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 4084.
+1-1 attacked 2-1 for 8 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 4126.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 4136.
+2-1 started moving to GRID(2, 1), arriving on tick 4178.
+1-1 started moving to GRID(0, 1), arriving on tick 4150.
+1-1 started moving to GRID(1, 2), arriving on tick 4192.
+5-1 started moving to GRID(0, 2), arriving on tick 4194.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(3, 0), arriving on tick 4220.
+1-1 started moving to GRID(0, 3), arriving on tick 4234.
+5-1 started moving to GRID(0, 1), arriving on tick 4224.
+2-1 started moving to GRID(2, 0), arriving on tick 4250.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 4264.
+2-1 started moving to GRID(1, 0), arriving on tick 4280.
+1-1 started moving to GRID(1, 3), arriving on tick 4306.
+2-1 started moving to GRID(2, 1), arriving on tick 4322.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 4336.
+2-1 started moving to GRID(1, 1), arriving on tick 4352.
+1-1 started moving to GRID(0, 2), arriving on tick 4366.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 4382.
+1-1 started moving to GRID(1, 3), arriving on tick 4408.
+2-1 started moving to GRID(2, 1), arriving on tick 4424.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 4438.
+2-1 started moving to GRID(1, 1), arriving on tick 4454.
+1-1 started moving to GRID(0, 2), arriving on tick 4468.
+2-1 started moving to GRID(1, 0), arriving on tick 4484.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 4510.
+2-1 started moving to GRID(2, 1), arriving on tick 4526.
+1-1 started moving to GRID(1, 2), arriving on tick 4540.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 4556.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 4570.
+2-1 started moving to GRID(1, 0), arriving on tick 4586.
+1-1 started moving to GRID(1, 3), arriving on tick 4612.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 4628.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 4642.
+2-1 started moving to GRID(1, 1), arriving on tick 4658.
+1-1 started moving to GRID(0, 2), arriving on tick 4672.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 4688.
+1-1 started moving to GRID(1, 3), arriving on tick 4714.
+2-1 started moving to GRID(2, 1), arriving on tick 4730.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 4744.
+2-1 started moving to GRID(1, 1), arriving on tick 4760.
+1-1 started moving to GRID(0, 2), arriving on tick 4774.
+2-1 started moving to GRID(1, 0), arriving on tick 4790.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 4816.
+2-1 started moving to GRID(2, 1), arriving on tick 4832.
+1-1 started moving to GRID(1, 2), arriving on tick 4846.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 4862.
+1-1 started moving to GRID(0, 2), arriving on tick 4876.
+2-1 started moving to GRID(1, 0), arriving on tick 4892.
+1-1 started moving to GRID(1, 3), arriving on tick 4918.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 4934.
+1-1 started moving to GRID(1, 2), arriving on tick 4948.
+2-1 started moving to GRID(1, 1), arriving on tick 4964.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 4978.
+2-1 started moving to GRID(1, 0), arriving on tick 4994.
+1-1 started moving to GRID(1, 3), arriving on tick 5020.
+2-1 started moving to GRID(2, 1), arriving on tick 5036.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 5050.
+2-1 started moving to GRID(1, 1), arriving on tick 5066.
+1-1 started moving to GRID(0, 2), arriving on tick 5080.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 5096.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 5122.
+2-1 started moving to GRID(2, 1), arriving on tick 5138.
+1-1 started moving to GRID(1, 2), arriving on tick 5152.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 5168.
+1-1 started moving to GRID(0, 2), arriving on tick 5182.
+2-1 started moving to GRID(1, 0), arriving on tick 5198.
+1-1 started moving to GRID(1, 3), arriving on tick 5224.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 5240.
+1-1 started moving to GRID(1, 2), arriving on tick 5254.
+2-1 started moving to GRID(1, 1), arriving on tick 5270.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 5284.
+2-1 started moving to GRID(1, 0), arriving on tick 5300.
+1-1 started moving to GRID(1, 3), arriving on tick 5326.
+2-1 started moving to GRID(2, 1), arriving on tick 5342.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 5356.
+2-1 started moving to GRID(1, 1), arriving on tick 5372.
+1-1 started moving to GRID(0, 2), arriving on tick 5386.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 5402.
+1-1 started moving to GRID(1, 3), arriving on tick 5428.
+2-1 started moving to GRID(2, 1), arriving on tick 5444.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 5458.
+2-1 started moving to GRID(1, 1), arriving on tick 5474.
+1-1 started moving to GRID(0, 2), arriving on tick 5488.
+2-1 started moving to GRID(1, 0), arriving on tick 5504.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 5530.
+2-1 started moving to GRID(2, 1), arriving on tick 5546.
+1-1 started moving to GRID(1, 2), arriving on tick 5560.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 5576.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 5590.
+2-1 started moving to GRID(1, 0), arriving on tick 5606.
+1-1 started moving to GRID(1, 3), arriving on tick 5632.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 5648.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 5662.
+2-1 started moving to GRID(1, 1), arriving on tick 5678.
+1-1 started moving to GRID(0, 2), arriving on tick 5692.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 5708.
+1-1 started moving to GRID(1, 3), arriving on tick 5734.
+2-1 started moving to GRID(2, 1), arriving on tick 5750.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 5764.
+2-1 started moving to GRID(1, 1), arriving on tick 5780.
+1-1 started moving to GRID(0, 2), arriving on tick 5794.
+2-1 started moving to GRID(1, 0), arriving on tick 5810.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 5836.
+2-1 started moving to GRID(2, 1), arriving on tick 5852.
+1-1 started moving to GRID(1, 2), arriving on tick 5866.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 5882.
+1-1 started moving to GRID(0, 2), arriving on tick 5896.
+2-1 started moving to GRID(1, 0), arriving on tick 5912.
+1-1 started moving to GRID(1, 3), arriving on tick 5938.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 5954.
+1-1 started moving to GRID(1, 2), arriving on tick 5968.
+2-1 started moving to GRID(1, 1), arriving on tick 5984.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 5998.
+2-1 started moving to GRID(1, 0), arriving on tick 6014.
+1-1 started moving to GRID(1, 3), arriving on tick 6040.
+2-1 started moving to GRID(2, 1), arriving on tick 6056.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 6070.
+2-1 started moving to GRID(1, 1), arriving on tick 6086.
+1-1 started moving to GRID(0, 2), arriving on tick 6100.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 6116.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 6142.
+2-1 started moving to GRID(2, 1), arriving on tick 6158.
+1-1 started moving to GRID(1, 2), arriving on tick 6172.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 6188.
+1-1 started moving to GRID(0, 2), arriving on tick 6202.
+2-1 started moving to GRID(1, 0), arriving on tick 6218.
+1-1 started moving to GRID(1, 3), arriving on tick 6244.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 6260.
+1-1 started moving to GRID(1, 2), arriving on tick 6274.
+2-1 started moving to GRID(1, 1), arriving on tick 6290.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 6304.
+2-1 started moving to GRID(1, 0), arriving on tick 6320.
+1-1 started moving to GRID(1, 3), arriving on tick 6346.
+2-1 started moving to GRID(2, 1), arriving on tick 6362.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 6376.
+2-1 started moving to GRID(1, 1), arriving on tick 6392.
+1-1 started moving to GRID(0, 2), arriving on tick 6406.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 6422.
+1-1 started moving to GRID(1, 3), arriving on tick 6448.
+2-1 started moving to GRID(2, 1), arriving on tick 6464.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 6478.
+2-1 started moving to GRID(1, 1), arriving on tick 6494.
+1-1 started moving to GRID(0, 2), arriving on tick 6508.
+2-1 started moving to GRID(1, 0), arriving on tick 6524.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 6550.
+2-1 started moving to GRID(2, 1), arriving on tick 6566.
+1-1 started moving to GRID(1, 2), arriving on tick 6580.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 6596.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 6610.
+2-1 started moving to GRID(1, 0), arriving on tick 6626.
+1-1 started moving to GRID(1, 3), arriving on tick 6652.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 6668.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 6682.
+2-1 started moving to GRID(1, 1), arriving on tick 6698.
+1-1 started moving to GRID(0, 2), arriving on tick 6712.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 6728.
+1-1 started moving to GRID(1, 3), arriving on tick 6754.
+2-1 started moving to GRID(2, 1), arriving on tick 6770.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 6784.
+2-1 started moving to GRID(1, 1), arriving on tick 6800.
+1-1 started moving to GRID(0, 2), arriving on tick 6814.
+2-1 started moving to GRID(1, 0), arriving on tick 6830.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 6856.
+2-1 started moving to GRID(2, 1), arriving on tick 6872.
+1-1 started moving to GRID(1, 2), arriving on tick 6886.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 6902.
+1-1 started moving to GRID(0, 2), arriving on tick 6916.
+2-1 started moving to GRID(1, 0), arriving on tick 6932.
+1-1 started moving to GRID(1, 3), arriving on tick 6958.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 6974.
+1-1 started moving to GRID(1, 2), arriving on tick 6988.
+2-1 started moving to GRID(1, 1), arriving on tick 7004.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 7018.
+2-1 started moving to GRID(1, 0), arriving on tick 7034.
+1-1 started moving to GRID(1, 3), arriving on tick 7060.
+2-1 started moving to GRID(2, 1), arriving on tick 7076.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 7090.
+2-1 started moving to GRID(1, 1), arriving on tick 7106.
+1-1 started moving to GRID(0, 2), arriving on tick 7120.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 7136.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 7162.
+2-1 started moving to GRID(2, 1), arriving on tick 7178.
+1-1 started moving to GRID(1, 2), arriving on tick 7192.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 7208.
+1-1 started moving to GRID(0, 2), arriving on tick 7222.
+2-1 started moving to GRID(1, 0), arriving on tick 7238.
+1-1 started moving to GRID(1, 3), arriving on tick 7264.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 7280.
+1-1 started moving to GRID(1, 2), arriving on tick 7294.
+2-1 started moving to GRID(1, 1), arriving on tick 7310.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 7324.
+2-1 started moving to GRID(1, 0), arriving on tick 7340.
+1-1 started moving to GRID(1, 3), arriving on tick 7366.
+2-1 started moving to GRID(2, 1), arriving on tick 7382.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 7396.
+2-1 started moving to GRID(1, 1), arriving on tick 7412.
+1-1 started moving to GRID(0, 2), arriving on tick 7426.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 7442.
+1-1 started moving to GRID(1, 3), arriving on tick 7468.
+2-1 started moving to GRID(2, 1), arriving on tick 7484.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 7498.
+2-1 started moving to GRID(1, 1), arriving on tick 7514.
+1-1 started moving to GRID(0, 2), arriving on tick 7528.
+2-1 started moving to GRID(1, 0), arriving on tick 7544.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 7570.
+2-1 started moving to GRID(2, 1), arriving on tick 7586.
+1-1 started moving to GRID(1, 2), arriving on tick 7600.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 7616.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 7630.
+2-1 started moving to GRID(1, 0), arriving on tick 7646.
+1-1 started moving to GRID(1, 3), arriving on tick 7672.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 7688.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 7702.
+2-1 started moving to GRID(1, 1), arriving on tick 7718.
+1-1 started moving to GRID(0, 2), arriving on tick 7732.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 7748.
+1-1 started moving to GRID(1, 3), arriving on tick 7774.
+2-1 started moving to GRID(2, 1), arriving on tick 7790.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 7804.
+2-1 started moving to GRID(1, 1), arriving on tick 7820.
+1-1 started moving to GRID(0, 2), arriving on tick 7834.
+2-1 started moving to GRID(1, 0), arriving on tick 7850.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 7876.
+2-1 started moving to GRID(2, 1), arriving on tick 7892.
+1-1 started moving to GRID(1, 2), arriving on tick 7906.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 7922.
+1-1 started moving to GRID(0, 2), arriving on tick 7936.
+2-1 started moving to GRID(1, 0), arriving on tick 7952.
+1-1 started moving to GRID(1, 3), arriving on tick 7978.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 7994.
+1-1 started moving to GRID(1, 2), arriving on tick 8008.
+2-1 started moving to GRID(1, 1), arriving on tick 8024.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 8038.
+2-1 started moving to GRID(1, 0), arriving on tick 8054.
+1-1 started moving to GRID(1, 3), arriving on tick 8080.
+2-1 started moving to GRID(2, 1), arriving on tick 8096.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 8110.
+2-1 started moving to GRID(1, 1), arriving on tick 8126.
+1-1 started moving to GRID(0, 2), arriving on tick 8140.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 8156.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 8182.
+2-1 started moving to GRID(2, 1), arriving on tick 8198.
+1-1 started moving to GRID(1, 2), arriving on tick 8212.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 8228.
+1-1 started moving to GRID(0, 2), arriving on tick 8242.
+2-1 started moving to GRID(1, 0), arriving on tick 8258.
+1-1 started moving to GRID(1, 3), arriving on tick 8284.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 8300.
+1-1 started moving to GRID(1, 2), arriving on tick 8314.
+2-1 started moving to GRID(1, 1), arriving on tick 8330.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 8344.
+2-1 started moving to GRID(1, 0), arriving on tick 8360.
+1-1 started moving to GRID(1, 3), arriving on tick 8386.
+2-1 started moving to GRID(2, 1), arriving on tick 8402.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 8416.
+2-1 started moving to GRID(1, 1), arriving on tick 8432.
+1-1 started moving to GRID(0, 2), arriving on tick 8446.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 8462.
+1-1 started moving to GRID(1, 3), arriving on tick 8488.
+2-1 started moving to GRID(2, 1), arriving on tick 8504.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 8518.
+2-1 started moving to GRID(1, 1), arriving on tick 8534.
+1-1 started moving to GRID(0, 2), arriving on tick 8548.
+2-1 started moving to GRID(1, 0), arriving on tick 8564.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 8590.
+2-1 started moving to GRID(2, 1), arriving on tick 8606.
+1-1 started moving to GRID(1, 2), arriving on tick 8620.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 8636.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 8650.
+2-1 started moving to GRID(1, 0), arriving on tick 8666.
+1-1 started moving to GRID(1, 3), arriving on tick 8692.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 8708.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 8722.
+2-1 started moving to GRID(1, 1), arriving on tick 8738.
+1-1 started moving to GRID(0, 2), arriving on tick 8752.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 8768.
+1-1 started moving to GRID(1, 3), arriving on tick 8794.
+2-1 started moving to GRID(2, 1), arriving on tick 8810.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 8824.
+2-1 started moving to GRID(1, 1), arriving on tick 8840.
+1-1 started moving to GRID(0, 2), arriving on tick 8854.
+2-1 started moving to GRID(1, 0), arriving on tick 8870.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 8896.
+2-1 started moving to GRID(2, 1), arriving on tick 8912.
+1-1 started moving to GRID(1, 2), arriving on tick 8926.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 8942.
+1-1 started moving to GRID(0, 2), arriving on tick 8956.
+2-1 started moving to GRID(1, 0), arriving on tick 8972.
+1-1 started moving to GRID(1, 3), arriving on tick 8998.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 9014.
+1-1 started moving to GRID(1, 2), arriving on tick 9028.
+2-1 started moving to GRID(1, 1), arriving on tick 9044.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 9058.
+2-1 started moving to GRID(1, 0), arriving on tick 9074.
+1-1 started moving to GRID(1, 3), arriving on tick 9100.
+2-1 started moving to GRID(2, 1), arriving on tick 9116.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 9130.
+2-1 started moving to GRID(1, 1), arriving on tick 9146.
+1-1 started moving to GRID(0, 2), arriving on tick 9160.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 9176.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 9202.
+2-1 started moving to GRID(2, 1), arriving on tick 9218.
+1-1 started moving to GRID(1, 2), arriving on tick 9232.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 9248.
+1-1 started moving to GRID(0, 2), arriving on tick 9262.
+2-1 started moving to GRID(1, 0), arriving on tick 9278.
+1-1 started moving to GRID(1, 3), arriving on tick 9304.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 9320.
+1-1 started moving to GRID(1, 2), arriving on tick 9334.
+2-1 started moving to GRID(1, 1), arriving on tick 9350.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 9364.
+2-1 started moving to GRID(1, 0), arriving on tick 9380.
+1-1 started moving to GRID(1, 3), arriving on tick 9406.
+2-1 started moving to GRID(2, 1), arriving on tick 9422.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 9436.
+2-1 started moving to GRID(1, 1), arriving on tick 9452.
+1-1 started moving to GRID(0, 2), arriving on tick 9466.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 9482.
+1-1 started moving to GRID(1, 3), arriving on tick 9508.
+2-1 started moving to GRID(2, 1), arriving on tick 9524.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 9538.
+2-1 started moving to GRID(1, 1), arriving on tick 9554.
+1-1 started moving to GRID(0, 2), arriving on tick 9568.
+2-1 started moving to GRID(1, 0), arriving on tick 9584.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 9610.
+2-1 started moving to GRID(2, 1), arriving on tick 9626.
+1-1 started moving to GRID(1, 2), arriving on tick 9640.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 9656.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 9670.
+2-1 started moving to GRID(1, 0), arriving on tick 9686.
+1-1 started moving to GRID(1, 3), arriving on tick 9712.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 9728.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 9742.
+2-1 started moving to GRID(1, 1), arriving on tick 9758.
+1-1 started moving to GRID(0, 2), arriving on tick 9772.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 9788.
+1-1 started moving to GRID(1, 3), arriving on tick 9814.
+2-1 started moving to GRID(2, 1), arriving on tick 9830.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 9844.
+2-1 started moving to GRID(1, 1), arriving on tick 9860.
+1-1 started moving to GRID(0, 2), arriving on tick 9874.
+2-1 started moving to GRID(1, 0), arriving on tick 9890.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 9916.
+2-1 started moving to GRID(2, 1), arriving on tick 9932.
+1-1 started moving to GRID(1, 2), arriving on tick 9946.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 9962.
+1-1 started moving to GRID(0, 2), arriving on tick 9976.
+2-1 started moving to GRID(1, 0), arriving on tick 9992.
+1-1 started moving to GRID(1, 3), arriving on tick 10018.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 10034.
+1-1 started moving to GRID(1, 2), arriving on tick 10048.
+2-1 started moving to GRID(1, 1), arriving on tick 10064.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 10078.
+2-1 started moving to GRID(1, 0), arriving on tick 10094.
+1-1 started moving to GRID(1, 3), arriving on tick 10120.
+2-1 started moving to GRID(2, 1), arriving on tick 10136.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 10150.
+2-1 started moving to GRID(1, 1), arriving on tick 10166.
+1-1 started moving to GRID(0, 2), arriving on tick 10180.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 10196.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 10222.
+2-1 started moving to GRID(2, 1), arriving on tick 10238.
+1-1 started moving to GRID(1, 2), arriving on tick 10252.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 10268.
+1-1 started moving to GRID(0, 2), arriving on tick 10282.
+2-1 started moving to GRID(1, 0), arriving on tick 10298.
+1-1 started moving to GRID(1, 3), arriving on tick 10324.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 10340.
+1-1 started moving to GRID(1, 2), arriving on tick 10354.
+2-1 started moving to GRID(1, 1), arriving on tick 10370.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 10384.
+2-1 started moving to GRID(1, 0), arriving on tick 10400.
+1-1 started moving to GRID(1, 3), arriving on tick 10426.
+2-1 started moving to GRID(2, 1), arriving on tick 10442.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 10456.
+2-1 started moving to GRID(1, 1), arriving on tick 10472.
+1-1 started moving to GRID(0, 2), arriving on tick 10486.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 10502.
+1-1 started moving to GRID(1, 3), arriving on tick 10528.
+2-1 started moving to GRID(2, 1), arriving on tick 10544.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 10558.
+2-1 started moving to GRID(1, 1), arriving on tick 10574.
+1-1 started moving to GRID(0, 2), arriving on tick 10588.
+2-1 started moving to GRID(1, 0), arriving on tick 10604.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 10630.
+2-1 started moving to GRID(2, 1), arriving on tick 10646.
+1-1 started moving to GRID(1, 2), arriving on tick 10660.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 10676.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 10690.
+2-1 started moving to GRID(1, 0), arriving on tick 10706.
+1-1 started moving to GRID(1, 3), arriving on tick 10732.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 10748.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 10762.
+2-1 started moving to GRID(1, 1), arriving on tick 10778.
+1-1 started moving to GRID(0, 2), arriving on tick 10792.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 10808.
+1-1 started moving to GRID(1, 3), arriving on tick 10834.
+2-1 started moving to GRID(2, 1), arriving on tick 10850.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 10864.
+2-1 started moving to GRID(1, 1), arriving on tick 10880.
+1-1 started moving to GRID(0, 2), arriving on tick 10894.
+2-1 started moving to GRID(1, 0), arriving on tick 10910.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 10936.
+2-1 started moving to GRID(2, 1), arriving on tick 10952.
+1-1 started moving to GRID(1, 2), arriving on tick 10966.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 10982.
+1-1 started moving to GRID(0, 2), arriving on tick 10996.
+2-1 started moving to GRID(1, 0), arriving on tick 11012.
+1-1 started moving to GRID(1, 3), arriving on tick 11038.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 11054.
+1-1 started moving to GRID(1, 2), arriving on tick 11068.
+2-1 started moving to GRID(1, 1), arriving on tick 11084.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 11098.
+2-1 started moving to GRID(1, 0), arriving on tick 11114.
+1-1 started moving to GRID(1, 3), arriving on tick 11140.
+2-1 started moving to GRID(2, 1), arriving on tick 11156.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 11170.
+2-1 started moving to GRID(1, 1), arriving on tick 11186.
+1-1 started moving to GRID(0, 2), arriving on tick 11200.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 11216.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 11242.
+2-1 started moving to GRID(2, 1), arriving on tick 11258.
+1-1 started moving to GRID(1, 2), arriving on tick 11272.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 11288.
+1-1 started moving to GRID(0, 2), arriving on tick 11302.
+2-1 started moving to GRID(1, 0), arriving on tick 11318.
+1-1 started moving to GRID(1, 3), arriving on tick 11344.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 11360.
+1-1 started moving to GRID(1, 2), arriving on tick 11374.
+2-1 started moving to GRID(1, 1), arriving on tick 11390.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 11404.
+2-1 started moving to GRID(1, 0), arriving on tick 11420.
+1-1 started moving to GRID(1, 3), arriving on tick 11446.
+2-1 started moving to GRID(2, 1), arriving on tick 11462.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 11476.
+2-1 started moving to GRID(1, 1), arriving on tick 11492.
+1-1 started moving to GRID(0, 2), arriving on tick 11506.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 11522.
+1-1 started moving to GRID(1, 3), arriving on tick 11548.
+2-1 started moving to GRID(2, 1), arriving on tick 11564.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 11578.
+2-1 started moving to GRID(1, 1), arriving on tick 11594.
+1-1 started moving to GRID(0, 2), arriving on tick 11608.
+2-1 started moving to GRID(1, 0), arriving on tick 11624.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 11650.
+2-1 started moving to GRID(2, 1), arriving on tick 11666.
+1-1 started moving to GRID(1, 2), arriving on tick 11680.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 11696.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 11710.
+2-1 started moving to GRID(1, 0), arriving on tick 11726.
+1-1 started moving to GRID(1, 3), arriving on tick 11752.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 11768.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 11782.
+2-1 started moving to GRID(1, 1), arriving on tick 11798.
+1-1 started moving to GRID(0, 2), arriving on tick 11812.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 11828.
+1-1 started moving to GRID(1, 3), arriving on tick 11854.
+2-1 started moving to GRID(2, 1), arriving on tick 11870.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 11884.
+2-1 started moving to GRID(1, 1), arriving on tick 11900.
+1-1 started moving to GRID(0, 2), arriving on tick 11914.
+2-1 started moving to GRID(1, 0), arriving on tick 11930.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 11956.
+2-1 started moving to GRID(2, 1), arriving on tick 11972.
+1-1 started moving to GRID(1, 2), arriving on tick 11986.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 12002.
+1-1 started moving to GRID(0, 2), arriving on tick 12016.
+2-1 started moving to GRID(1, 0), arriving on tick 12032.
+1-1 started moving to GRID(1, 3), arriving on tick 12058.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 12074.
+1-1 started moving to GRID(1, 2), arriving on tick 12088.
+2-1 started moving to GRID(1, 1), arriving on tick 12104.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 12118.
+2-1 started moving to GRID(1, 0), arriving on tick 12134.
+1-1 started moving to GRID(1, 3), arriving on tick 12160.
+2-1 started moving to GRID(2, 1), arriving on tick 12176.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 12190.
+2-1 started moving to GRID(1, 1), arriving on tick 12206.
+1-1 started moving to GRID(0, 2), arriving on tick 12220.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 12236.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 12262.
+2-1 started moving to GRID(2, 1), arriving on tick 12278.
+1-1 started moving to GRID(1, 2), arriving on tick 12292.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 12308.
+1-1 started moving to GRID(0, 2), arriving on tick 12322.
+2-1 started moving to GRID(1, 0), arriving on tick 12338.
+1-1 started moving to GRID(1, 3), arriving on tick 12364.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 12380.
+1-1 started moving to GRID(1, 2), arriving on tick 12394.
+2-1 started moving to GRID(1, 1), arriving on tick 12410.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 12424.
+2-1 started moving to GRID(1, 0), arriving on tick 12440.
+1-1 started moving to GRID(1, 3), arriving on tick 12466.
+2-1 started moving to GRID(2, 1), arriving on tick 12482.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 12496.
+2-1 started moving to GRID(1, 1), arriving on tick 12512.
+1-1 started moving to GRID(0, 2), arriving on tick 12526.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 12542.
+1-1 started moving to GRID(1, 3), arriving on tick 12568.
+2-1 started moving to GRID(2, 1), arriving on tick 12584.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 12598.
+2-1 started moving to GRID(1, 1), arriving on tick 12614.
+1-1 started moving to GRID(0, 2), arriving on tick 12628.
+2-1 started moving to GRID(1, 0), arriving on tick 12644.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 12670.
+2-1 started moving to GRID(2, 1), arriving on tick 12686.
+1-1 started moving to GRID(1, 2), arriving on tick 12700.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 12716.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 12730.
+2-1 started moving to GRID(1, 0), arriving on tick 12746.
+1-1 started moving to GRID(1, 3), arriving on tick 12772.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 12788.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 12802.
+2-1 started moving to GRID(1, 1), arriving on tick 12818.
+1-1 started moving to GRID(0, 2), arriving on tick 12832.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 12848.
+1-1 started moving to GRID(1, 3), arriving on tick 12874.
+2-1 started moving to GRID(2, 1), arriving on tick 12890.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 12904.
+2-1 started moving to GRID(1, 1), arriving on tick 12920.
+1-1 started moving to GRID(0, 2), arriving on tick 12934.
+2-1 started moving to GRID(1, 0), arriving on tick 12950.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 12976.
+2-1 started moving to GRID(2, 1), arriving on tick 12992.
+1-1 started moving to GRID(1, 2), arriving on tick 13006.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 13022.
+1-1 started moving to GRID(0, 2), arriving on tick 13036.
+2-1 started moving to GRID(1, 0), arriving on tick 13052.
+1-1 started moving to GRID(1, 3), arriving on tick 13078.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 13094.
+1-1 started moving to GRID(1, 2), arriving on tick 13108.
+2-1 started moving to GRID(1, 1), arriving on tick 13124.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 13138.
+2-1 started moving to GRID(1, 0), arriving on tick 13154.
+1-1 started moving to GRID(1, 3), arriving on tick 13180.
+2-1 started moving to GRID(2, 1), arriving on tick 13196.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 13210.
+2-1 started moving to GRID(1, 1), arriving on tick 13226.
+1-1 started moving to GRID(0, 2), arriving on tick 13240.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 13256.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 13282.
+2-1 started moving to GRID(2, 1), arriving on tick 13298.
+1-1 started moving to GRID(1, 2), arriving on tick 13312.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 13328.
+1-1 started moving to GRID(0, 2), arriving on tick 13342.
+2-1 started moving to GRID(1, 0), arriving on tick 13358.
+1-1 started moving to GRID(1, 3), arriving on tick 13384.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 13400.
+1-1 started moving to GRID(1, 2), arriving on tick 13414.
+2-1 started moving to GRID(1, 1), arriving on tick 13430.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 13444.
+2-1 started moving to GRID(1, 0), arriving on tick 13460.
+1-1 started moving to GRID(1, 3), arriving on tick 13486.
+2-1 started moving to GRID(2, 1), arriving on tick 13502.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 13516.
+2-1 started moving to GRID(1, 1), arriving on tick 13532.
+1-1 started moving to GRID(0, 2), arriving on tick 13546.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 13562.
+1-1 started moving to GRID(1, 3), arriving on tick 13588.
+2-1 started moving to GRID(2, 1), arriving on tick 13604.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 13618.
+2-1 started moving to GRID(1, 1), arriving on tick 13634.
+1-1 started moving to GRID(0, 2), arriving on tick 13648.
+2-1 started moving to GRID(1, 0), arriving on tick 13664.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 13690.
+2-1 started moving to GRID(2, 1), arriving on tick 13706.
+1-1 started moving to GRID(1, 2), arriving on tick 13720.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 13736.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 13750.
+2-1 started moving to GRID(1, 0), arriving on tick 13766.
+1-1 started moving to GRID(1, 3), arriving on tick 13792.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 13808.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 13822.
+2-1 started moving to GRID(1, 1), arriving on tick 13838.
+1-1 started moving to GRID(0, 2), arriving on tick 13852.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 13868.
+1-1 started moving to GRID(1, 3), arriving on tick 13894.
+2-1 started moving to GRID(2, 1), arriving on tick 13910.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 13924.
+2-1 started moving to GRID(1, 1), arriving on tick 13940.
+1-1 started moving to GRID(0, 2), arriving on tick 13954.
+2-1 started moving to GRID(1, 0), arriving on tick 13970.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 13996.
+2-1 started moving to GRID(2, 1), arriving on tick 14012.
+1-1 started moving to GRID(1, 2), arriving on tick 14026.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 14042.
+1-1 started moving to GRID(0, 2), arriving on tick 14056.
+2-1 started moving to GRID(1, 0), arriving on tick 14072.
+1-1 started moving to GRID(1, 3), arriving on tick 14098.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 14114.
+1-1 started moving to GRID(1, 2), arriving on tick 14128.
+2-1 started moving to GRID(1, 1), arriving on tick 14144.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 14158.
+2-1 started moving to GRID(1, 0), arriving on tick 14174.
+1-1 started moving to GRID(1, 3), arriving on tick 14200.
+2-1 started moving to GRID(2, 1), arriving on tick 14216.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 14230.
+2-1 started moving to GRID(1, 1), arriving on tick 14246.
+1-1 started moving to GRID(0, 2), arriving on tick 14260.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 14276.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 14302.
+2-1 started moving to GRID(2, 1), arriving on tick 14318.
+1-1 started moving to GRID(1, 2), arriving on tick 14332.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 14348.
+1-1 started moving to GRID(0, 2), arriving on tick 14362.
+2-1 started moving to GRID(1, 0), arriving on tick 14378.
+1-1 started moving to GRID(1, 3), arriving on tick 14404.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 14420.
+1-1 started moving to GRID(1, 2), arriving on tick 14434.
+2-1 started moving to GRID(1, 1), arriving on tick 14450.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 14464.
+2-1 started moving to GRID(1, 0), arriving on tick 14480.
+1-1 started moving to GRID(1, 3), arriving on tick 14506.
+2-1 started moving to GRID(2, 1), arriving on tick 14522.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 14536.
+2-1 started moving to GRID(1, 1), arriving on tick 14552.
+1-1 started moving to GRID(0, 2), arriving on tick 14566.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 14582.
+1-1 started moving to GRID(1, 3), arriving on tick 14608.
+2-1 started moving to GRID(2, 1), arriving on tick 14624.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 14638.
+2-1 started moving to GRID(1, 1), arriving on tick 14654.
+1-1 started moving to GRID(0, 2), arriving on tick 14668.
+2-1 started moving to GRID(1, 0), arriving on tick 14684.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 14710.
+2-1 started moving to GRID(2, 1), arriving on tick 14726.
+1-1 started moving to GRID(1, 2), arriving on tick 14740.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 14756.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 14770.
+2-1 started moving to GRID(1, 0), arriving on tick 14786.
+1-1 started moving to GRID(1, 3), arriving on tick 14812.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 14828.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 14842.
+2-1 started moving to GRID(1, 1), arriving on tick 14858.
+1-1 started moving to GRID(0, 2), arriving on tick 14872.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 14888.
+1-1 started moving to GRID(1, 3), arriving on tick 14914.
+2-1 started moving to GRID(2, 1), arriving on tick 14930.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 14944.
+2-1 started moving to GRID(1, 1), arriving on tick 14960.
+1-1 started moving to GRID(0, 2), arriving on tick 14974.
+2-1 started moving to GRID(1, 0), arriving on tick 14990.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 15016.
+2-1 started moving to GRID(2, 1), arriving on tick 15032.
+1-1 started moving to GRID(1, 2), arriving on tick 15046.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 15062.
+1-1 started moving to GRID(0, 2), arriving on tick 15076.
+2-1 started moving to GRID(1, 0), arriving on tick 15092.
+1-1 started moving to GRID(1, 3), arriving on tick 15118.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 15134.
+1-1 started moving to GRID(1, 2), arriving on tick 15148.
+2-1 started moving to GRID(1, 1), arriving on tick 15164.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 15178.
+2-1 started moving to GRID(1, 0), arriving on tick 15194.
+1-1 started moving to GRID(1, 3), arriving on tick 15220.
+2-1 started moving to GRID(2, 1), arriving on tick 15236.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 15250.
+2-1 started moving to GRID(1, 1), arriving on tick 15266.
+1-1 started moving to GRID(0, 2), arriving on tick 15280.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 15296.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 15322.
+2-1 started moving to GRID(2, 1), arriving on tick 15338.
+1-1 started moving to GRID(1, 2), arriving on tick 15352.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 15368.
+1-1 started moving to GRID(0, 2), arriving on tick 15382.
+2-1 started moving to GRID(1, 0), arriving on tick 15398.
+1-1 started moving to GRID(1, 3), arriving on tick 15424.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 15440.
+1-1 started moving to GRID(1, 2), arriving on tick 15454.
+2-1 started moving to GRID(1, 1), arriving on tick 15470.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 15484.
+2-1 started moving to GRID(1, 0), arriving on tick 15500.
+1-1 started moving to GRID(1, 3), arriving on tick 15526.
+2-1 started moving to GRID(2, 1), arriving on tick 15542.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 15556.
+2-1 started moving to GRID(1, 1), arriving on tick 15572.
+1-1 started moving to GRID(0, 2), arriving on tick 15586.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 15602.
+1-1 started moving to GRID(1, 3), arriving on tick 15628.
+2-1 started moving to GRID(2, 1), arriving on tick 15644.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 15658.
+2-1 started moving to GRID(1, 1), arriving on tick 15674.
+1-1 started moving to GRID(0, 2), arriving on tick 15688.
+2-1 started moving to GRID(1, 0), arriving on tick 15704.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 15730.
+2-1 started moving to GRID(2, 1), arriving on tick 15746.
+1-1 started moving to GRID(1, 2), arriving on tick 15760.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 15776.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 15790.
+2-1 started moving to GRID(1, 0), arriving on tick 15806.
+1-1 started moving to GRID(1, 3), arriving on tick 15832.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 15848.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 15862.
+2-1 started moving to GRID(1, 1), arriving on tick 15878.
+1-1 started moving to GRID(0, 2), arriving on tick 15892.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 15908.
+1-1 started moving to GRID(1, 3), arriving on tick 15934.
+2-1 started moving to GRID(2, 1), arriving on tick 15950.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 15964.
+2-1 started moving to GRID(1, 1), arriving on tick 15980.
+1-1 started moving to GRID(0, 2), arriving on tick 15994.
+2-1 started moving to GRID(1, 0), arriving on tick 16010.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 16036.
+2-1 started moving to GRID(2, 1), arriving on tick 16052.
+1-1 started moving to GRID(1, 2), arriving on tick 16066.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 16082.
+1-1 started moving to GRID(0, 2), arriving on tick 16096.
+2-1 started moving to GRID(1, 0), arriving on tick 16112.
+1-1 started moving to GRID(1, 3), arriving on tick 16138.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 16154.
+1-1 started moving to GRID(1, 2), arriving on tick 16168.
+2-1 started moving to GRID(1, 1), arriving on tick 16184.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 16198.
+2-1 started moving to GRID(1, 0), arriving on tick 16214.
+1-1 started moving to GRID(1, 3), arriving on tick 16240.
+2-1 started moving to GRID(2, 1), arriving on tick 16256.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 16270.
+2-1 started moving to GRID(1, 1), arriving on tick 16286.
+1-1 started moving to GRID(0, 2), arriving on tick 16300.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 16316.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 16342.
+2-1 started moving to GRID(2, 1), arriving on tick 16358.
+1-1 started moving to GRID(1, 2), arriving on tick 16372.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 16388.
+1-1 started moving to GRID(0, 2), arriving on tick 16402.
+2-1 started moving to GRID(1, 0), arriving on tick 16418.
+1-1 started moving to GRID(1, 3), arriving on tick 16444.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 16460.
+1-1 started moving to GRID(1, 2), arriving on tick 16474.
+2-1 started moving to GRID(1, 1), arriving on tick 16490.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 16504.
+2-1 started moving to GRID(1, 0), arriving on tick 16520.
+1-1 started moving to GRID(1, 3), arriving on tick 16546.
+2-1 started moving to GRID(2, 1), arriving on tick 16562.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 16576.
+2-1 started moving to GRID(1, 1), arriving on tick 16592.
+1-1 started moving to GRID(0, 2), arriving on tick 16606.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 16622.
+1-1 started moving to GRID(1, 3), arriving on tick 16648.
+2-1 started moving to GRID(2, 1), arriving on tick 16664.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 16678.
+2-1 started moving to GRID(1, 1), arriving on tick 16694.
+1-1 started moving to GRID(0, 2), arriving on tick 16708.
+2-1 started moving to GRID(1, 0), arriving on tick 16724.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 16750.
+2-1 started moving to GRID(2, 1), arriving on tick 16766.
+1-1 started moving to GRID(1, 2), arriving on tick 16780.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 16796.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 16810.
+2-1 started moving to GRID(1, 0), arriving on tick 16826.
+1-1 started moving to GRID(1, 3), arriving on tick 16852.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 16868.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 16882.
+2-1 started moving to GRID(1, 1), arriving on tick 16898.
+1-1 started moving to GRID(0, 2), arriving on tick 16912.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 16928.
+1-1 started moving to GRID(1, 3), arriving on tick 16954.
+2-1 started moving to GRID(2, 1), arriving on tick 16970.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 16984.
+2-1 started moving to GRID(1, 1), arriving on tick 17000.
+1-1 started moving to GRID(0, 2), arriving on tick 17014.
+2-1 started moving to GRID(1, 0), arriving on tick 17030.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 17056.
+2-1 started moving to GRID(2, 1), arriving on tick 17072.
+1-1 started moving to GRID(1, 2), arriving on tick 17086.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 17102.
+1-1 started moving to GRID(0, 2), arriving on tick 17116.
+2-1 started moving to GRID(1, 0), arriving on tick 17132.
+1-1 started moving to GRID(1, 3), arriving on tick 17158.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 17174.
+1-1 started moving to GRID(1, 2), arriving on tick 17188.
+2-1 started moving to GRID(1, 1), arriving on tick 17204.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 17218.
+2-1 started moving to GRID(1, 0), arriving on tick 17234.
+1-1 started moving to GRID(1, 3), arriving on tick 17260.
+2-1 started moving to GRID(2, 1), arriving on tick 17276.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 17290.
+2-1 started moving to GRID(1, 1), arriving on tick 17306.
+1-1 started moving to GRID(0, 2), arriving on tick 17320.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 17336.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 17362.
+2-1 started moving to GRID(2, 1), arriving on tick 17378.
+1-1 started moving to GRID(1, 2), arriving on tick 17392.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 17408.
+1-1 started moving to GRID(0, 2), arriving on tick 17422.
+2-1 started moving to GRID(1, 0), arriving on tick 17438.
+1-1 started moving to GRID(1, 3), arriving on tick 17464.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 17480.
+1-1 started moving to GRID(1, 2), arriving on tick 17494.
+2-1 started moving to GRID(1, 1), arriving on tick 17510.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 17524.
+2-1 started moving to GRID(1, 0), arriving on tick 17540.
+1-1 started moving to GRID(1, 3), arriving on tick 17566.
+2-1 started moving to GRID(2, 1), arriving on tick 17582.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 17596.
+2-1 started moving to GRID(1, 1), arriving on tick 17612.
+1-1 started moving to GRID(0, 2), arriving on tick 17626.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 17642.
+1-1 started moving to GRID(1, 3), arriving on tick 17668.
+2-1 started moving to GRID(2, 1), arriving on tick 17684.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 17698.
+2-1 started moving to GRID(1, 1), arriving on tick 17714.
+1-1 started moving to GRID(0, 2), arriving on tick 17728.
+2-1 started moving to GRID(1, 0), arriving on tick 17744.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 3), arriving on tick 17770.
+2-1 started moving to GRID(2, 1), arriving on tick 17786.
+1-1 started moving to GRID(1, 2), arriving on tick 17800.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 1), arriving on tick 17816.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(0, 2), arriving on tick 17830.
+2-1 started moving to GRID(1, 0), arriving on tick 17846.
+1-1 started moving to GRID(1, 3), arriving on tick 17872.
+5-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(2, 1), arriving on tick 17888.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 17902.
+2-1 started moving to GRID(1, 1), arriving on tick 17918.
+1-1 started moving to GRID(0, 2), arriving on tick 17932.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+2-1 started moving to GRID(1, 0), arriving on tick 17948.
+1-1 started moving to GRID(1, 3), arriving on tick 17974.
+2-1 started moving to GRID(2, 1), arriving on tick 17990.
+5-1 attacked 1-1 for 0 damage.
+6-1 attacked 1-1 for 0 damage.
+1-1 started moving to GRID(1, 2), arriving on tick 18004.
+2-1 started moving to GRID(1, 1), arriving on tick 18020.

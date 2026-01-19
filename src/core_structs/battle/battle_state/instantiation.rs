@@ -5,6 +5,7 @@ use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 
 use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
+use crate::core_structs::battle::battle_state::team_position_caches::TeamPositionCache;
 use crate::core_structs::battle::battle_state::timeline::EventTimeline;
 use crate::core_structs::{battle::battle_state::entity_list::EntityList, prelude::*};
 use crate::Roster::*;
@@ -25,7 +26,9 @@ impl BattleState {
             last_processed_tick: 0,
             blocked: BlockedArena::new(),
             godot_event_buffer: None,
-            unit_manifest: None
+            unit_manifest: None,
+            ally_pos_cache: RefCell::new(TeamPositionCache::new()),
+            opp_pos_cache:  RefCell::new(TeamPositionCache::new()),
         }
     }
 

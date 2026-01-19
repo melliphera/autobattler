@@ -11,7 +11,7 @@ pub use core_structs::prelude;
 #[cfg(test)]
 pub mod tests;
 
-pub const MAX_FIGHT_LENGTH: u32 = 30000;
+pub const MAX_FIGHT_LENGTH: u32 = 30000; // 1500 seconds - will be clamped hard in the future.
 
 #[cfg(test)]
 pub mod tests_local {
@@ -36,7 +36,7 @@ pub mod tests_local {
             (0, (8, 4)),
         ];
 
-        let mut b = BattleState::new_seeded(9405163005650660990)
+        let mut b = BattleState::new_seeded([54,24,46,57,45,65,34,56,25,52,34,54,25,57,36,27,65,46,36,73,25,42,47,35,90,98,86,65,34,32,35,32])
                         //.with_debug(prelude::DebugInfo::_EventQueue, 500)
                         //.with_debug(prelude::DebugInfo::_HealthAndPos, 500)
                         ;

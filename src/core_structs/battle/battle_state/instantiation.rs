@@ -1,7 +1,8 @@
 use std::{collections::HashMap};
 use std::cell::{RefCell};
 
-use rand::{SeedableRng, rngs::StdRng};
+use rand::SeedableRng;
+use rand_chacha::ChaCha8Rng;
 
 use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
 use crate::core_structs::battle::battle_state::timeline::EventTimeline;
@@ -9,27 +10,28 @@ use crate::core_structs::{battle::battle_state::entity_list::EntityList, prelude
 use crate::Roster::*;
 
 impl BattleState {
-    pub fn _new() -> Self {
-        let seed: u64 = rand::random();
+    pub fn new() -> Self {
+        let seed: [u8; 32] = rand::random();
         //println!("Generating new BattleState with seed: {}", seed);
         BattleState::new_seeded(seed)
     }
 
-    pub fn new_seeded(seed: u64) -> Self {
+    pub fn new_seeded(seed: [u8; 32]) -> Self {
         BattleState { 
             live_units: EntityList::new(), 
             timeline: EventTimeline::new(), 
-            rng: StdRng::seed_from_u64(seed),
+            rng: ChaCha8Rng::from_seed(seed),
             events_called: 0,
             last_processed_tick: 0,
             blocked: BlockedArena::new(),
-            godot_event_buffer: None
+            godot_event_buffer: None,
+            unit_manifest: None
         }
     }
 
     pub fn new_with_teams(human_team: &[(u16, (i32, i32))], enemy_team: &[(u16, (i32, i32))]) -> BattleState {
         // mostly for quickly building combat scenarios for testing. Assumes enemy is NPC.
-        let mut b = BattleState::_new();
+        let mut b = BattleState::new();
         for (id, (x, y)) in human_team.iter() {
             _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), GridPosition  { x: *x, y: *y });
         };
@@ -40,7 +42,7 @@ impl BattleState {
         b
     }
 
-    pub fn new_seeded_with_teams(seed: u64, human_team: &[(u16, (i32, i32))], enemy_team: &[(u16, (i32, i32))]) -> BattleState {
+    pub fn new_seeded_with_teams(seed: [u8; 32], human_team: &[(u16, (i32, i32))], enemy_team: &[(u16, (i32, i32))]) -> BattleState {
         // mostly for quickly building combat scenarios for testing. Assumes enemy is NPC.
         let mut b = BattleState::new_seeded(seed);
         for (id, (x, y)) in human_team.iter() {
@@ -56,8 +58,9 @@ impl BattleState {
     fn spawn_from_id(&mut self, id: UnitTemplateID, position: GridPosition, team: Team) -> Result<(), ()> {
         let template = UNIT_DATABASE[id.0 as usize];
         let ability = get_ability(id);
+        let eid = self.live_units.get_next_id();
         let b = BattleUnit { 
-            id: self.live_units.get_next_id(), 
+            id: eid, 
             template: id, 
             team: team,
             position: position,
@@ -87,6 +90,9 @@ impl BattleState {
         };
         self.blocked.set_coord(&GridPosition { x: position.x, y: position.y}, true);
         self.live_units.spawn(b)?;
+        if let Some(ref mut manifest) = self.unit_manifest {
+            manifest.push((eid, template.name));
+        }
         Ok(())
     }
 

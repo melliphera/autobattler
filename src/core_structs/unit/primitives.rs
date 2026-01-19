@@ -141,3 +141,9 @@ impl SecondsPerTile {
         MoveSpeed(subtiles_per_tick as i32)
     }
 }
+
+impl std::fmt::Display for EntityID {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}-{}", self.0, self.1)
+    }
+}

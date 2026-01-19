@@ -4,6 +4,7 @@
 //! Likewise some event types are so simple to handle that they're directly handled in execute_event.
 //! These types are currently RawDamageEvent, HealEvent and ShieldEvent.
 use fixedstr::str32;
+use smallvec::SmallVec;
 
 use crate::core_structs::{battle::battle_state::godot_interface::godot_events::{GodotAttackData, GodotEvent}, prelude::*};
 
@@ -16,12 +17,11 @@ pub(crate) struct AttackContext {
 impl BattleState {
     //Events not listed below are handled in the match bracket of operation::execute_event()
 
-    pub(super) fn process_attack_event(&mut self, ctx: AttackContext) -> (Vec<(BattleEvent, u32)>, Vec<EntityID>) {
+    pub(super) fn process_attack_event(&mut self, ctx: AttackContext) -> (SmallVec<[(BattleEvent, u32); 1]>, SmallVec<[EntityID; 1]>) {
         let (mut _max_hp, mut _pre_hp, mut _rem_hp) = (Hitpoints(0), Hitpoints(0), Hitpoints(0));
         let mut _target_name = str32::new();
-        let mut new_dead = Vec::new();
-        let mut new_events = Vec::new();
-
+        let mut new_dead = SmallVec::new();
+        let mut new_events = SmallVec::new();
         let event = ctx.event;
         let mut data = match event {
             AttackEvent(d) => d,
@@ -29,7 +29,7 @@ impl BattleState {
         };
 
         let mut _successful_hit: bool = false; 
-        let source_id = event.get_source_id().unwrap(); // safe because it is Attack
+        let source_id = data.source; 
 
         // grabbing some cheaply Copy data from source
         let source_cc: CritChance;
@@ -37,15 +37,15 @@ impl BattleState {
         let source_range: SquaredLogicalRange;
         let _source_name: str32;
         {
-            let source_unit = self.live_units.get(&source_id).unwrap(); // safe because source is definitely still alive.
+            let source_unit = self.live_units.get_mut(&source_id).unwrap(); // safe because source is definitely still alive.
             source_cc = source_unit.crit_chance;
             source_pos = source_unit.get_position(ctx.tick);
             source_range = source_unit.range_squared;
-            _source_name = source_unit.template.get_name()
+            _source_name = source_unit.template.get_name();
         }
 
         {   
-            // handle target stuff - use different code block for source if necessary later.
+            // if attack is stale (dead target), find new target and queue a new attack to that target.
             if self.live_units.get(&data.target).is_none() {
                 //println!("Target dead, requeueing new attack on this tick.");
                 let opp_positions = self.get_opponent_positions(source_id, ctx.tick);
@@ -73,7 +73,8 @@ impl BattleState {
                     println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
                 }
                 let m = MoveEvent(source.path(&self, ctx.tick));
-                return (vec![(m,  ctx.tick)], vec![])
+                new_events.push((m, ctx.tick));
+                return (new_events, SmallVec::new())
             }
             
 
@@ -121,7 +122,7 @@ impl BattleState {
         (new_events, new_dead)
     }
 
-    pub(super) fn process_ability_cast(&mut self, data: AbilityData, tick: u32) -> Vec<(BattleEvent, u32)> {
+    pub(super) fn process_ability_cast(&mut self, data: AbilityData, tick: u32) -> SmallVec<[(BattleEvent, u32); 1]> {
         // check if ability is targeted to current attack target. - if it is, ensure current target is valid.
         let source = self.live_units.get(&data.source).unwrap();
         if data.ability.target_paradigm == TargetParadigm::CurrentTarget && source.target.is_none() {
@@ -131,7 +132,7 @@ impl BattleState {
         }
         { // set mana to 0
             let source = self.live_units.get_mut(&data.source).unwrap();
-            source.mana = Mana(0)
+            source.mana = Mana(0);
         }
         // apply ability effect to each target
         data.ability.cast(data.source, self, tick)
@@ -148,7 +149,7 @@ impl BattleState {
                         .or_insert(BuffContainer::new_from(data.buff)); // or create one with value 1.
     }
 
-    pub(super) fn process_move_event(&mut self, data: MoveData) -> Vec<(BattleEvent, u32)> {
+    pub(super) fn process_move_event(&mut self, data: MoveData) -> SmallVec<[(BattleEvent, u32); 1]> {
         let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
         target_unit.current_movement = Some(data);
 
@@ -161,22 +162,27 @@ impl BattleState {
 
         self.blocked.set_coord(&data.end_pos, true);
         // queue movement end event
-        vec![(MoveEndEvent(MoveEndData {
+        let mut v = SmallVec::new();
+        v.push((MoveEndEvent(MoveEndData {
             target: data.target,
             end_pos: data.end_pos
-        }), data.end_tick)]
+        }), data.end_tick));
+        v
     }
 
     pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: u32) -> Option<BattleEvent> {
         let mut move_again = false; // if new move event should be instantly triggered
         {   
-            let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was daed
+            let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
 
             // free the location they departed from
-            self.blocked.set_coord(&target_unit.position, false);
+            if target_unit.position != data.end_pos {
+                self.blocked.set_coord(&target_unit.position, false);
+            }
 
             // update unit position variables
             target_unit.current_movement = None;
+            target_unit.last_position = target_unit.position;
             target_unit.position = data.end_pos;
             
             #[cfg(test)]
@@ -194,6 +200,8 @@ impl BattleState {
                     move_again = true
                 }
             } 
+        } else {
+
         }
 
         // slipping in some debugging stuff here.

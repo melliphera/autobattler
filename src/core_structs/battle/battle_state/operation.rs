@@ -1,6 +1,7 @@
 use crate::core_structs::prelude::*;
 use crate::core_structs::battle::battle_state::godot_interface::godot_events::GodotEvent;
 use fixedstr::str32;
+use smallvec::SmallVec;
 
 impl BattleState {
     pub(super) fn queue_event(&mut self, event: BattleEvent, tick: u32) {
@@ -13,7 +14,8 @@ impl BattleState {
         while let Some(container) = self.timeline.pop() { // while there are things in the timeline
             let (tick, event) = (container.tick, container.event);
             if tick > max_tick { // max fight length.
-                //println!("Fight timed out!");
+                println!("Fight timed out!");
+                print!("{:?}", self);
                 return (self.events_called, None);
             }
             #[cfg(test)]
@@ -28,13 +30,48 @@ impl BattleState {
         (self.events_called, Some(self.live_units.iter().next().map_or(Team::Player, |unit| unit.team)))    // Events should only run dry when one team is fully dead. If both teams are, player biased.
     }
 
-    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32) -> Vec<(BattleEvent, u32)> {
+    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32) -> SmallVec<[(BattleEvent, u32); 1]> {
         //! execute the current event. This is gonna get bulky.
 
-        // debug assertion that events are correctly executing in chronological order
-        #[cfg(test)]
-        assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
+        #[cfg(test)] {
+            // debug assertion that events are correctly executing in chronological order
+            assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
 
+            // debug assertion that when there are no 0-tick events queued, each unit has exactly one AttackEvent, AbilityCastEvent or MoveEndEvent queued.
+            // also sanity checks that the event is in a reasonable timeframe.
+            if tick > self.last_processed_tick {
+                let has_player = self.live_units.iter().any(|u| u.team == Team::Player);
+                let has_opponent = self.live_units.iter().any(|u| u.team == Team::Opponent);
+                if !(has_player && has_opponent) {
+                    println!("One team is dead, skipping event queue sanity check.");
+                } else {
+                    println!("Checking event queue sanity at tick {}.", tick);
+
+                    for unit in self.live_units.iter() {
+                        if unit.id == event._get_source_id().expect("this shouldnt fail.") {
+                            continue; // skip the unit that just acted.
+                        }
+                        let source_id = unit.id;
+                        let mut event_count = 0;
+                        for container in self.timeline.iter() {
+                            let ev = &container.event;
+                            if let Some(ev_source) = ev.get_source_for_pruning() {
+                                if ev_source == source_id {
+                                    match ev {
+                                        AttackEvent(_) | AbilityCastEvent(_) | MoveEndEvent(_) => {
+                                            event_count += 1;
+                                            assert!(container.tick <= tick+300, "Unit {}'s next key event isn't for another {} ticks!'!", source_id.0, container.tick-tick);
+                                        }
+                                        _ => { println!("Event {:?} from unit {} is not a key event, ignoring.", ev, source_id.0)}
+                                    }
+                                }
+                            }
+                        }
+                        assert!(event_count == 1, "Unit {} has {} queued events when they should have exactly one!\n\nUnit data:\n{:#?}", source_id.0, event_count, self.live_units.get(&source_id).unwrap());
+                    }
+                }
+            }
+        }
 
         // acknowledge current tick as "last processed tick" so spawning events on the same tick is more efficient.
         self.last_processed_tick = tick;
@@ -42,16 +79,16 @@ impl BattleState {
         // below allocations are for combat logging. Pre-unders are to circumvent inaccurate linting.
         let mut _target_name = str32::new();
 
-        let mut new_dead: Vec<EntityID> = Vec::new(); // entities that have died from this Event
-        let mut new_events: Vec<(BattleEvent, u32)> = Vec::new();
+        let mut new_dead: SmallVec<[EntityID; 1]> = SmallVec::new(); // entities that have died from this Event. 95+% of the time this is 0 or 1 long.
+        let mut new_events: SmallVec<[(BattleEvent, u32); 1]> = SmallVec::new();
 
         match event {
             AttackEvent(_data) => {
                 let attack_ctx = AttackContext { event, tick };
                 (new_events, new_dead) = self.process_attack_event(attack_ctx); // overwrite safe because original vecs are definitely empty.
                 
-                //if the unit is moving instead of attacking, dont process a new attack.
-                if let Some((MoveEvent(_data), _tick)) = new_events.iter().next() {
+                //if the unit is moving, or the processed attack was stale, 
+                if let Some(_container) = new_events.iter().next() {
                     return new_events
                 }
 
@@ -68,7 +105,9 @@ impl BattleState {
             MoveEndEvent(data) => {
                 // if move_end processing returns an event, its another MoveEvent. therefore do not attack so return immediately.
                 if let Some(move_event) = self.process_move_end_event(data, tick) {
-                    return vec![(move_event, tick)];
+                    let mut v = SmallVec::new();
+                    v.push((move_event, tick));
+                    return v;
                 }
             }
             RawDamageEvent(data) => {
@@ -114,7 +153,6 @@ impl BattleState {
         };
 
         // clear out any dead, remove their events from the timeline, and unblock the tiles they are blocking.
-
         for id in new_dead.iter() {
             let unit = self.live_units.get(id).unwrap(); // this thing is about to die, it shouldnt be dead already.
 
@@ -127,19 +165,20 @@ impl BattleState {
             //println!("Unit {}: {} has died!", id.0, self.get_name(*id));
             // remove the unit and its events from the BattleState structure
             self.live_units.remove(id);
-            self.timeline.retain(|container| container.event.get_source_id() != Some(*id) && container.event.get_target_id() != Some(*id));
+            self.timeline.retain(|container| 
+                container.event.get_source_for_pruning() != Some(*id) && 
+                container.event.get_target_for_pruning() != Some(*id));
         };
         
         // -- all below queue the attacker's next event --
-        // therefore only relevant for AbilityCast, Attack or MoveEnd events
-        match event {
-            AbilityCastEvent(_) | AttackEvent(_) | MoveEndEvent(_) => {}
-            _ => { return new_events }
+        // therefore only relevant for Key Events (AbilityCast, Attack or MoveEnd events), see BattleEvent::is_key_event() for more info.
+        if !event.is_key_event() { 
+            return new_events 
         }
 
         // if source is dead, don't queue them another event.
         // THIS IS SCUFFED - IF MORE NEW EVENTS COME DOWN HERE, CHECK THEY RETURN Some ON get_source_id()!!
-        let source_id_opt = event.get_source_id();
+        let source_id_opt = event.get_source_for_pruning();
         if let None = source_id_opt { 
             return new_events
         };
@@ -156,7 +195,7 @@ impl BattleState {
             source.find_target(&opp_positions);
         }
 
-        // 1.5 - if no target can be found, don't queue another event
+        // 1.5 - if no target can be found, don't queue another event - the enemy team is dead and the fight is won.
         if source.target == None {
             return new_events;
         }
@@ -182,8 +221,8 @@ impl BattleState {
     }
 
     #[cfg(test)] #[allow(private_interfaces)]
-    pub fn step_event(&mut self) -> Vec<(BattleEvent, u32)> {
-        //! pops a single event in the timeline and returns the event it spawns.
+    pub fn step_event(&mut self) -> SmallVec<[(BattleEvent, u32); 1]> {
+        //! pops a single event in the timeline and returns the events it spawns.
         if let Some(container) = self.timeline.pop() {
             let (tick, event) = (container.tick, container.event);
 

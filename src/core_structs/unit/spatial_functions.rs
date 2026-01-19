@@ -4,7 +4,7 @@ use super::primitives::{AttackRange, BattleSubtile};
 use std::fmt::Display;
 
 pub const LOGICAL_SUBTILES: i32 = 512;
-pub const TICKS_PER_SECOND: i32 = 20;
+pub const TICKS_PER_SECOND: i32 = 60;
 
 impl AttackRange {
     pub(crate) fn to_squared(self) -> SquaredLogicalRange {

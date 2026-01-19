@@ -11,7 +11,7 @@ pub use core_structs::prelude;
 #[cfg(test)]
 pub mod tests;
 
-pub const MAX_FIGHT_LENGTH: u32 = 30000; // 1500 seconds - will be clamped hard in the future.
+pub const MAX_FIGHT_LENGTH: u32 = 18000; // 5 minutes at 60 TPS
 
 #[cfg(test)]
 pub mod tests_local {
@@ -21,9 +21,9 @@ pub mod tests_local {
     #[test]
     fn it_works() {
         let human_team = [
-            (0, (5, 3)), // knight
-            (1, (1, 3)), // ranger
-            (2, (1, 2))  // mage
+            (0, (4, 2)), // knight
+            (1, (0, 3)), // ranger
+            (2, (0, 1))  // mage
         ];
 
         let npc_team = [

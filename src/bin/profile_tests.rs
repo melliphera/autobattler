@@ -1,7 +1,7 @@
 use autobattler::dev_tools::profiling::*;
 
 fn main() {
-    profile_threaded(60, 4); // run random tests for x seconds with y threads.   
+    profile(60); // run random tests for this many seconds.   
 }
 
 #[cfg(test)]

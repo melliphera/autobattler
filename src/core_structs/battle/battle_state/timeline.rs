@@ -57,11 +57,6 @@ impl EventTimeline {
         };
         self.seq += 1;
 
-        #[cfg(test)] {
-            println!("Inserting event with tick: {}, seq: {} into list with\nticks: {:?}", cont.tick, cont.seq, self.events.iter().map(|e| e.tick).collect::<Vec<_>>());
-            println!("Current tick: {}", current_tick);
-        }
-
         if tick == current_tick {
             // scan back from end as this will likely go right near the end.
             let mut flag: usize = 0;
@@ -107,6 +102,20 @@ impl Display for EventTimeline {
         let mut buf = String::with_capacity(self.len() * 10);
         for event in self.events.iter() {
             buf += &match event.event {
+                AttackEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                DeathEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                HealEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                AbilityCastEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                RawDamageEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                BuffEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                ShieldEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                MoveEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                MoveEndEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                _DebugEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
+                // Add other BattleEvent variants as needed
+            }
+            /* 
+            buf += &match event.event {
                 AttackEvent(_) => format!("Tick {}: AttackEvent\n", event.tick),
                 DeathEvent(_) => format!("Tick {}: DeathEvent\n", event.tick),
                 HealEvent(_) => format!("Tick {}: HealEvent\n", event.tick),
@@ -119,6 +128,7 @@ impl Display for EventTimeline {
                 _DebugEvent(_) => format!("Tick {}: DebugEvent\n", event.tick),
                 // Add other BattleEvent variants as needed
             }
+            */
         }
         write!(f, "{}\n", buf)
     }

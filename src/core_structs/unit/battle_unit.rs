@@ -7,7 +7,7 @@ use smallvec::SmallVec;
 use crate::core_structs::battle::battle_state::blocked_arena::BlockedArena;
 use crate::core_structs::prelude::*;
 
-#[derive(Clone)] // Clone is cheap because all non-collection primitives are Copy
+#[derive(Clone, Debug)] // Clone is cheap because all non-collection primitives are Copy
 pub struct BattleUnit {
     // Represents a single entity within a battle scenario. 
     pub id: EntityID,               // ID for entity tracking - *NOT* actual unit's id.
@@ -44,7 +44,7 @@ pub struct BattleUnit {
     pub shield: Shield,
     pub incoming_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs. - u8 = stacks.
     pub outgoing_damage_handlers: HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
-    pub temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>  // includes both buffs and debuffs.
+    pub temp_stat_modifiers:      HashMap<(BuffID, EntityID), BuffContainer>, // includes both buffs and debuffs.
 }
 
 impl BattleUnit {

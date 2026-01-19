@@ -86,7 +86,6 @@ impl BattleState {
             attack: template.attack, 
             attack_delay: template.attack_delay, 
             crit_chance: template.crit_chance, 
-
         };
         self.blocked.set_coord(&GridPosition { x: position.x, y: position.y}, true);
         self.live_units.spawn(b)?;

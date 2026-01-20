@@ -3,7 +3,7 @@ use std::{cmp::PartialOrd, fmt::{Display, Write}};
 
 use smallvec::SmallVec;
 
-use crate::prelude::BattleEvent::{self, *};
+use crate::prelude::BattleEvent;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct EventTimeline {
@@ -33,6 +33,7 @@ impl PartialOrd for EventContainer {
         Some(self.cmp(other))
     }
 }
+
 impl EventTimeline {
     pub fn new() -> Self {
         Self {

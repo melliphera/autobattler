@@ -101,10 +101,6 @@ impl BattleSubtile {
         SquaredLogicalRange(dx*dx + dy*dy) // pythagorean
     }
 
-    pub(crate) fn translated_by_tiles(&self, tuple: (i32, i32)) -> BattleSubtile {
-        BattleSubtile { x: self.x + tuple.0*LOGICAL_SUBTILES, y: self.y + tuple.1*LOGICAL_SUBTILES }
-    }
-
     pub(crate) fn to_grid(self) -> GridPosition {
         // as this is used for indexing, also needs to shift -1.
         GridPosition { x: self.x/LOGICAL_SUBTILES - 1, y: self.y/LOGICAL_SUBTILES - 1 }

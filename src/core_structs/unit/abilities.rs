@@ -1,7 +1,6 @@
 use std::cmp::Reverse;
 
 use fixedstr::str32;
-use smallvec::{smallvec, SmallVec};
 
 use crate::core_structs::{battle::battle_state::{godot_interface::godot_events::{GodotAbilityData, GodotEvent}, operation::EventReturnBuffer}, prelude::*};
 use super::targeting::TargetParadigm;

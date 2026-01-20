@@ -6,6 +6,10 @@ use std::fmt::Display;
 pub const LOGICAL_SUBTILES: i32 = 512;
 pub const TICKS_PER_SECOND: i32 = 60;
 
+const DIRECTION_VECTORS: [(i32, i32); 8] = [
+    (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)
+];
+
 impl AttackRange {
     pub(crate) fn to_squared(self) -> SquaredLogicalRange {
         SquaredLogicalRange((self.0*LOGICAL_SUBTILES).pow(2)) //  LOGICAL_SUBTILES "logical pixels" per tile
@@ -67,15 +71,11 @@ impl GridPosition {
         }
 
         // 4) look at all unblocked tiles that decrease either x_dist or y_dist and pick best by alignment.
-        let direction_vectors = [
-            (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)
-        ];
-
         let direction_is_blocked = blocked.get_adjacent_states(&self);
 
         let mut best_dir = (0, 0);
         let mut max_dot = i32::MIN;
-        for ((x, y), blocked) in direction_vectors.iter().zip(direction_is_blocked) {
+        for ((x, y), blocked) in DIRECTION_VECTORS.iter().zip(direction_is_blocked) {
             if ((x == &x_dist.signum() && x != &0) || (y == &y_dist.signum()&& y != &0)) && ![diag_direction, best_orthogonal_direction].contains(&(*x, *y)) && !blocked {
                 let dot = (x * x_dist + y * y_dist).pow(2) / (x_dist.abs() + y_dist.abs()); // div0 should never happen as that would require occupying the same tile.
                 if dot > max_dot {

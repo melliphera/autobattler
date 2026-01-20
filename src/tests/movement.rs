@@ -26,9 +26,9 @@ pub mod movement_tests {
 
     #[test]
     fn out_of_range_direct() {
-        // expects resolution 0 because both x are the same
+        // expects resolution 0 because both x are the same.
 
-        let human_team = &[(0, (2, 2))]; // knight
+        let human_team = &[(0, (2, 2))]; // knight, tessted unit
         let enemy_team = &[(0, (6, 2))]; // slime
 
         assert_eq!(
@@ -41,7 +41,7 @@ pub mod movement_tests {
     fn step_into_orthogonally() {
         // expects resolution 1 - units are just over 6 tiles apart, but 1 orthogonal move away.
 
-        let human_team = &[(1, (1, 3))]; // ranger; 6 range
+        let human_team = &[(1, (1, 3))]; // 6 range ranger; tested unit.
         let enemy_team = &[(0, (7, 2))]; // slime
 
         assert_eq!(
@@ -53,7 +53,7 @@ pub mod movement_tests {
     #[test]
     fn step_into_diagonally() {
         // expects resolution 2
-        let human_team = &[(0, (5, 0))]; // knight
+        let human_team = &[(0, (5, 0))]; // knight; tested unit
         let enemy_team = &[(0, (6, 2))]; // slime
 
         assert_eq!(
@@ -65,7 +65,7 @@ pub mod movement_tests {
     #[test]
     fn orthogonal_by_dot() {
         // expects resolution 3
-        let human_team = &[(0, (1, 1))]; // knight
+        let human_team = &[(0, (1, 1))]; // knight; tested unit
         let enemy_team = &[(0, (6, 2))]; // slime
 
         assert_eq!(
@@ -77,7 +77,7 @@ pub mod movement_tests {
     #[test]
     fn diagonal_by_dot() {
         // expects resolution 3 but diagonal
-        let human_team = &[(0, (0, 0))]; // knight
+        let human_team = &[(0, (0, 0))]; // knight; tested unit
         let enemy_team = &[(0, (5, 4))]; // slime
 
         assert_eq!(
@@ -90,10 +90,11 @@ pub mod movement_tests {
     fn perpendicular_blocked() {
         // expects resolution 4 - both best_ortho and best_diag blocked so it moves the other orthogonal direction.
         let human_team = &[
-            (0, (2, 1)), // knight
-
             (0, (3, 1)), // knight used for blocking
             (0, (3, 2)), // knight used for blocking
+
+            (0, (2, 1)), // knight; tested unit
+
 
         ]; 
         let enemy_team = &[
@@ -110,11 +111,12 @@ pub mod movement_tests {
     fn stationary_blocked() {
         // all forwards directions blocked so unit doesn't move
         let human_team = &[
-            (0, (2, 2)), // knight
-
             (0, (3, 1)), // knight used for blocking
             (0, (3, 2)), // knight used for blocking
             (0, (3, 3)), // knight used for blocking
+
+            (0, (2, 2)), // knight; tested unit
+
 
         ]; 
         let enemy_team = &[
@@ -131,11 +133,12 @@ pub mod movement_tests {
     fn further_because_of_blockage() {
         // unit paths around blockage in a way that actually increases distance to target, because it decreases one of the distances but increases the other
         let human_team = &[
-            (0, (2, 0)), // knight
-
             (0, (3, 0)), // knight used for blocking
             (0, (3, 1)), // knight used for blocking
             (0, (2, 1)), // knight used for blocking
+
+            (0, (2, 0)), // knight; tested unit
+
 
         ]; 
         let enemy_team = &[

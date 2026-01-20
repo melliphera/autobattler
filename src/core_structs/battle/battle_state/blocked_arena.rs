@@ -4,6 +4,13 @@ use crate::prelude::{BattleSubtile, GridPosition};
 
 use std::fmt::Display;
 
+const DIRECTION_VECTORS: [(i32, i32); 8] = [
+    (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)
+];
+const ARENA_WIDTH: i32 = 10;
+const ARENA_HEIGHT: i32 = 5;
+const EMPTY_ARENA: [[bool; ARENA_HEIGHT as usize]; ARENA_WIDTH as usize] = [[false; ARENA_HEIGHT as usize]; ARENA_WIDTH as usize];
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct BlockedArena {
     // array grid defining each tile on the 2D arena. if a slot is True, it is blocked - either occupied or the end location of an existing move.
@@ -11,8 +18,8 @@ pub struct BlockedArena {
 }
 
 impl BlockedArena {
-    pub fn new() -> Self {
-        BlockedArena { data: [[false; 5]; 10]}
+    pub const fn new() -> Self {
+        BlockedArena { data: EMPTY_ARENA }
     }
 
     pub fn get_coord(&self, coord: &GridPosition) -> bool {
@@ -38,12 +45,9 @@ impl BlockedArena {
 
         let mut out = [true; 8]; // assume blocked by default, so no edits need to be made on out-of-bounds.
 
-        let directions = [
-            (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1)
-        ];
-        for (i, (x_diff, y_diff)) in directions.iter().enumerate() {
+        for (i, (x_diff, y_diff)) in DIRECTION_VECTORS.iter().enumerate() {
             let (hypo_x, hypo_y) = (base.x + x_diff, base.y + y_diff);
-            if (0..10).contains(&hypo_x) && (0..5).contains(&hypo_y) {
+            if hypo_x >= 0 && hypo_x < ARENA_WIDTH && hypo_y >= 0 && hypo_y < ARENA_HEIGHT {
                 out[i] = self.data[hypo_x as usize][hypo_y as usize]
             }
         }

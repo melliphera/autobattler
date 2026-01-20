@@ -39,12 +39,11 @@ impl BattleState {
 
             self.execute_event(event, tick, &mut return_buffer); // do the thing. Mutates retbuffer to hold new events
             self.events_called += 1;
-
+            
+            if self.events_called > 500_000 { println!("{:?}", self); panic!("Infinite event stream found.")}
 
             for (event, tick) in return_buffer.0.iter() {       // add newly produced items to the queue.
                 self.queue_event(*event, *tick);
-
-                if self.events_called > 500_000 { println!("{:?}", self); panic!("Infinite event stream found.")}
             } 
         }
         (self.events_called, Some(self.live_units.iter().next().map_or(Team::Player, |unit| unit.team)))    // Events should only run dry when one team is fully dead. If both teams are, player biased.

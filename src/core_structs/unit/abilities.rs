@@ -48,26 +48,24 @@ impl Ability {
         }
 
         for target in targets.iter() {
-            buffer.0.extend(self.create_events(caster, *target, tick))
+            self.create_events(caster, *target, tick, buffer)
         };
         ////println!("Events added by ability cast {}\n{:#?}", self.name, temp);
     }
 
-    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> SmallVec<[EntityID;8]> {
-        let ally_positions  = b.get_positions_by_team(Team::Player, tick);
-        let enemy_positions = b.get_positions_by_team(Team::Opponent, tick);
-
+    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32) -> Vec<EntityID> {
+        // most abilities only target 1-4 things so that seems appropriate.
         let caster_unit = b.live_units.get(&caster).expect("Caster wasn't found while casting ability.");
         let team_digit: i8 = if caster_unit.team == Team::Player {1} else {-1};
         let side_digit: i8 = if self.target == TargetTeam::Ally  {1} else {-1};
         let mut viable_targets = match team_digit*side_digit {
-             1 => ally_positions,
-            -1 => enemy_positions,
+             1 => b.get_positions_by_team(Team::Player, tick),
+            -1 => b.get_positions_by_team(Team::Opponent, tick),
              _ => unreachable!()
         };
 
         match self.target_paradigm {
-            TargetParadigm::Me => { return smallvec![caster] }
+            TargetParadigm::Me => { return vec![caster] }
             
             TargetParadigm::CurrentTarget => {
                 if let Some(t) = caster_unit.target {
@@ -91,9 +89,8 @@ impl Ability {
         }
     }
 
-    fn create_events(&self, source: EntityID, target: EntityID, cast_tick: u32) -> Vec<(BattleEvent, u32)> {
+    fn create_events(&self, source: EntityID, target: EntityID, cast_tick: u32, buffer: &mut EventReturnBuffer) {
         //! creates the BattleEvent object describing the ability's effect on a given target.
-        let mut out = Vec::new();
         for effect_slot in self.effects.iter() {
             if let Some(event) = effect_slot {
                 let e = match event {
@@ -132,10 +129,9 @@ impl Ability {
                         unimplemented!()
                     }
                 };
-                out.push((e, cast_tick + self.cast_delay.unwrap_or(0)));
+                buffer.0.push((e, cast_tick + self.cast_delay.unwrap_or(0)));
             }
         }
-        out
     }
 }
 

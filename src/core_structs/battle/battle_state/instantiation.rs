@@ -34,13 +34,14 @@ impl BattleState {
 
     pub fn new_with_teams(human_team: &[(u16, (i32, i32))], enemy_team: &[(u16, (i32, i32))]) -> BattleState {
         // mostly for quickly building combat scenarios for testing. Assumes enemy is NPC.
+        // Spawns enemies first so that first-event testing uses the human team (thanks to tick 0 LIFO)
         let mut b = BattleState::new();
-        for (id, (x, y)) in human_team.iter() {
-            _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), GridPosition  { x: *x, y: *y });
-        };
-
         for (id, (x, y)) in enemy_team.iter() {
             _ = b.spawn_enemy_from_id(UnitTemplateID(*id, NPC),  GridPosition { x: *x, y: *y });
+        };
+
+        for (id, (x, y)) in human_team.iter() {
+            _ = b.spawn_ally_from_id(UnitTemplateID(*id, Human), GridPosition  { x: *x, y: *y });
         };
         b
     }
@@ -59,7 +60,7 @@ impl BattleState {
     }
 
     fn spawn_from_id(&mut self, id: UnitTemplateID, position: GridPosition, team: Team) -> Result<(), ()> {
-        let template = UNIT_DATABASE[id.0 as usize];
+        let template = id.get_template();
         let ability = get_ability(id);
         let eid = self.live_units.get_next_id();
         let b = BattleUnit { 

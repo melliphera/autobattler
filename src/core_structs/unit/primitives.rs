@@ -34,7 +34,7 @@ pub(crate) use DamageType::*;
 
 use crate::core_structs::unit::{data::{
     enemies::ENEMY_DATABASE, roster::UNIT_DATABASE
-}, spatial_functions::{LOGICAL_SUBTILES, TICKS_PER_SECOND}};
+}, spatial_functions::{LOGICAL_SUBTILES, TICKS_PER_SECOND}, template::UnitTemplate};
 
 impl AttackDamage {
     pub fn add(self, other: &Self) -> Self {
@@ -72,10 +72,17 @@ impl CritChance {
 }
 
 impl UnitTemplateID {
-    pub(crate) fn get_name(self) -> str32 {
+    pub(crate) fn get_name(&self) -> str32 {
         match self.1 {
             Roster::Human => {UNIT_DATABASE [self.0 as usize].name}
             Roster::NPC   => {ENEMY_DATABASE[self.0 as usize].name}
+        }
+    }
+
+    pub(crate) fn get_template(&self) -> UnitTemplate {
+        match self.1 {
+            Roster::Human => {UNIT_DATABASE [self.0 as usize]}
+            Roster::NPC   => {ENEMY_DATABASE[self.0 as usize]}
         }
     }
 }

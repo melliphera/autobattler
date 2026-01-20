@@ -14,8 +14,8 @@ use std::time::Instant;
 
 use std::ops::AddAssign;
 
-const TESTS_PER_POLL: usize = 100;
-const TEST_SEED: [u8; 32] = unsafe { std::mem::transmute::<[u128; 2], [u8; 32]>([9405163043505650660990, 376425672376467324256]) };
+const TESTS_PER_POLL: usize = 250;
+const TEST_SEED:  [u8; 32] = unsafe { std::mem::transmute::<[u128; 2], [u8; 32]>([9405163043505650660990, 376425672376467324256]) };
 const CHARSET_16: [char; 16] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
 
 

@@ -1,5 +1,5 @@
 //! contains the EventTimeline struct, which implements a Binary Heap 
-use std::{cmp::PartialOrd, fmt::Display};
+use std::{cmp::PartialOrd, fmt::{Display, Write}};
 
 use smallvec::SmallVec;
 
@@ -23,8 +23,8 @@ impl Ord for EventContainer {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         // Primary: lower tick comes first (min-heap)
         self.tick.cmp(&other.tick)
-            // Secondary: lower seq comes first for FIFO (since seq increases)
-            .then(self.seq.cmp(&other.seq)) 
+            // Secondary: higher seq comes first for LIFO (since seq increases)
+            .then(other.seq.cmp(&self.seq)) 
     }
 }
 
@@ -101,34 +101,7 @@ impl Display for EventTimeline {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut buf = String::with_capacity(self.len() * 10);
         for event in self.events.iter() {
-            buf += &match event.event {
-                AttackEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                DeathEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                HealEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                AbilityCastEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                RawDamageEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                BuffEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                ShieldEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                MoveEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                MoveEndEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                _DebugEvent(_) => format!("Tick {}: {:?}\n", event.tick, event.event),
-                // Add other BattleEvent variants as needed
-            }
-            /* 
-            buf += &match event.event {
-                AttackEvent(_) => format!("Tick {}: AttackEvent\n", event.tick),
-                DeathEvent(_) => format!("Tick {}: DeathEvent\n", event.tick),
-                HealEvent(_) => format!("Tick {}: HealEvent\n", event.tick),
-                AbilityCastEvent(_) => format!("Tick {}: AbilityCastEvent\n", event.tick),
-                RawDamageEvent(_) => format!("Tick {}: RawDamageEvent\n", event.tick),
-                BuffEvent(_) => format!("Tick {}: BuffEvent\n", event.tick),
-                ShieldEvent(_) => format!("Tick {}: ShieldEvent\n", event.tick),
-                MoveEvent(_) => format!("Tick {}: MoveEvent\n", event.tick),
-                MoveEndEvent(_) => format!("Tick {}: MoveEndEvent\n", event.tick),
-                _DebugEvent(_) => format!("Tick {}: DebugEvent\n", event.tick),
-                // Add other BattleEvent variants as needed
-            }
-            */
+            writeln!(buf, "Tick {}: {:?}", event.tick, event.event).unwrap();
         }
         write!(f, "{}\n", buf)
     }

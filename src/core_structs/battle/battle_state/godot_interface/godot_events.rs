@@ -31,7 +31,7 @@ pub struct GodotAbilityData {
     // purely for animation. Internal AbilityEvent spawns other events which are replicated here 
     pub source: EntityID,
     pub ability_name: fixedstr::str32,
-    pub targets: Vec<EntityID>
+    pub targets: [EntityID; 6] //
 }
 
 #[test] 

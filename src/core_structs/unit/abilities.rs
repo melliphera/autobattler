@@ -36,24 +36,28 @@ impl Ability {
     }
 
     pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32, buffer: &mut EventReturnBuffer) {
-        let mut target_buffer = [EntityID(u16::MAX, 0); 6]; // dummy values
-        self.get_targets(caster, b, tick, &mut target_buffer);
+        //! get_targets mutates buffer.1, and cast reads it. This buffer is usually used to manage character death, 
+        //! therefore it is cleared at the end of the function.
+        self.get_targets(caster, b, tick, buffer);
+
+        let t = buffer.1.clone();
+
+        for target in t.iter() {
+            self.create_events(caster, *target, tick, buffer)
+        }
 
         if let Some(ref mut vec) = b.godot_event_buffer {
             vec.push(GodotEvent::AbilityCast(GodotAbilityData {
                 source: caster,
                 ability_name: self.name,
-                targets: target_buffer
+                targets: t
             }))
-        }
-
-        for target in target_buffer[..self.target_paradigm.get_target_count()].iter().filter(|x|x.0 != u16::MAX) {
-            self.create_events(caster, *target, tick, buffer)
-        };
-        ////println!("Events added by ability cast {}\n{:#?}", self.name, temp);
+        } 
+        
+        buffer.1.clear();
     }
 
-    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32, target_buffer: &mut [EntityID; 6]) {
+    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32, buffer: &mut EventReturnBuffer) {
         let caster_unit = b.live_units.get(&caster).expect("Caster wasn't found while casting ability.");
         let team_digit: i8 = if caster_unit.team == Team::Player {1} else {-1};
         let side_digit: i8 = if self.target == TargetTeam::Ally  {1} else {-1};
@@ -64,12 +68,11 @@ impl Ability {
         };
 
         match self.target_paradigm {
-            TargetParadigm::Me => { target_buffer[0] = caster; }
+            TargetParadigm::Me => { buffer.1.push(caster); }
             
             TargetParadigm::CurrentTarget => {
                 if let Some(t) = caster_unit.target {
-                    target_buffer[0] = t;
-                } else {
+                    buffer.1.push(t) } else {
                     unreachable!("Caught casting Target ability with no target") // target sanitisation happens in the core BattleState logic.
                 }
             }
@@ -77,13 +80,19 @@ impl Ability {
             TargetParadigm::Nearest(n) => {
                 viable_targets.sort_by_key(|target| caster_unit.get_position(tick).0.distance_squared_to(&target.location));
                 let num_targets = (n as usize).min(viable_targets.len());
-                viable_targets[0..num_targets].iter().map(|x| x.id).enumerate().for_each(|(i, id)| target_buffer[i] = id);
+                buffer.1.clear();
+                for target in &viable_targets[0..num_targets] {
+                    buffer.1.push(target.id);
+                }
             }
 
             TargetParadigm::Furthest(n) => {
                 viable_targets.sort_by_key(|target| Reverse(caster_unit.get_position(tick).0.distance_squared_to(&target.location)));
                 let num_targets = (n as usize).min(viable_targets.len());
-                viable_targets[0..num_targets].iter().map(|x| x.id).enumerate().for_each(|(i, id)| target_buffer[i] = id);
+                buffer.1.clear();
+                for target in &viable_targets[0..num_targets] {
+                    buffer.1.push(target.id);
+                }
             }
         }
     }

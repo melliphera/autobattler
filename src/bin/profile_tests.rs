@@ -1,7 +1,7 @@
 use autobattler::dev_tools::profiling::*;
 
 fn main() {
-    profile_with_event_log(30); // run random tests for this many seconds.   
+    profile_with_event_log(10); // run random tests for this many seconds.   
 }
 
 #[cfg(test)]

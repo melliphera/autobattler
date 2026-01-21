@@ -16,7 +16,7 @@ fn _calc_dps(unit: &BattleUnit) -> f32 {
         for effect in ability.effects.iter().filter(|a| !a.is_none()) {
             match effect.unwrap() {
                 AbilityPayload::Attack(a, _b) => {
-                    let num_targets = ability.target_paradigm.get_target_count();
+                    let num_targets = ability.target_paradigm._get_target_count();
                     ability_damage += a.0 as f32 * num_targets as f32
                 }
                 AbilityPayload::BuffPayload(_buff) => {}

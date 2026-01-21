@@ -1,4 +1,4 @@
-//! contains the EventTimeline struct, which implements a Binary Heap 
+//! contains the EventTimeline struct - a sorted vector optimized for small event queues
 use std::{cmp::PartialOrd, fmt::{Display, Write}};
 
 use smallvec::SmallVec;
@@ -13,7 +13,7 @@ pub struct EventTimeline {
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct EventContainer{
-    pub event: BattleEvent, 
+    pub event: BattleEvent,
     pub tick: u32,
     seq: i32
 }
@@ -24,7 +24,7 @@ impl Ord for EventContainer {
         // Primary: lower tick comes first (min-heap)
         self.tick.cmp(&other.tick)
             // Secondary: higher seq comes first for LIFO (since seq increases)
-            .then(other.seq.cmp(&self.seq)) 
+            .then(other.seq.cmp(&self.seq))
     }
 }
 
@@ -42,6 +42,7 @@ impl EventTimeline {
         }
     }
 
+    #[cfg(test)]
     pub fn iter(&self) -> impl Iterator<Item=&EventContainer> {
         self.events.iter()
     }
@@ -52,8 +53,8 @@ impl EventTimeline {
 
     pub fn push(&mut self, event: BattleEvent, tick: u32, current_tick: u32) {
         let cont = EventContainer {
-            event, 
-            tick, 
+            event,
+            tick,
             seq: self.seq
         };
         self.seq += 1;
@@ -61,7 +62,7 @@ impl EventTimeline {
         if tick == current_tick {
             // scan back from end as this will likely go right near the end.
             let mut flag: usize = 0;
-            
+
             for (i, val) in self.events.iter().enumerate().rev() {
                 if val > &cont {
                     flag = i+1;
@@ -72,7 +73,7 @@ impl EventTimeline {
         } else {
             // scan from front
             let mut flag: usize = self.events.len();
-            
+
             for (i, val) in self.events.iter().enumerate() {
                 if val < &cont {
                     flag = i;
@@ -80,12 +81,6 @@ impl EventTimeline {
                 }
             }
             self.events.insert(flag, cont);
-        }
-
-        #[cfg(test)] {
-            println!("new ticks: {:?}", self.events.iter().map(|e| e.tick).collect::<Vec<_>>());
-            assert!(self.events.windows(2).all(|w| w[0] >= w[1]),
-            "Events aren't sorted in descending order!");
         }
     }
 

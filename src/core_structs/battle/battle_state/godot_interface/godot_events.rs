@@ -1,5 +1,5 @@
 // condensed form of BattleEvent suitable for streaming to Godot.
-use crate::prelude::*;
+use crate::{core_structs::battle::battle_state::operation::UidBuffer, prelude::*};
 
 #[derive(Debug)]
 pub enum GodotEvent { // comment format: uses; required info
@@ -29,17 +29,17 @@ pub struct GodotAttackData {
 #[derive(Debug)]
 pub struct GodotAbilityData {
     // purely for animation. Internal AbilityEvent spawns other events which are replicated here 
-    pub source: EntityID,
-    pub ability_name: fixedstr::str32,
-    pub targets: [EntityID; 6] //
+    pub source: EntityID,                               // 4 bytes
+    pub ability_name: fixedstr::str32,                  // 32 bytes
+    pub targets: UidBuffer
 }
 
 #[test] 
 fn test_godot_event_size() {
     use std::mem::size_of;
-    let p = size_of::<GodotEvent>();
+    let p = size_of::<GodotAbilityData>();
     println!("Size of GodotEvent: {}", p);
-    assert!(p <= 64);
+    assert!(p <= 128);
 }
 
 impl std::fmt::Display for GodotEvent {

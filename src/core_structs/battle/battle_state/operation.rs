@@ -1,16 +1,24 @@
 use crate::core_structs::prelude::*;
 use crate::core_structs::battle::battle_state::godot_interface::godot_events::GodotEvent;
 use fixedstr::str32;
-use smallvec::SmallVec;
+
+
+/*
+pub type EventBuffer = SmallVec<[(BattleEvent, u32); 8]>;
+pub type UidBuffer   = SmallVec<[EntityID;    2]>;
+*/
+
+pub type EventBuffer = Vec<(BattleEvent, u32)>;
+pub type UidBuffer   = Vec<EntityID>;
 
 pub struct EventReturnBuffer (
-    pub SmallVec<[(BattleEvent, u32); 4]>,
-    pub SmallVec<[EntityID; 4]>
+    pub EventBuffer, // events spawned by executing an event. Exceeded during ability casting but never elsewhere.
+    pub UidBuffer    // units killed during the processing of an event. Also used for targets while processing an ability.
 );
 
 impl EventReturnBuffer {
-    fn new() -> Self { Self (SmallVec::new(), SmallVec::new())}
-    fn clear(&mut self) {self.0.clear(); self.1.clear();}
+    fn new() -> Self { Self (Vec::with_capacity(8), Vec::with_capacity(8))}
+    fn clear(&mut self) {self.0.clear(); self.1.clear();} // 
 }
 
 impl BattleState {
@@ -104,7 +112,7 @@ impl BattleState {
                 self.process_attack_event(attack_ctx, buffer); // overwrite safe because original vecs are definitely empty.
                 
                 //if the unit needs to move, or the processed attack was stale, requeue 0-tick attack or move as appropriate.
-                if let Some(_container) = buffer.0.iter().next() {
+                if !buffer.0.is_empty() {
                     return;
                 }
 
@@ -247,7 +255,7 @@ impl BattleState {
     }
 
     #[cfg(test)] #[allow(private_interfaces)]
-    pub fn step_event(&mut self) -> SmallVec<[(BattleEvent, u32); 4]> {
+    pub fn step_event(&mut self) -> EventBuffer {
         //! pops a single event in the timeline and returns the events it spawns.
         let mut buffer = EventReturnBuffer::new();
         if let Some(container) = self.timeline.pop() {

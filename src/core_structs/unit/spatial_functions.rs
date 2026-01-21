@@ -12,7 +12,8 @@ const DIRECTION_VECTORS: [(i32, i32); 8] = [
 
 impl AttackRange {
     pub(crate) fn to_squared(self) -> SquaredLogicalRange {
-        SquaredLogicalRange((self.0*LOGICAL_SUBTILES).pow(2)) //  LOGICAL_SUBTILES "logical pixels" per tile
+        let scaled = self.0 * LOGICAL_SUBTILES;
+        SquaredLogicalRange(scaled * scaled) //  LOGICAL_SUBTILES "logical pixels" per tile
     }
 }
 
@@ -64,7 +65,7 @@ impl GridPosition {
         let dot_orthogonal = x_dist * best_orthogonal_direction.0 + y_dist * best_orthogonal_direction.1;
         let dot_diagonal = x_dist * diag_direction.0 + y_dist * diag_direction.1;
 
-        if dot_diagonal.pow(2) > 2 * dot_orthogonal.pow(2) && !blocked.get_coord(&best_diagonal_tile) {
+        if dot_diagonal * dot_diagonal > 2 * dot_orthogonal * dot_orthogonal && !blocked.get_coord(&best_diagonal_tile) {
             return best_diagonal_tile;
         } else if !blocked.get_coord(&best_orthogonal_tile) {
             return best_orthogonal_tile;
@@ -77,7 +78,8 @@ impl GridPosition {
         let mut max_dot = i32::MIN;
         for ((x, y), blocked) in DIRECTION_VECTORS.iter().zip(direction_is_blocked) {
             if ((x == &x_dist.signum() && x != &0) || (y == &y_dist.signum()&& y != &0)) && ![diag_direction, best_orthogonal_direction].contains(&(*x, *y)) && !blocked {
-                let dot = (x * x_dist + y * y_dist).pow(2) / (x_dist.abs() + y_dist.abs()); // div0 should never happen as that would require occupying the same tile.
+                let dot_val = x * x_dist + y * y_dist;
+                let dot = (dot_val * dot_val) / (x_dist.abs() + y_dist.abs()); // div0 should never happen as that would require occupying the same tile.
                 if dot > max_dot {
                     best_dir = (*x, *y);
                     max_dot = dot;

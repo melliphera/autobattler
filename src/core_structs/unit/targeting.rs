@@ -8,7 +8,7 @@ pub(crate) enum TargetParadigm {
 }
 
 impl TargetParadigm {
-    pub(crate) fn get_target_count(&self) -> usize {
+    pub(crate) fn _get_target_count(&self) -> usize {
         match self {
          TargetParadigm::Nearest(n) | TargetParadigm::Furthest(n) => {*n as usize}
          _ => {1}

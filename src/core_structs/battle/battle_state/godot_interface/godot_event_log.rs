@@ -19,7 +19,7 @@ impl GodotEventLog {
         Self {
             events: Vec::with_capacity(capacity), // total number of events in the battle. ~150 in profiling sims.
             in_transit: Vec::with_capacity(8),    // units moving at any given moment. usually less than 8.
-            last_read: 0,
+            last_read: 0,                         // for use in the pre-calculated communication system.
         }
     }
 
@@ -28,8 +28,8 @@ impl GodotEventLog {
     }
 
     pub fn diff_to_present(&mut self, unit_list: &EntityList<25>, tick: Tick) -> BattleDiff {
-        let new_events = self.events[self.last_read..].to_vec();
-        self.last_read = self.events.len();
+        // for use with the "live update" communication model, in tandem with BattleState.run_to_tick();
+        let new_events = self.events.to_vec();
 
         let mut transit_positions = Vec::with_capacity(self.in_transit.len());
         let mut has_dead = false;
@@ -49,10 +49,19 @@ impl GodotEventLog {
         if has_dead {
             self.in_transit.retain(|id| unit_list.get(id).is_some());
         }
+        
+        // the advantage of the live update model is reduced memory footprint as events don't need to be stored.
+        // therefore, dump stored events after calling.
+        self.events.clear();
 
         BattleDiff {
             events: new_events,
             in_transit: transit_positions,
         }
+    }
+
+    pub fn diff_to_tick(&mut self, tick: Tick) {
+        // for use with pre-computed GodotEventLogs using the "pre-calculate" communication model.; called by Godot directly.
+        todo!();
     }
 }

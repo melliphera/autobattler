@@ -10,7 +10,7 @@ use crate::core_structs::{battle::battle_state::{godot_interface::godot_events::
 
 pub(crate) struct AttackContext {
     pub(super) event: BattleEvent,
-    pub(super) tick: u32
+    pub(super) tick: Tick
 }
 
 impl BattleState {
@@ -68,7 +68,7 @@ impl BattleState {
                 #[cfg(test)] 
                 {
                     use crate::core_structs::unit::spatial_functions::LOGICAL_SUBTILES;
-                    println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
+                    println!("tick {}: \t{} is out of range! distance: {}, range: {}", ctx.tick.0, _source_name, (target_distance.0 as f32).sqrt()/LOGICAL_SUBTILES as f32, source_range.0.isqrt()/LOGICAL_SUBTILES);
                 }
                 let m = MoveEvent(source.path(&self.blocked, t_pos, ctx.tick));
                 buffer.0.push((m, ctx.tick));
@@ -85,8 +85,8 @@ impl BattleState {
             _pre_hp = target.current_hp;    
 
             if let Some(DeathEvent(id)) = target.take_damage(data).1 {
-                if let Some(ref mut vec) = self.godot_event_buffer {
-                    vec.push(GodotEvent::Death(id));
+                if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+                    godot_buffer.push(GodotEvent::Death(id));
                 }
                 buffer.1.push(id);
             }
@@ -103,8 +103,8 @@ impl BattleState {
                 source.mana.add(10, source.max_mana);
 
                 // also log the AttackEvent if thats necessary
-                if let Some(ref mut vec) = self.godot_event_buffer {
-                    vec.push(GodotEvent::Attack(GodotAttackData {
+                if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+                    godot_buffer.push(GodotEvent::Attack(GodotAttackData {
                         source: source_id,
                         target: data.target,
                         target_damage: _pre_hp-_rem_hp
@@ -117,7 +117,7 @@ impl BattleState {
         }
     }
 
-    pub(super) fn process_ability_cast(&mut self, data: AbilityData, tick: u32, buffer: &mut EventReturnBuffer) {
+    pub(super) fn process_ability_cast(&mut self, data: AbilityData, tick: Tick, buffer: &mut EventReturnBuffer) {
         // check if ability is targeted to current attack target. - if it is, ensure current target is valid.
         let source = self.live_units.get(&data.source).unwrap();
         if data.ability.target_paradigm == TargetParadigm::CurrentTarget && source.target.is_none() {
@@ -155,12 +155,12 @@ impl BattleState {
             Team::Opponent => {self.opp_pos_cache .borrow_mut().acknowledge_movement(data.start_tick);}
         }
 
-        if let Some(ref mut vec) = self.godot_event_buffer {
-            vec.push(GodotEvent::Move(data.target, data.end_pos, data.end_tick));
+        if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+            godot_buffer.push(GodotEvent::Move(data.target, data.end_pos, data.end_tick));
         }
 
         #[cfg(test)]
-        println!("tick {}:  \t{} {} is moving to {} over {} ticks ", data.start_tick, target_unit.template.get_name(), target_unit.position, data.end_pos, data.end_tick-data.start_tick);
+        println!("tick {}:  \t{} {} is moving to {} over {} ticks ", data.start_tick.0, target_unit.template.get_name(), target_unit.position, data.end_pos, data.end_tick.0-data.start_tick.0);
 
         self.blocked.set_coord(&data.end_pos, true);
         // queue movement end event
@@ -170,7 +170,7 @@ impl BattleState {
         }), data.end_tick));
     }
 
-    pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: u32) -> Option<BattleEvent> {
+    pub(super) fn process_move_end_event(&mut self, data: MoveEndData, tick: Tick) -> Option<BattleEvent> {
         {   
             let target_unit = self.live_units.get_mut(&data.target).unwrap(); // event would be flushed if target was dead
 
@@ -186,7 +186,7 @@ impl BattleState {
             
             #[cfg(test)]
             {
-                println!("tick {}:  \t{} has arrived at {}", tick, target_unit.template.get_name(), data.end_pos);
+                println!("tick {}:  \t{} has arrived at {}", tick.0, target_unit.template.get_name(), data.end_pos);
             }
         }
         // double grab so needs immutable 

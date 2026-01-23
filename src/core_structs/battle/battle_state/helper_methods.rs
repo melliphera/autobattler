@@ -8,7 +8,7 @@ use smallvec::SmallVec;
 pub const MAX_TEAM_SIZE: usize = 16;
 
 impl BattleState {
-    pub(crate) fn get_positions_by_team(&self, team: Team, tick: u32) -> SmallVec<[LocationTag; MAX_TEAM_SIZE]> {
+    pub(crate) fn get_positions_by_team(&self, team: Team, tick: Tick) -> SmallVec<[LocationTag; MAX_TEAM_SIZE]> {
         let cache = match team {
             Team::Player    => {&self.ally_pos_cache}
             Team::Opponent  => {&self.opp_pos_cache}
@@ -37,7 +37,7 @@ impl BattleState {
         out
     }
 
-    pub(crate) fn get_opponent_positions(&self, id: EntityID, tick: u32)  -> SmallVec<[LocationTag; MAX_TEAM_SIZE]> {
+    pub(crate) fn get_opponent_positions(&self, id: EntityID, tick: Tick)  -> SmallVec<[LocationTag; MAX_TEAM_SIZE]> {
         let team = self.live_units.get(&id).unwrap().team;
         self.get_positions_by_team(team.opponent(), tick)
     }

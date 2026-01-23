@@ -53,8 +53,8 @@ pub mod data_types {
         pub(crate) target: EntityID, // in case of displacing abilities
         pub(crate) start_pos: GridPosition,
         pub(crate) end_pos: GridPosition,
-        pub(crate) start_tick: u32,
-        pub(crate) end_tick: u32,
+        pub(crate) start_tick: Tick,
+        pub(crate) end_tick: Tick,
         pub(crate) move_speed_override: Option<MoveSpeed> // for forced displacements
     }
 
@@ -72,7 +72,7 @@ pub mod data_types {
 
     #[derive(Hash, Clone, Copy, PartialEq, Eq, Debug)]
     pub(crate) struct DebugData {
-        pub(crate) delay: u32,
+        pub(crate) delay: Tick,
         pub(crate) info: DebugInfo // what to //print for the debugevent
     }
 
@@ -110,6 +110,7 @@ impl BattleEvent {
             RawDamageEvent(data)    => {Some(data.source)}
 
             // remember in these cases, the "target unit" is the one moving and NOT the unit's target. 
+            // therefore target is returned so log is "{target} moved to C"; source is irrelevant.
             MoveEvent(data)         => {Some(data.target)}
             MoveEndEvent(data)      => {Some(data.target)}
             _ => None

@@ -23,7 +23,7 @@ impl BattleState {
             timeline: EventTimeline::new(), 
             rng: ChaCha8Rng::from_seed(seed),
             events_called: 0,
-            last_processed_tick: 0,
+            last_processed_tick: Tick(0),
             blocked: BlockedArena::new(),
             godot_event_buffer: None,
             unit_manifest: None,
@@ -110,8 +110,8 @@ impl BattleState {
     pub fn initialize(&mut self) {
         // load any start-of-fight state (not implemented)
         //println!("Initialising battlefield.");
-        let ally_positions = self.get_positions_by_team(Team::Player, 0);
-        let opponent_positions = self.get_positions_by_team(Team::Opponent, 0);
+        let ally_positions = self.get_positions_by_team(Team::Player, Tick(0));
+        let opponent_positions = self.get_positions_by_team(Team::Opponent, Tick(0));
         let mut initial_event_stack: Vec<BattleEvent> = Vec::with_capacity(self.live_units.len());
 
         for unit in self.live_units.iter_mut() {
@@ -122,16 +122,16 @@ impl BattleState {
             
         }
         for event in initial_event_stack.iter() {
-            self.queue_event(*event, 0);
+            self.queue_event(*event, Tick(0));
         }
 
         #[cfg(test)]
         println!("{}", self.blocked)
     }
 
-    pub(crate) fn _with_debug(mut self, info: DebugInfo, interval: u32) -> Self {
+    pub(crate) fn _with_debug(mut self, info: DebugInfo, interval: Tick) -> Self {
         let payload = _DebugEvent(DebugData { delay: interval, info });
-        self.queue_event(payload, 0);
+        self.queue_event(payload, Tick(0));
         self
     }
 }

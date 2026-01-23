@@ -19,6 +19,7 @@ use fixedstr::str32;
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct UnitTemplateID (pub(crate) u16, pub(crate) Roster); // used for hash lookup
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct BuffID         (pub(crate) u16); 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct EntityID       (pub(crate) u16, pub(crate) u16);       
+#[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub struct Tick           (pub(crate) u16);       
 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub enum Team   { Player, Opponent } 
 #[derive(Hash, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)] pub enum Roster { Human, NPC } 
@@ -123,6 +124,14 @@ impl SubAssign for Hitpoints {
     // halts at 0
     fn sub_assign(&mut self, rhs: Self) {
         self.0 -= rhs.0.min(self.0)
+    }
+}
+
+impl Add for Tick {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Tick(self.0 + rhs.0)
     }
 }
 

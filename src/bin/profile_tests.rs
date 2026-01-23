@@ -22,4 +22,5 @@ pub mod tests {
     pub fn multithreaded_test() {
         profile_threaded(10u64, 4);
     }
+
 }

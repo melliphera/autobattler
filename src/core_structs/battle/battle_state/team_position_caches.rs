@@ -6,7 +6,7 @@ use crate::prelude::*;
 #[derive(Debug)]
 pub enum CacheCleanliness {
     Clean,             // cache is cleaned whenever the team's position has been queried.
-    DirtyAfter(u32),   // any active movement invalidates the cache every tick. Clean during tick, dirty after.
+    DirtyAfter(Tick),   // any active movement invalidates the cache every tick. Clean during tick, dirty after.
     Dirty              // any unit dying invalidates the cache instantly.
 }
 
@@ -23,7 +23,7 @@ pub struct TeamPositionCache {
 impl TeamPositionCache {
     pub fn new() -> Self { Self {data: SmallVec::new(), cleanliness: Dirty}}
 
-    pub fn get_positions(&self, tick: u32) -> Option<&SmallVec<[LocationTag; 16]>> {
+    pub fn get_positions(&self, tick: Tick) -> Option<&SmallVec<[LocationTag; 16]>> {
         match self.cleanliness {
             Clean => Some(&self.data),
             Dirty => None,
@@ -41,7 +41,7 @@ impl TeamPositionCache {
         self.cleanliness = Dirty
     }
 
-    pub fn acknowledge_movement(&mut self, tick: u32) {
+    pub fn acknowledge_movement(&mut self, tick: Tick) {
         self.cleanliness = DirtyAfter(tick)
     }
 

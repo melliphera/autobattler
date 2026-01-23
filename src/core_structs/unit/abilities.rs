@@ -26,7 +26,7 @@ pub struct Ability {
     pub(crate) effects: [Option<AbilityPayload>; 4], // what Event this produces when it resolves
     pub(crate) target: TargetTeam,                  // whether it targets ally or opponent (relative to itself) - also has Oneself for short-circuiting targeting. Do not use Oneself for AoE.
     pub(crate) target_paradigm: TargetParadigm,     // enum wrapper for targeting function that decides who is targeted within TargetTeam - could be lowest health, highest armour etc.
-    pub(crate) cast_delay: Option<u32>              // ticks between effect starting and impacts applying. Option so that instant = cast_delay: None rather than 0 
+    pub(crate) cast_delay: Option<Tick>              // ticks between effect starting and impacts applying. Option so that instant = cast_delay: None rather than 0 
                                                     // (...cont) feels more explict and has behavioural distinctions (1 event rather than 2).
 }
 
@@ -35,7 +35,7 @@ impl Ability {
         Mana(self.mana_cost)
     }
 
-    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: u32, buffer: &mut EventReturnBuffer) {
+    pub(crate) fn cast(&self, caster: EntityID, b: &mut BattleState, tick: Tick, buffer: &mut EventReturnBuffer) {
         //! get_targets mutates buffer.1, and cast reads it. This buffer is usually used to manage character death, 
         //! therefore it is cleared at the end of the function.
         self.get_targets(caster, b, tick, buffer);
@@ -46,8 +46,8 @@ impl Ability {
             self.create_events(caster, *target, tick, buffer)
         }
 
-        if let Some(ref mut vec) = b.godot_event_buffer {
-            vec.push(GodotEvent::AbilityCast(GodotAbilityData {
+        if let Some(ref mut godot_buffer) = b.godot_event_buffer {
+            godot_buffer.push(GodotEvent::AbilityCast(GodotAbilityData {
                 source: caster,
                 ability_name: self.name,
                 targets: t
@@ -57,7 +57,7 @@ impl Ability {
         buffer.1.clear();
     }
 
-    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: u32, buffer: &mut EventReturnBuffer) {
+    fn get_targets(&self, caster: EntityID, b: &BattleState, tick: Tick, buffer: &mut EventReturnBuffer) {
         let caster_unit = b.live_units.get(&caster).expect("Caster wasn't found while casting ability.");
         let team_digit: i8 = if caster_unit.team == Team::Player {1} else {-1};
         let side_digit: i8 = if self.target == TargetTeam::Ally  {1} else {-1};
@@ -97,7 +97,7 @@ impl Ability {
         }
     }
 
-    fn create_events(&self, source: EntityID, target: EntityID, cast_tick: u32, buffer: &mut EventReturnBuffer) {
+    fn create_events(&self, source: EntityID, target: EntityID, cast_tick: Tick, buffer: &mut EventReturnBuffer) {
         //! creates the BattleEvent object describing the ability's effect on a given target.
         for effect_slot in self.effects.iter() {
             if let Some(event) = effect_slot {
@@ -137,7 +137,7 @@ impl Ability {
                         unimplemented!()
                     }
                 };
-                buffer.0.push((e, cast_tick + self.cast_delay.unwrap_or(0)));
+                buffer.0.push((e, cast_tick + self.cast_delay.unwrap_or(Tick(0))));
             }
         }
     }

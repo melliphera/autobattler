@@ -1,24 +1,24 @@
 // condensed form of BattleEvent suitable for streaming to Godot.
 use crate::{core_structs::battle::battle_state::operation::UidBuffer, prelude::*};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum GodotEvent { // comment format: uses; required info
-    Attack(GodotAttackData),           // DONE animation + hitsplat + health adjustment; attacker, target, post-mitigation damage.
-    AbilityCast(GodotAbilityData),     // DONE just used for animations.
+    Attack(GodotAttackData),           // animation + hitsplat + health adjustment; attacker, target, post-mitigation damage.
+    AbilityCast(GodotAbilityData),     // just used for animations.
 
     DamageTaken(EntityID, Hitpoints),  // for health bar adjustment and hitsplats
-    DamageHealed(EntityID, Hitpoints), // DONE as above
-    Shielded(EntityID, Hitpoints),     // DONE as above, target recieves shield.
+    DamageHealed(EntityID, Hitpoints), // as above
+    Shielded(EntityID, Hitpoints),     // as above, target recieves shield.
 
-    Death(EntityID),                   // DONE
+    Death(EntityID),                   // 
 
-    Move(EntityID, GridPosition, u32)  // DONE for movement (duh)
+    Move(EntityID, GridPosition, Tick) // for movement (duh)
     // MoveEnd not needed as that's just for logic
 
     // by putting ability receiver animations in, BuffEvent can be skipped entirely
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct GodotAttackData {
     // for animation + hitsplats
     pub source: EntityID,
@@ -26,7 +26,7 @@ pub struct GodotAttackData {
     pub target_damage: Hitpoints
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct GodotAbilityData {
     // purely for animation. Internal AbilityEvent spawns other events which are replicated here 
     pub source: EntityID,                               // 4 bytes
@@ -50,7 +50,7 @@ impl std::fmt::Display for GodotEvent {
             GodotEvent::DamageTaken(id, amount)     => write!(f, "{} took {} damage.", id, amount.0),
             GodotEvent::DamageHealed(id, amount)    => write!(f, "{} healed for {} health.", id, amount.0),
             GodotEvent::Shielded(id, amount)        => write!(f, "{} was shielded for {} health.", id, amount.0),
-            GodotEvent::Move(id, end_loc, end_tick) => write!(f, "{} started moving to {}, arriving on tick {}.", id, end_loc, end_tick),        
+            GodotEvent::Move(id, end_loc, end_tick) => write!(f, "{} started moving to {}, arriving on tick {}.", id, end_loc, end_tick.0),        
             GodotEvent::Death(id)                   => write!(f, "{} died.", id)
         }
     }

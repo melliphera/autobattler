@@ -12,10 +12,9 @@ pub mod team_position_caches;
 use entity_list::EntityList;
 use rand_chacha::ChaCha8Rng;
 
-use crate::prelude::*;
+use crate::{core_structs::battle::battle_state::godot_interface::godot_event_log::GodotEventLog, prelude::*};
 use timeline::EventTimeline;
 use blocked_arena::BlockedArena;
-use godot_interface::godot_events::GodotEvent;
 use team_position_caches::TeamPositionCache;
 
 use std::cell::RefCell;
@@ -25,9 +24,9 @@ pub struct BattleState {
     pub live_units: EntityList<25>, // all living units. dead units can be seperately handled in Godot. <N> represents max number concurrently alive.
     pub rng: ChaCha8Rng, 
     timeline: EventTimeline,
-    last_processed_tick: u32,
+    last_processed_tick: Tick,
     pub blocked: BlockedArena,
-    pub godot_event_buffer: Option<Vec<GodotEvent>>, // if Some, all processed events get converted to GodotEvent and stored.
+    pub godot_event_buffer: Option<GodotEventLog>, // if Some, all processed events get converted to GodotEvent and stored.
     pub unit_manifest: Option<Vec<(EntityID, fixedstr::str32)>>,
 
     pub ally_pos_cache: RefCell<TeamPositionCache>, // Caches for all unit locations on team.

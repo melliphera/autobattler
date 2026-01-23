@@ -3,10 +3,11 @@ use std::{cmp::PartialOrd, fmt::{Display, Write}};
 
 use smallvec::SmallVec;
 
-use crate::prelude::BattleEvent;
+use crate::prelude::*;
 
 #[derive(PartialEq, Eq, Debug)]
 pub struct EventTimeline {
+    //pub events: Vec<EventContainer>,
     pub events: SmallVec<[EventContainer; 32]>,
     seq: i32
 }
@@ -14,17 +15,17 @@ pub struct EventTimeline {
 #[derive(PartialEq, Eq, Debug)]
 pub struct EventContainer{
     pub event: BattleEvent,
-    pub tick: u32,
+    pub tick: Tick,
     seq: i32
 }
 
-// Implement ordering that gives us min-heap on tick, max-heap on seq
+// Implement ordering that gives us FIFO behavior for events with the same tick.
 impl Ord for EventContainer {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         // Primary: lower tick comes first (min-heap)
         self.tick.cmp(&other.tick)
-            // Secondary: higher seq comes first for LIFO (since seq increases)
-            .then(other.seq.cmp(&self.seq))
+            // Secondary: lower seq comes first for FIFO (since seq increases)
+            .then(self.seq.cmp(&other.seq))
     }
 }
 
@@ -37,7 +38,7 @@ impl PartialOrd for EventContainer {
 impl EventTimeline {
     pub fn new() -> Self {
         Self {
-            events: SmallVec::new(),
+            events: SmallVec::with_capacity(32),
             seq: 0
         }
     }
@@ -51,7 +52,8 @@ impl EventTimeline {
         self.events.len()
     }
 
-    pub fn push(&mut self, event: BattleEvent, tick: u32, current_tick: u32) {
+    pub fn push(&mut self, event: BattleEvent, tick: Tick, current_tick: Tick) {
+        // create event container
         let cont = EventContainer {
             event,
             tick,
@@ -60,16 +62,9 @@ impl EventTimeline {
         self.seq += 1;
 
         if tick == current_tick {
-            // scan back from end as this will likely go right near the end.
-            let mut flag: usize = 0;
+            // whenever same-tick events are queued, they should be processed immediately, so push to end. (Events are called with self.pop()).
+            self.events.push(cont);
 
-            for (i, val) in self.events.iter().enumerate().rev() {
-                if val > &cont {
-                    flag = i+1;
-                    break
-                }
-            }
-            self.events.insert(flag, cont);
         } else {
             // scan from front
             let mut flag: usize = self.events.len();
@@ -97,7 +92,7 @@ impl Display for EventTimeline {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut buf = String::with_capacity(self.len() * 10);
         for event in self.events.iter() {
-            writeln!(buf, "Tick {}: {:?}", event.tick, event.event).unwrap();
+            writeln!(buf, "Tick {}: {:?}", event.tick.0, event.event).unwrap();
         }
         write!(f, "{}\n", buf)
     }

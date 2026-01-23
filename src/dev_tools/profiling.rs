@@ -15,7 +15,7 @@ use std::time::Instant;
 use std::ops::AddAssign;
 
 const TESTS_PER_POLL: usize = 250;
-const TEST_SEED:  [u8; 32] = unsafe { std::mem::transmute::<[u128; 2], [u8; 32]>([9405163043505650660990, 376425672376467324256]) };
+pub const TEST_SEED:  [u8; 32] = unsafe { std::mem::transmute::<[u128; 2], [u8; 32]>([9405163043505650660990, 376425672376467324256]) };
 const CHARSET_16: [char; 16] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
 
 
@@ -213,13 +213,15 @@ fn random_with_listener() -> (i32, Option<Team>) {
     }
 
     let r = b.simulate(MAX_FIGHT_LENGTH);
+
+    // if fight times out and the battle is being logged, write the log to file.
     match r.1 {
         None => {
             if let Some(ref buffer) = b.godot_event_buffer {
                 let log_file = format!("./logs/{}.log", get_logstring(b.rng.get_seed()));
                 let mut file = File::create(&log_file).expect(&format!("Failed to create log file at {}", log_file));
                 file.write_all(format!("{}\nSTART OF EVENT TRANSCRIPT\n", parse_unit_manifest(b.unit_manifest.unwrap())).as_bytes()).expect("Failed to write to created logfile.");
-                file.write_all(format!("{}", parse_event_buffer(buffer)).as_bytes()).expect("Failed to write to created logfile.");
+                file.write_all(format!("{}", parse_event_buffer(&buffer.events)).as_bytes()).expect("Failed to write to created logfile.");
             }
         }
         _ => {}

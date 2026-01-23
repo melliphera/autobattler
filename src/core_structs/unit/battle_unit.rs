@@ -139,18 +139,18 @@ impl BattleUnit {
         self.shield = Shield(Some(incoming.amount))
     }
 
-    pub(crate) fn get_position(&self, tick: u32) -> (BattleSubtile, bool) {
+    pub(crate) fn get_position(&self, tick: Tick) -> (BattleSubtile, bool) {
         //! BattleSubtile is position, bool is whether it is actively moving or not (for cacheing reasons).
 
         if self.current_movement.is_none() {
             (self.position.to_logical(), false)
         } else {
             #[cfg(test)] {
-                println!("Getting position of moving unit with MoveData:- current tick: {}\n{:?} ", tick, self.current_movement.unwrap())
+                //println!("Getting position of moving unit with MoveData:- current tick: {}\n{:?} ", tick.0, self.current_movement.unwrap())
             }
             let move_order = self.current_movement.unwrap(); // safe unwrap bc above.
-            let tick_number = tick - move_order.start_tick;
-            let progress = tick_number as f32 / (move_order.end_tick - move_order.start_tick) as f32;
+            let tick_number = tick.0 - move_order.start_tick.0;
+            let progress = tick_number as f32 / (move_order.end_tick.0 - move_order.start_tick.0) as f32;
             let (x_f, y_f) = (
                 move_order.start_pos.x as f32 + progress*(move_order.end_pos.x - move_order.start_pos.x) as f32,
                 move_order.start_pos.y as f32 + progress*(move_order.end_pos.y - move_order.start_pos.y) as f32,
@@ -159,7 +159,7 @@ impl BattleUnit {
         }
     }
 
-    pub(crate) fn path(&self, blocked: &BlockedArena, target_pos: BattleSubtile, current_tick: u32) -> MoveData {
+    pub(crate) fn path(&self, blocked: &BlockedArena, target_pos: BattleSubtile, current_tick: Tick) -> MoveData {
         let mut blocked = *blocked; // create editable local copy
 
         let tile_coords = self.last_position;
@@ -182,13 +182,12 @@ impl BattleUnit {
                         start_pos: self.position, // can use position field directly as it will never path while under a MoveEvent.
                         end_pos: self.position,
                         start_tick: current_tick,
-                        end_tick: current_tick + 10,
+                        end_tick: current_tick + Tick(10),
                         move_speed_override: None
                 }
             }
         }
         
-
         let next = self.position.best_next_tile(&target_pos, self.range_squared, &blocked);
 
         // if next is self, forcibly add 10 tick delay to not spam moveevents, and cache current blockedtiles.
@@ -202,10 +201,10 @@ impl BattleUnit {
         MoveData {
             source: self.id, 
             target: self.id, 
-            start_pos: self.position, // can use position field directly as it will never path while under a MoveEvent.
+            start_pos: self.position, // can use position field directly as it will never path while already under a MoveEvent.
             end_pos: next,
             start_tick: current_tick,
-            end_tick: current_tick + travel_ticks as u32,
+            end_tick: current_tick + Tick(travel_ticks as u16),
             move_speed_override: None
         }
     }

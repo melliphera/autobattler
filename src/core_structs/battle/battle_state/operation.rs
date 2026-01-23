@@ -8,7 +8,7 @@ pub type EventBuffer = SmallVec<[(BattleEvent, u32); 8]>;
 pub type UidBuffer   = SmallVec<[EntityID;    2]>;
 */
 
-pub type EventBuffer = Vec<(BattleEvent, u32)>;
+pub type EventBuffer = Vec<(BattleEvent, Tick)>;
 pub type UidBuffer   = Vec<EntityID>;
 
 pub struct EventReturnBuffer (
@@ -17,16 +17,16 @@ pub struct EventReturnBuffer (
 );
 
 impl EventReturnBuffer {
-    fn new() -> Self { Self (Vec::with_capacity(8), Vec::with_capacity(8))}
-    fn clear(&mut self) {self.0.clear(); self.1.clear();} // 
+    pub fn new() -> Self { Self (Vec::with_capacity(8), Vec::with_capacity(8))}
+    pub fn clear(&mut self) {self.0.clear(); self.1.clear();} // 
 }
 
 impl BattleState {
-    pub(super) fn queue_event(&mut self, event: BattleEvent, tick: u32) {
+    pub(super) fn queue_event(&mut self, event: BattleEvent, tick: Tick) {
         self.timeline.push(event, tick, self.last_processed_tick);
     }
 
-    pub fn simulate(&mut self, max_tick: u32) -> (i32, Option<Team>) {
+    pub fn simulate(&mut self, max_tick: Tick) -> (i32, Option<Team>) {
         
         self.initialize();
 
@@ -57,12 +57,12 @@ impl BattleState {
         (self.events_called, Some(self.live_units.iter().next().map_or(Team::Player, |unit| unit.team)))    // Events should only run dry when one team is fully dead. If both teams are, player biased.
     }
 
-    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: u32, buffer: &mut EventReturnBuffer) {
+    pub(super) fn execute_event(&mut self, event: BattleEvent, tick: Tick, buffer: &mut EventReturnBuffer) {
         //! execute the current event. This is gonna get bulky.
 
         #[cfg(test)] { // test assertions of tick exection order and unit event stream preservation.
             // debug assertion that events are correctly executing in chronological order
-            assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick, tick);
+            assert!(tick >= self.last_processed_tick, "Ticks executed non-chronologically!\nLast processed: {}\nCurrent event tick: {}", self.last_processed_tick.0, tick.0);
 
             // debug assertion that when there are no 0-tick events queued, each unit has exactly one AttackEvent, AbilityCastEvent or MoveEndEvent queued.
             // also sanity checks that the event is in a reasonable timeframe.
@@ -72,7 +72,7 @@ impl BattleState {
                 if !(has_player && has_opponent) {
                     println!("One team is dead, skipping event queue sanity check.");
                 } else {
-                    println!("Checking event queue sanity at tick {}.", tick);
+                    // println!("Checking event queue sanity at tick {}.", tick.0);
 
                     for unit in self.live_units.iter() {
                         if unit.id == event._get_source_id().expect("this shouldnt fail.") {
@@ -87,7 +87,7 @@ impl BattleState {
                                     match ev {
                                         AttackEvent(_) | AbilityCastEvent(_) | MoveEndEvent(_) => {
                                             event_count += 1;
-                                            assert!(container.tick <= tick+300, "Unit {}'s next key event isn't for another {} ticks!'!", source_id.0, container.tick-tick);
+                                            assert!(container.tick <= tick+Tick(300), "Unit {}'s next key event isn't for another {} ticks!'!", source_id.0, container.tick.0-tick.0);
                                         }
                                         _ => { println!("Event {:?} from unit {} is not a key event, ignoring.", ev, source_id.0)}
                                     }
@@ -137,13 +137,13 @@ impl BattleState {
                 let target = self.live_units.get_mut(&data.target).unwrap();
                 let (damage, dead_opt) = target.take_damage(data);
 
-                if let Some(ref mut vec) = self.godot_event_buffer {
-                    vec.push(GodotEvent::DamageTaken(data.target, damage));
+                if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+                    godot_buffer.push(GodotEvent::DamageTaken(data.target, damage));
                 }
 
                 if let Some(DeathEvent(id)) = dead_opt {
-                    if let Some(ref mut vec) = self.godot_event_buffer {
-                        vec.push(GodotEvent::Death(id));
+                    if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+                        godot_buffer.push(GodotEvent::Death(id));
                     }
                     buffer.1.push(id);
                 } 
@@ -153,14 +153,14 @@ impl BattleState {
                 let target = self.live_units.get_mut(&data.target).unwrap();
                 let actually_healed = target.heal(data);
 
-                if let Some(ref mut vec) = self.godot_event_buffer {
-                    vec.push(GodotEvent::DamageHealed(data.target, actually_healed))
+                if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+                    godot_buffer.push(GodotEvent::DamageHealed(data.target, actually_healed))
                 }
             }
             ShieldEvent(data) => {
                 let target = self.live_units.get_mut(&data.target).unwrap();
-                if let Some(ref mut vec) = self.godot_event_buffer {
-                    vec.push(GodotEvent::Shielded(data.target, data.amount))
+                if let Some(ref mut godot_buffer) = self.godot_event_buffer {
+                    godot_buffer.push(GodotEvent::Shielded(data.target, data.amount))
                 }
                 target.shield(data)
             }
@@ -243,14 +243,14 @@ impl BattleState {
                     source: source_id,
                     ability: source.ability.expect("Trying to cast ability without having one.")
                 }),
-                tick + source.attack_delay.0 as u32
+                tick + Tick(source.attack_delay.0 as u16)
             ));
             //println!("Added cast: {} - {} to the queue.", source.template.get_name(), source.ability.expect("trying to cast None ability.").name);
             return
         }
 
         // 3 - attack target (or move into range if currently out of range)
-        let next_attack_tick = tick + source.attack_delay.0 as u32;
+        let next_attack_tick = tick + Tick(source.attack_delay.0 as u16);
         buffer.0.push((source.attack_current_target(), next_attack_tick));
     }
 

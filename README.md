@@ -15,7 +15,7 @@ Gameplay rule decisions and where each lives in the code are listed in [`mechani
 
 ## Optimisation log
 
-Most of the development history is an exercise in making the simulation fast. The table below measures throughput at key commits with the project's own benchmark (`dev_tools::profiling::profile`), single-threaded, release build, 8 seconds per run on a 2-core cloud machine. Repeat runs varied by 2 to 3%.
+Most of the development history is an exercise in making the simulation fast. Each round started from flamegraph profiling to find the hot paths, followed by research into faster data structures and patterns, with an AI coding assistant used to suggest refactoring candidates that I then evaluated and implemented. The table below measures throughput at key commits with the project's own benchmark (`dev_tools::profiling::profile`), single-threaded, release build, 8 seconds per run on a 2-core cloud machine. Repeat runs varied by 2 to 3%.
 
 | Commit | Change | Fights simulated per second |
 | --- | --- | ---: |
@@ -50,3 +50,5 @@ cargo run --release --bin profile_tests      # 10-second benchmark that also wri
 ## License
 
 MIT, for the Rust source. See [`LICENSE`](LICENSE).
+
+The placeholder images in `godot/` (`assets/ballBlue_10.png`, `tile-without-mold.png`) came from free-to-use asset sites and are not covered by the MIT licence.

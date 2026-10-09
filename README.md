@@ -11,8 +11,6 @@ Work in progress.
 - **Working:** the Rust combat engine, which runs complete fights and is covered by unit and profiling tests.
 - **Scaffold only:** the Godot front end in `godot/`, which is not yet connected to the engine.
 
-Gameplay rule decisions and where each lives in the code are listed in [`mechanical decisions and their code locations.txt`](mechanical%20decisions%20and%20their%20code%20locations.txt).
-
 ## Optimisation log
 
 Most of the development history is an exercise in making the simulation fast. Each round started from flamegraph profiling to find the hot paths, followed by research into faster data structures and patterns, with an AI coding assistant used to suggest refactoring candidates that I then evaluated and implemented. The table below measures throughput at key commits with the project's own benchmark (`dev_tools::profiling::profile`), single-threaded, release build, 8 seconds per run on a 2-core cloud machine. Repeat runs varied by 2 to 3%.
